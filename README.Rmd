@@ -53,6 +53,10 @@ ggplot()+
   scale_fill_gradient(low="white", high="black")
 ```
 
+Coding projects:
+* lasso solver
+* SVM solver
+* k-means / GMM / hierarchical clustering
 
 Topics:
 * Support vector machines
@@ -64,10 +68,29 @@ Topics:
 * Hierarchical clustering 
 * Hidden Markov models
 * Optimal segmentation / dynamic programming
-
+   
 Murphy Chapter 1
 - Logistic regression
 - Overfitting / model selection
+
+Murphy Chapter 16
+* 16.5 Feedforward neural networks
+
+LP/QP solver examples
+* Murphy 7.4 Robust linear regression
+* Lasso
+* SVM
+
+Murphy Chapter 7 
+* 7.5 Ridge regression.
+
+Murphy Chapter 8
+* 8.3.2 Steepest descent
+* 8.3.3 Newton's method
+* 8.3.5 Quasi-newton methods
+* 8.3.6 L2 regularization
+* 8.3.7 Multi-class logistic regression
+
 
 Murphy Chapter 13 
 * Linear models
@@ -76,42 +99,62 @@ Murphy Chapter 13
 * Coordinate descent
 * LARS
 * Proximal and gradient projection methods
-
-
+ 
 * Lecture 1 Tue Jan 15: Applications of machine learning, syllabus, placement test
-* Lecture 2 Thu Jan 17: 
-* Lecture 3 Tue Jan 22
-* Lecture 4 Thu Jan 24
-* Lecture 5 Tue Jan 29
-* Lecture 6 Thu Jan 31
-* Lecture 7 Tue Feb 05
-* Lecture 8 Thu Feb 07
-* Lecture 9 Tue Feb 12
-* Lecture 10 Thu Feb 14
-* Lecture 11 Tue Feb 19
-* Lecture 12 Thu Feb 21
-* Lecture 13 Tue Feb 26
-* Lecture 14 Thu Feb 28
-* Lecture 15 Tue Mar 05
-* Lecture 16 Thu Mar 07
-* Lecture 17 Tue Mar 12
-* Lecture 18 Thu Mar 14
-* Lecture 19 Tue Mar 19
-* Lecture 20 Thu Mar 21
-* Lecture 21 Tue Mar 26
-* Lecture 22 Thu Mar 28
-* Lecture 23 Tue Apr 02
-* Lecture 24 Thu Apr 04
-* Lecture 25 Tue Apr 09
-* Lecture 26 Thu Apr 11
-* Lecture 27 Tue Apr 16
-* Lecture 28 Thu Apr 18
-* Lecture 29 Tue Apr 23
-* Lecture 30 Thu Apr 25
-* Lecture 31 Tue Apr 30
-* Lecture 32 Thu May 02
-* Lecture 33 Tue May 07
-* Lecture 34 Thu May 09
+* Lecture 2 Thu Jan 17: Nearest neighbors, cross-validation, bias-variance tradeoff
+* Lecture 3 Tue Jan 22: Ridge regression
+* Lecture 4 Thu Jan 24: Gradient descent
+* Homework 1 Due Fri Jan 25: Nearest neighbors, CV.
+* Lecture 5 Tue Jan 29: L2-regularized logistic regression
+* Lecture 6 Thu Jan 31: Newton's method
+* Homework 2 Due Fri Feb 1: ridge regression solver.
+* Lecture 7 Tue Feb 05: Multi-class logistic regression
+* Lecture 8 Thu Feb 07: quasi-newton methods
+* Homework 3 Due Fri Feb 8: L2-regularized logistic regression solver.
+* Lecture 9 Tue Feb 12: coordinate descent.
+* Lecture 10 Thu Feb 14: stochastic (average) gradient.
+* Homework 4: multi-class logistic regression solver.
+* Lecture 11 Tue Feb 19: Neural networks
+* Lecture 12 Thu Feb 21: backpropagation algorithm.
+* Homework 5: stochastic and coordinate descent methods.
+* Lecture 13 Tue Feb 26: Best subset selection, Lasso
+* Lecture 14 Thu Feb 28: LARS algorithm.
+* Homework 6: neural network.
+* Lecture 15 Tue Mar 05: L1-regularized logistic regression
+* Lecture 16 Thu Mar 07: proximal gradient algorithms. 
+* Homework 7: Lasso solver. 
+* Lecture 17 Tue Mar 12: SVM Primal 
+
+MIDTERM EXAM on smooth optimization algorithms for supervised learning
+
+* Lecture 18 Thu Mar 14: SVM Dual
+* Homework 8: L1-regularized logistic regression solver. 
+* Lecture 19 Tue Mar 19: Sequential Minimal Optimization.
+* Lecture 20 Thu Mar 21: Kernel trick.
+* Homework 9: linear SVM solver.
+* Lecture 21 Tue Mar 26: Decision trees, CART. 
+* Lecture 22 Thu Mar 28: Random forests.
+* Homework 10: nonlinear SVM.
+* Lecture 23 Tue Apr 02: K-means clustering.
+* Lecture 24 Thu Apr 04: Gaussian mixture models.
+* Homework 11: decision trees and random forests.
+* Lecture 25 Tue Apr 09: Other mixture models.
+* Lecture 26 Thu Apr 11: Hierarchical clustering.
+* Homework 12: K-means and GMM.
+* Lecture 27 Tue Apr 16: Hidden Markov Models.
+* Lecture 28 Thu Apr 18: Forward-backward algorithm. 
+* Homework 13: hierarchical clustering.
+* Lecture 29 Tue Apr 23: Viterbi, Baum-Welch.
+* Lecture 30 Thu Apr 25: Optimal segmentation, dynamic programming.
+* Homework 14: HMM.
+* Lecture 31 Tue Apr 30: 
+* Lecture 32 Thu May 02:
+* Homework 15: optimal segmentation.
+* Lecture 33 Tue May 07:
+* Lecture 34 Thu May 09:
+* Homework 16: reproducing results from ML paper.
+
+FINAL EXAM on non-smooth, discrete, unsupervised algorithms
 
 ## Books
 
