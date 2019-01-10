@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{Pre-req quiz for CS499 spring 2019}
+\author{Toby Dylan Hocking}
+%\maketitle
+\thispagestyle{empty}
+
+This quiz will not be graded, but only students who are able to answer
+all questions correctly will be encouraged to take this class. Make
+sure to show your work in all questions.
+
+Let $z_1, \dots, z_n\in\mathbb Z_+$ be a set of $n$ non-negative integers,
+i.e. $\mathbb Z_+=\{0, 1, 2, \dots\}$. Define for any positive $\mu>0$ the function
+$$ f(\mu) = \sum_{i=1}^n \mu - z_i\log \mu. $$
+
+\begin{enumerate}
+\item Derive an expression in terms of $\mu,n,z_i$ for the first derivative
+  $f'(\mu)$. 
+
+\vskip 1in
+\item Derive an expression in terms of $n,z_i$ for the value of $\mu$
+  which is a critical point of $f$. Hint: set $f'(\mu)=0$ and solve
+  for $\mu$.
+
+\vskip 1in
+\item If $n=3$ and $z_1=1, z_2=0, z_3=2$, then compute the value of
+  the critical point $\mu=\underline{\hspace{1cm}}$ and the critical
+  function value $f(\mu)=\underline{\hspace{1cm}}$. Fill in the blanks
+  here but show your work below.
+
+\vskip 1in
+\item Is the critical point a minimum ($f''(\mu)>0$), maximum
+  ($f''(\mu)<0$), or inflection point ($f''(\mu)=0$)?
+
+\vskip 1in
+\item Write a function in the C programming language that computes the
+  critical point $\mu$. The function should have two input arguments:
+  the number $n$ of data \texttt{int n} and a pointer \texttt{int* z}
+  to the data $z_i$. The function should output the critical point
+  $\mu$ as a \texttt{double}.
+\end{enumerate}
+
+\end{document}
