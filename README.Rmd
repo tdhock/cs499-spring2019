@@ -104,40 +104,32 @@ Applications
 * Music transcription
 * Translation
 * Spam filtering
-* Diagnosis
+* Medical diagnosis
 * Optical/intelligent character/word recognition
 * Image classification
 * Image segmentation
 * Genomic segmentation
  
 * Lecture 1 Tue Jan 15: Applications of machine learning, syllabus, placement test
-* Lecture 2 Thu Jan 17: Nearest neighbors, cross-validation, bias-variance tradeoff
-* Quiz 1 Due Fri Jan 25: Nearest neighbors, CV.
+* Lecture 2 Thu Jan 17: Nearest neighbors, cross-validation
 * Lecture 3 Tue Jan 22: Linear regression, gradient descent
 * Lecture 4 Thu Jan 24: Ridge regression
-* Quiz 2 Due Fri Feb 1: ridge regression solver.
 * Lecture 5 Tue Jan 29: Writing an R package
 * Lecture 6 Thu Jan 31: C/C++ code in R packages via .C
-* Quiz 3 Due Fri Feb 8: R packages
 * Lecture 7 Tue Feb 05: Multi-class, L2-regularized, logistic regression
 * Lecture 8 Thu Feb 07: stochastic gradient
-* Quiz 4: 
 * Lecture 9 Tue Feb 12: Neural networks
 * Lecture 10 Thu Feb 14: backpropagation algorithm.
-* Quiz 5: 
 
 Coding project 1. R package for smooth optimization, linear/logistic
 regression, compare L2 regularization with early stopping.
 
 * Lecture 11 Tue Feb 19: Best subset selection, L1-regularization
 * Lecture 12 Thu Feb 21: proximal gradient
-* Quiz 6: 
 * Lecture 13 Tue Feb 26: coordinate descent
 * Lecture 14 Thu Feb 28: LARS algorithm.
-* Quiz 7: 
 * Lecture 15 Tue Mar 05: SVM Primal 
 * Lecture 16 Thu Mar 07: SVM Dual 
-* Quiz 8: 
 * Lecture 17 Tue Mar 12: kernel trick
 * Lecture 18 Thu Mar 14: Sequential Minimal Optimization
 
@@ -148,16 +140,12 @@ MIDTERM EXAM on smooth optimization algorithms for supervised learning
 
 * Lecture 19 Tue Mar 19: Hierarchical clustering.
 * Lecture 20 Thu Mar 21: K-means clustering.
-* Quiz 9: 
 * Lecture 21 Tue Mar 26: Gaussian mixture models.
 * Lecture 22 Thu Mar 28: Other mixture models.
-* Quiz 10: 
 * Lecture 23 Tue Apr 02: Hidden Markov Models.
 * Lecture 24 Thu Apr 04: Forward-backward algorithm. 
-* Quiz 11: 
 * Lecture 25 Tue Apr 09: Viterbi, Baum-Welch.
-* Lecture 26 Thu Apr 11: Optimal segmentation, dynamic programming.
-* Quiz 12: 
+ * Lecture 26 Thu Apr 11: Optimal segmentation, dynamic programming.
 
 Decision trees, CART,Random forests?
 
@@ -165,25 +153,22 @@ Coding project 3. R package for unsupervised learning
 
 * Lecture 27 Tue Apr 16: paper review?
 * Lecture 28 Thu Apr 18: 
-* Quiz 13: 
 * Lecture 29 Tue Apr 23: 
 * Lecture 30 Thu Apr 25: 
-* Quiz 14: 
 * Lecture 31 Tue Apr 30: 
 * Lecture 32 Thu May 02:
-* Quiz 15: 
 * Lecture 33 Tue May 07:
 * Lecture 34 Thu May 09:
-* Quiz 16: 
 
-Coding project 4.
+Coding project 4. R package for algo from ML literature.
+- 
 
 FINAL EXAM on non-smooth, discrete, unsupervised algorithms
 
 ## Books
 
 * https://www.cs.ubc.ca/~murphyk/MLbook/
-* NAU library https://arizona-nau-primo.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=01NAU_ALMA51166833980003842&context=L&vid=01NAU&lang=en_US&search_scope=Everything&adaptor=Local%20Search%20Engine&tab=default_tab&query=any,contains,murphy%20machine%20learning&sortby=rank&mode=Basic
+* NAU library https://arizona-nau -primo.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=01NAU_ALMA51166833980003842&context=L&vid=01NAU&lang=en_US&search_scope=Everything&adaptor=Local%20Search%20Engine&tab=default_tab&query=any,contains,murphy%20machine%20learning&sortby=rank&mode=Basic
 * e-book http://eds.a.ebscohost.com/ehost/ebookviewer/ebook?sid=f4a68ba6-099a-4015-9d63-a342771786f3%40sdc-v-sessmgr02&vid=0&format=EB
 * http://numerical.recipes/
 * https://web.stanford.edu/~hastie/ElemStatLearn/
