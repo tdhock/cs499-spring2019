@@ -1,0 +1,73 @@
+Computer Science 499-007 (9235) at Northern Arizona University, Spring 2019
+
+Optimization Algorithms for Machine Learning
+
+TuTh 9:35-10:50
+
+** Lectures
+  
+- [[file:2019-01-15-applications/][Lecture 1 Tue Jan 15]]: Applications of
+  machine learning, syllabus, calculus/C quiz.
+- Lecture 2 Thu Jan 17: 
+- Lecture 3 Tue Jan 22: 
+- Lecture 4 Thu Jan 24: 
+- Lecture 5 Tue Jan 29: 
+- Lecture 6 Thu Jan 31: 
+- Lecture 7 Tue Feb 05: 
+- Lecture 8 Thu Feb 07: 
+- Lecture 9 Tue Feb 12: 
+- Lecture 10 Thu Feb 14: 
+
+Coding project 1. R package for smooth optimization, linear/logistic
+regression, compare L2 regularization with early stopping.
+
+- Lecture 11 Tue Feb 19: 
+- Lecture 12 Thu Feb 21: 
+- Lecture 13 Tue Feb 26: 
+- Lecture 14 Thu Feb 28: 
+- Lecture 15 Tue Mar 05: 
+- Lecture 16 Thu Mar 07: 
+- Lecture 17 Tue Mar 12: 
+- Lecture 18 Thu Mar 14: 
+
+Coding project 2. R package for non-smooth optimization, Lasso and
+SVM.
+
+MIDTERM EXAM on smooth optimization algorithms for supervised learning
+
+- Lecture 19 Tue Mar 19: 
+- Lecture 20 Thu Mar 21: 
+- Lecture 21 Tue Mar 26: 
+- Lecture 22 Thu Mar 28: 
+- Lecture 23 Tue Apr 02: 
+- Lecture 24 Thu Apr 04: 
+- Lecture 25 Tue Apr 09: 
+- Lecture 26 Thu Apr 11: 
+
+Coding project 3. R package for unsupervised learning
+
+- Lecture 27 Tue Apr 16: paper review?
+- Lecture 28 Thu Apr 18: 
+- Lecture 29 Tue Apr 23: 
+- Lecture 30 Thu Apr 25: 
+- Lecture 31 Tue Apr 30: 
+- Lecture 32 Thu May 02:
+- Lecture 33 Tue May 07:
+- Lecture 34 Thu May 09:
+
+Coding project 4. R package for algo from ML literature.
+
+FINAL EXAM on non-smooth, discrete, unsupervised algorithms
+
+** Books
+
+Murphy
+- https://www.cs.ubc.ca/~murphyk/MLbook/
+- NAU library https://arizona-nau-primo.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=01NAU_ALMA51166833980003842&context=L&vid=01NAU&lang=en_US&search_scope=Everything&adaptor=Local%20Search%20Engine&tab=default_tab&query=any,contains,murphy%20machine%20learning&sortby=rank&mode=Basic
+- e-book http://eds.a.ebscohost.com/ehost/ebookviewer/ebook?sid=f4a68ba6-099a-4015-9d63-a342771786f3%40sdc-v-sessmgr02&vid=0&format=EB
+
+Hastie, Tibshirani, Friedman
+- https://web.stanford.edu/~hastie/ElemStatLearn/
+
+Press, et al.
+- http://numerical.recipes/
