@@ -90,7 +90,6 @@ Murphy Chapter 8
 * 8.3.5 Quasi-newton methods
 * 8.3.6 L2 regularization
 * 8.3.7 Multi-class logistic regression
-
  
 Murphy Chapter 13 
 * Linear models
@@ -109,45 +108,46 @@ Applications
 * Image classification OK
 * Image segmentation - TODO LabelMe slide
 * Genomic segmentation - TODO copy slide.
+
+## Lectures
   
-* Lecture 1 Tue Jan 15: Applications of machine learning, syllabus, placement test
-* Lecture 2 Thu Jan 17: Nearest neighbors, cross-validation
-* Lecture 3 Tue Jan 22: Linear regression, gradient descent
-* Lecture 4 Thu Jan 24: Ridge regression
-* Lecture 5 Tue Jan 29: Writing an R package
-* Lecture 6 Thu Jan 31: C/C++ code in R packages via .C
-* Lecture 7 Tue Feb 05: Multi-class, L2-regularized, logistic regression
-* Lecture 8 Thu Feb 07: stochastic gradient
-* Lecture 9 Tue Feb 12: Neural networks
-* Lecture 10 Thu Feb 14: backpropagation algorithm.
+* [Lecture 1 Tue Jan 15](2019-01-15-applications): Applications of
+  machine learning, syllabus, calculus/C quiz.
+* Lecture 2 Thu Jan 17: 
+* Lecture 3 Tue Jan 22: 
+* Lecture 4 Thu Jan 24: 
+* Lecture 5 Tue Jan 29: 
+* Lecture 6 Thu Jan 31: 
+* Lecture 7 Tue Feb 05: 
+* Lecture 8 Thu Feb 07: 
+* Lecture 9 Tue Feb 12: 
+* Lecture 10 Thu Feb 14: 
 
 Coding project 1. R package for smooth optimization, linear/logistic
 regression, compare L2 regularization with early stopping.
 
-* Lecture 11 Tue Feb 19: Best subset selection, L1-regularization
-* Lecture 12 Thu Feb 21: proximal gradient
-* Lecture 13 Tue Feb 26: coordinate descent
-* Lecture 14 Thu Feb 28: LARS algorithm.
-* Lecture 15 Tue Mar 05: SVM Primal 
-* Lecture 16 Thu Mar 07: SVM Dual 
-* Lecture 17 Tue Mar 12: kernel trick
-* Lecture 18 Thu Mar 14: Sequential Minimal Optimization
+* Lecture 11 Tue Feb 19: 
+* Lecture 12 Thu Feb 21: 
+* Lecture 13 Tue Feb 26: 
+* Lecture 14 Thu Feb 28: 
+* Lecture 15 Tue Mar 05: 
+* Lecture 16 Thu Mar 07: 
+* Lecture 17 Tue Mar 12: 
+* Lecture 18 Thu Mar 14: 
 
 Coding project 2. R package for non-smooth optimization, Lasso and
 SVM.
 
 MIDTERM EXAM on smooth optimization algorithms for supervised learning
 
-* Lecture 19 Tue Mar 19: Hierarchical clustering.
-* Lecture 20 Thu Mar 21: K-means clustering.
-* Lecture 21 Tue Mar 26: Gaussian mixture models.
-* Lecture 22 Thu Mar 28: Other mixture models.
-* Lecture 23 Tue Apr 02: Hidden Markov Models.
-* Lecture 24 Thu Apr 04: Forward-backward algorithm. 
-* Lecture 25 Tue Apr 09: Viterbi, Baum-Welch.
-* Lecture 26 Thu Apr 11: Optimal segmentation, dynamic programming.
-
-Decision trees, CART,Random forests?
+* Lecture 19 Tue Mar 19: 
+* Lecture 20 Thu Mar 21: 
+* Lecture 21 Tue Mar 26: 
+* Lecture 22 Thu Mar 28: 
+* Lecture 23 Tue Apr 02: 
+* Lecture 24 Thu Apr 04: 
+* Lecture 25 Tue Apr 09: 
+* Lecture 26 Thu Apr 11: 
 
 Coding project 3. R package for unsupervised learning
 
