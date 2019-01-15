@@ -8,6 +8,7 @@
 \usepackage{algorithmic}
 \usepackage{multirow}
 
+\usepackage[utf8]{inputenc}%for french accents. 
 %\usepackage{appendixnumberbeamer}
 
 \addtobeamertemplate{navigation symbols}{}{%
@@ -53,12 +54,15 @@
 
 \begin{document}
 
-\title{Applications of machine learning}
+\title{CS499\\Optimization algorithms for machine learning
+\\Lecture 1: applications of machine learning}
   \date{15 January 2019}
 \author{
   Toby Dylan Hocking\\
   toby.hocking@nau.edu
 }
+
+%To open: syllabus, google translate, mp3 player.
 
 \maketitle
 
@@ -119,6 +123,22 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Supervised machine learning algorithms}
+
+  \textbf{Can} be used typically whenever a knowledgeable/skilled
+  human can easily/quickly/consistently create a large database of
+  labels.
+
+  \vskip 1in
+
+  \textbf{Should} be used if it is not easy to code the function $f$
+  for predicting the labels by hand.
+
+\end{frame}
+
+
+
+\begin{frame}
   \frametitle{Advantages of supervised machine learning}
 
   \begin{center}
@@ -165,7 +185,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Machine learning for cell image classification}
+  \frametitle{Machine learning for cell image classification (CellProfiler)}
   Jones {\it et al.} PNAS 2009. Scoring diverse cellular morphologies in
   image-based screens with iterative feedback and machine learning.
 
@@ -183,7 +203,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Machine learning for image segmentation}
+  \frametitle{Machine learning for image segmentation (LabelMe)}
 
   \includegraphics[width=\textwidth]{image-segmentation/labelme-interface}
 
@@ -232,15 +252,58 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Machine learning for translation (google translate)}
+
+  --- Fernand! lui cria-t-il, de mes noms, je n'aurais besoin de t'en
+  dire qu'un seul pour te foudroyer; mais ce nom, tu le devines,
+  n'est-ce pas ? ou plutôt tu te le rappelles ? car, malgré tous mes
+  chagrins, toutes mes tortures, je te montre aujourd'hui un visage
+  que le bonheur de la vengeance rajeunit, un visage que tu dois avoir
+  vu bien souvent dans tes rêves depuis ton mariage ... avec Mercédès,
+  ma fiancée!
+
+  Le général, la tête renversée en arrière, les mains étendues, le
+  regard fixe, dévora en silence ce terrible spectacle; puis, allant
+  chercher la muraille comme point d'appui, il s'y glissa lentement
+  jusqu'à la porte par laquelle il sortit à reculons, en laissant
+  échapper ce seul cri lugubre, lamentable, déchirant:
+
+  --- Edmond Dantès!
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for translation (google translate)}
+  
+  ``Fernand,'' cried he, ``of my hundred names I need only tell you
+  one to overwhelm you! But you guess it now; do you not? --- or,
+  rather, you remember it? For, notwithstanding all my sorrows and my
+  tortures, I show you to-day a face which the happiness of revenge
+  makes young again --- a face you must often have seen in your dreams
+  since your marriage with Mercédès, my betrothed!''
+  
+  The general, with his head thrown back, hands extended, gaze fixed,
+  looked silently at this dreadful apparition; then seeking the wall
+  to support him, he glided along close to it until he reached the
+  door, through which he went out backwards, uttering this single
+  mournful, lamentable, distressing cry,---
+  
+  ``Edmond Dantès!''
+
+\end{frame}
+
+
+
+\begin{frame}
   \frametitle{Machine learning for music transcription}
 
   \begin{itemize}
    \item Want: $f$(mp3 file)=score for all instruments playing, e.g.
 \includegraphics[width=\textwidth]{music-transcription/BFD-page2}
-\item Easy to compute \textsc{Synth}(score)=synthesized mp3 file.
-  \item Generating a real/recorded mp3 file based on score is more difficult
-  (need skilled musicians to read/play).
 \item Listening to mp3 then writing score is difficult! (but possible)
+\item Generating a real/recorded mp3 file based on score is also difficult
+  (need skilled musicians to read/play).
+\item Easy to compute \textsc{Synth}(score)=synthesized mp3 file.
 \item Q: can we use synthesized mp3 files to train a ML algo?
 \item  Listen to MP3s: recorded, synthesized.
   \end{itemize}
@@ -299,6 +362,21 @@ f(\includegraphics[width=0.5\textwidth]{retinal-scans/national-geographic-medici
 \item Want $f$(profile)$\in\{\text{ok},\text{relapse}\}$.
 \item Can you determine an $f$ by visual inspection?
 \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Machine learning for other applications}
+
+  I have mostly presented machine learning applications which I
+  believe are good for the future of humanity. (e.g. google translate
+  makes it easier for people to communicate/understand each other)
+
+  \vskip 1in
+
+  Q: what are some other applications of machine learning which are
+  good/bad for the future of humanity? Why?
 
 \end{frame}
 
