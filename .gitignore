@@ -1,0 +1,11 @@
+*~
+auto
+.Rhistory
+texput.log
+*.aux
+*.log
+quiz.pdf
+*.snm
+*.nav
+*.toc
+*.out

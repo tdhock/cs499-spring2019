@@ -91,7 +91,7 @@ Murphy Chapter 8
 * 8.3.6 L2 regularization
 * 8.3.7 Multi-class logistic regression
 
-
+ 
 Murphy Chapter 13 
 * Linear models
 * Best subset selection 
@@ -101,15 +101,15 @@ Murphy Chapter 13
 * Proximal and gradient projection methods
 
 Applications
-* Music transcription
-* Translation
-* Spam filtering
-* Medical diagnosis
-* Optical/intelligent character/word recognition
-* Image classification
-* Image segmentation
-* Genomic segmentation
- 
+* Music transcription - TODO 
+* Translation - TODO google books?
+* Spam filtering - TODO slide
+* Medical diagnosis - TODO slide Natl Geo, my NB
+* Optical/intelligent character/word recognition TODO slide
+* Image classification TODO copy slide
+* Image segmentation - TODO LabelMe slide
+* Genomic segmentation - TODO copy slide.
+  
 * Lecture 1 Tue Jan 15: Applications of machine learning, syllabus, placement test
 * Lecture 2 Thu Jan 17: Nearest neighbors, cross-validation
 * Lecture 3 Tue Jan 22: Linear regression, gradient descent
@@ -145,7 +145,7 @@ MIDTERM EXAM on smooth optimization algorithms for supervised learning
 * Lecture 23 Tue Apr 02: Hidden Markov Models.
 * Lecture 24 Thu Apr 04: Forward-backward algorithm. 
 * Lecture 25 Tue Apr 09: Viterbi, Baum-Welch.
- * Lecture 26 Thu Apr 11: Optimal segmentation, dynamic programming.
+* Lecture 26 Thu Apr 11: Optimal segmentation, dynamic programming.
 
 Decision trees, CART,Random forests?
 
