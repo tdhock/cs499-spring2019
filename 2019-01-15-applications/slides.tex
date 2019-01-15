@@ -182,28 +182,126 @@
 }
 \end{frame}
 
+\begin{frame}
+  \frametitle{Machine learning for image segmentation}
+
+  \includegraphics[width=\textwidth]{image-segmentation/labelme-interface}
+
+\end{frame}
 
 \begin{frame}
-  \frametitle{Advantages of supervised machine learning}
+  \frametitle{Machine learning for image segmentation}
+
+  \includegraphics[width=\textwidth]{image-segmentation/labelme-examples}
+
+  Russell {\it et al.} 2007.
+
+  Q: What are the types/dimensions of $x,y,f$ in this example?
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Machine learning for spam filtering (Gmail)}
+
+  \includegraphics[height=2in]{spam-filtering/screenshot-gmail-spam}
+  \includegraphics[height=2in]{spam-filtering/screenshot-inbox-message}
+
+  Want: $f$(email message)$\in\{0,1\}$ -- binary classification, spam=1
+  or not=0.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Machine learning for translation (google books)}
+
+  \includegraphics[height=3in]{translation/monte-cristo-french-title}
+  \includegraphics[height=3in]{translation/monte-cristo-english-title}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for translation (google translate)}
+
+  
+  Want: $f$(\includegraphics[width=0.5\textwidth]{translation/monte-cristo-french}) =
+\includegraphics[width=0.8\textwidth]{translation/monte-cristo-english}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for music transcription}
 
   \begin{itemize}
-  \item Can use same learning algorithm regardless of pattern.
-  \item Pattern encoded in the labels (not the algorithm).
-  \item State-of-the-art accuracy (if there is enough training data).
+   \item Want: $f$(mp3 file)=score for all instruments playing, e.g.
+\includegraphics[width=\textwidth]{music-transcription/BFD-page2}
+\item Easy to compute \textsc{Synth}(score)=synthesized mp3 file.
+  \item Generating a real/recorded mp3 file based on score is more difficult
+  (need skilled musicians to read/play).
+\item Listening to mp3 then writing score is difficult! (but possible)
+\item Q: can we use synthesized mp3 files to train a ML algo?
+\item  Listen to MP3s: recorded, synthesized.
   \end{itemize}
-
-  \begin{center}
-      \begin{tabular}{cc}
-        \includegraphics[height=1in]{mnist-digits} &
-  \includegraphics[height=1in]{fashion-mnist-sprite-some}  
-  \end{tabular}
-  \end{center}
-  
-  \vskip -0.2cm
-  \scriptsize Sources: github.com/cazala/mnist, github.com/zalandoresearch/fashion-mnist
-
-  %\includegraphics[width=\textwidth]{figure-good-bad}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for recognizing cursive handwriting}
+
+Optical/intelligent character/word recognition 
+
+Want: $f$(\includegraphics[width=0.9\textwidth]{grandma-handwriting/grand-canyon-page1-paragraph1})=
+
+\only<2>{\underline{River Rafting Trip June 10--25, 1989}\\
+  \underline{14 days on the Colorado River from}\\
+  Lee's Ferry below Lake Powell to\\
+  Diamond Creek above Lake Mead,\\
+  Through the Grand Canyon}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for recognizing cursive handwriting}
+
+\includegraphics[width=1\textwidth]{grandma-handwriting/grand-canyon-page7}
+
+Q: sometimes you hear about ``AI more accurate than human'' -- what
+does that mean, if the human is defining the labels? 
+
+Q: Can AI be more accurate at reading this than my grandmother, who
+wrote it?
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for medical diagnosis}
+
+\parbox{0.49\textwidth}{
+\includegraphics[height=0.9\textheight]{retinal-scans/national-geographic-medicine-cover}
+}
+\parbox{0.49\textwidth}{
+f(\includegraphics[width=0.5\textwidth]{retinal-scans/national-geographic-medicine-retina})=
+\includegraphics[width=0.5\textwidth]{retinal-scans/national-geographic-medicine-paragraph})
+}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Machine learning for medical diagnosis 2}
+
+\includegraphics[width=\textwidth]{neuroblastoma-ok-relapse}
+
+\begin{itemize}
+\item Each row is a genomic profile from a cancer patient.
+\item Each column is a different chromosome.
+\item Approximate copy number plotted against chrom position.
+\item Want $f$(profile)$\in\{\text{ok},\text{relapse}\}$.
+\item Can you determine an $f$ by visual inspection?
+\end{itemize}
+
+\end{frame}
+
 
 
 

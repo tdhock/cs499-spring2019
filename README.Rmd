@@ -103,10 +103,10 @@ Murphy Chapter 13
 Applications
 * Music transcription - TODO 
 * Translation - TODO google books?
-* Spam filtering - TODO slide
+* Spam filtering - OK
 * Medical diagnosis - TODO slide Natl Geo, my NB
 * Optical/intelligent character/word recognition TODO slide
-* Image classification TODO copy slide
+* Image classification OK
 * Image segmentation - TODO LabelMe slide
 * Genomic segmentation - TODO copy slide.
   
