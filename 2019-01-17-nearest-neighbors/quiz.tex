@@ -1,0 +1,66 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} Jan 17 
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+Here are $n=5$ data with $p=2$ input dimensions. Each row is a person
+for which we have measured the height (first column of $X$, in
+centimeters), weight (second column in pounds). The output $y$ that we
+want to predict is diabetes diagnosis status ($y$, 0=no diabetes,
+1=diabetes).
+
+\begin{equation*}
+  X = \left[\begin{array}{cc}
+              170 & 140 \\
+              200 & 160 \\
+              180 & 200 \\
+              140 & 150 \\
+              150 & 130
+\end{array}\right],\ 
+  y = \left[\begin{array}{c}
+              0 \\
+              0 \\
+              1 \\
+              1 \\
+              1
+\end{array}\right],\ 
+  d = \left[\begin{array}{c}
+              \underline{\hspace{1cm}}\\
+              \underline{\hspace{1cm}}\\
+              \underline{\hspace{1cm}}\\
+              \underline{\hspace{1cm}}\\
+              \underline{\hspace{1cm}}
+\end{array}\right]
+\end{equation*}
+
+The goal is to compute the class predicted by the $K=3$ nearest
+neighbor model, for a new/test person with features $x$=[height = 160 cm,
+weight = 130 pounds].
+
+Assume that we use the Manhattan/L1 distance metric,
+\begin{equation*}
+  d(x,x') = \sum_{j=1}^p |x-x'|
+\end{equation*}
+
+\begin{enumerate}
+\item Fill in the blanks in the vector of distances $d$ above (each
+  row should be the Manhattan/L1 distance between the new/test person
+  and the training data).
+\item Which are the three nearest neighbors? (write a star* for each
+  of the three nearest neighbors in the blank next to the
+  corresponding distances/rows)
+\item What is the overall predicted class? (0 or 1)
+\end{enumerate}
+
+
+\end{document}
