@@ -8,7 +8,12 @@ TuTh 9:35-10:50
   
 - [[file:2019-01-15-applications/][Lecture 1 Tue Jan 15]]: Applications of
   machine learning, syllabus, calculus/C quiz.
-- Lecture 2 Thu Jan 17: nearest neighbors [[http://bl.ocks.org/tdhock/raw/e3ad8679a71756c3063f1e5f0b6a2864/][viz]]/[[file:2019-01-17-nearest-neighbors/viz.R][code]].
+- Lecture 2 Thu Jan 17: nearest neighbors data visualizations:
+  - 1d regression one train/validation split [[http://bl.ocks.org/tdhock/raw/c2eee6069c806f42a0f539e08e19787a/][viz]]/[[file:2019-01-17-nearest-neighbors/viz.R][code]]
+  - 1d regression 4-fold cross-validation [[http://bl.ocks.org/tdhock/raw/ead4b9d3ea8f8d670ec2259382d3cc3c/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-4folds.R][code]]
+  - 1d classification one train/validation split [[http://bl.ocks.org/tdhock/raw/4ae012435fbbcb1d41a6219f3f47756e/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-class-1d.R][code]]
+  - 2d regression 3-fold cross-validation [[http://bl.ocks.org/tdhock/raw/b966942e93269d8e764f9e1005e13275/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-ozone.R][code]]
+  - 2d classification ex from Hastie book [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][viz+code]]
 - Lecture 3 Tue Jan 22: 
 - Lecture 4 Thu Jan 24: 
 - Lecture 5 Tue Jan 29: 
