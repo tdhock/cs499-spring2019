@@ -16,8 +16,7 @@ correct answer.
 Here are $n=5$ data with $p=2$ input dimensions. Each row is a person
 for which we have measured the height (first column of $X$, in
 centimeters), weight (second column in pounds). The output $y$ that we
-want to predict is diabetes diagnosis status ($y$, 0=no diabetes,
-1=diabetes).
+want to predict is blood pressure.
 
 \begin{equation*}
   X = \left[\begin{array}{cc}
@@ -47,10 +46,12 @@ The goal is to compute the class predicted by the $K=3$ nearest
 neighbor model, for a new/test person with features $x$=[height = 160 cm,
 weight = 130 pounds].
 
-Assume that we use the Manhattan/L1 distance metric,
+Assume that we use the Manhattan/L1 distance metric, 
 \begin{equation*}
-  d(x,x') = \sum_{j=1}^p |x-x'|
+  d(x,x') = \sum_{j=1}^p |x_j-x_j'|,
 \end{equation*}
+i.e. the total distance between $x,x'$ is the sum of distances on each
+of the two component dimensions (height and weight).
 
 \begin{enumerate}
 \item Fill in the blanks in the vector of distances $d$ above (each

@@ -1,0 +1,93 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+
+\begin{document}
+
+\section{Training data in supervised learning}
+
+Training data: $D= \{(x_1,y_1), \dots, (x_n,y_n)\}$, given/known.
+
+Inputs $x_i\in\mathcal X$, outputs
+$y_i\in\mathcal y$.
+
+For each example, what is $\mathcal X,\mathcal Y$? 
+\begin{itemize}
+\item Image classification
+\item Image segmntation
+\item Translation
+\item Spam filtering
+\end{itemize}
+
+Usually $\mathcal X = \mathbb R^p$ (e.g. word counts in emails).
+
+Notation. 
+\begin{itemize}
+\item Inputs $x\in\mathbb R^p$.
+\item $p$ = dimension of each input.
+\item $n$ = number of training examples.
+\item Outputs $y\in\mathbb R$ for regression, $y\in\{0,1\}$ for binary
+  classification.
+\item $f:\mathcal X\rightarrow \mathcal Y$ is the prediction function
+  we want to learn.
+\item Regression function $f:\mathbb R^p\rightarrow\mathbb R$
+\item Binary classification function $f:\mathbb R^p\rightarrow \{0,1\}$.
+\end{itemize}
+
+Geometric interpretation of regression, height son/father (linear
+pattern), species versus temperature (non-linear pattern).
+
+Draw residual $r_i$ on graphs as vertical line segments.
+
+\section{Test data}
+
+Test data: $D'= \{ (x'_1,y'_1), \dots, (x'_m,y'_m)\}$, unknown.
+
+Goal is generalization to new/test data: algo $\textsc{Learn}(D) = f$,
+with $f(x'_i)\approx y'_i$ for all test data, i.e. minimize
+$$ \text{Err}_{D'}(f) = \sum_{(x',y')\in D'} \ell[f(x'), y'] $$,
+where $\ell$ is a loss function:
+\begin{itemize}
+\item In binary classification we typically use the
+  mis-classification-rate/0-1-loss $\ell[f(x),y]=I[f(x)!=y]$.
+\item In regression we use the squared error $\ell[f(x),y]=[f(x)-y]^2$.
+\end{itemize}
+
+Since $D'$ is unknown, we need to assume that $D,D'\sim \mathcal P$.
+
+\section{Nearest neighbors algorithm}
+
+What is near?
+$\textsc{Dist}:\mathcal X\times \mathcal X \rightarrow \mathbb R_+$ is
+a non-negative distance function between two data points.
+
+e.g. for $\mathcal X=\RR^p$ we use
+\begin{itemize}
+\item L1 distance $\textsc{Dist}(x,x') = ||x-x'||_1 = \sum_{j=1}^p |x_j-x_j'|$
+\item L2 distance $\textsc{Dist}(x,x') = ||x-x'||_2 = \sqrt{
+\sum_{j=1}^p (x_j-x_j')^2}$
+\end{itemize}
+
+Compute distances $d_1,\dots,d_n\in\mathbb R_+$ where 
+$d_i\textsc{Dist}(x_i,x)$.
+
+Example graph, draw horizontal line segments $d_i$ between $x,x_i$.
+
+Define neighbors function $N_{D,K} = \{t_1, t_2, \dots, t_K\}$ where
+$t_1,\dots,t_n\in\{1,\dots,n\}$ are indices such that
+$d_{t_1},x)\leq \cdots \leq d_{t_n}$.
+
+Predict the mean output value of the $K$ nearest
+neighbors, $$f_{D,K}(x) = \frac 1 K \sum_{i\in N_{D,K}} y_i$$
+
+\begin{itemize}
+\item For regression this is the mean.
+\item For binary classification the mean is intepreted as a
+  probability, predict 1 if greater than 0.5, and predict 0 otherwise.
+\end{itemize}
+
+TODO: Geometric interpretation of binary classification in 1d,2d.
+
+\end{document}
