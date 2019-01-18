@@ -1,0 +1,16 @@
+Optimization algorithms for machine learning
+
+Supervised learning: Gradient descent algorithms (full, stochastic,
+stochastic average), Coordinate descent, path-following algorithms
+(LARS, SVMpath, clusterpath), Support vector machines/duality, SMO
+algorithm. Linear and quadratic programming, disciplined convex
+programming. Greedy algorithms (decision tree growing, forward
+stepwise regression).
+
+Unsupervised learning: K-means, Mixture models, EM algorithm, Hidden
+Markov models (forward-backward, Baum-Welch, Viterbi), Optimal
+changepoint detection (dynamic programming) versus greedy binary
+segmentation.
+
+The main evaluation of the class would be 4-5 C/C++ projects where the
+students code the optimization algorithms.

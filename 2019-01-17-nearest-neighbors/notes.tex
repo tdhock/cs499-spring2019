@@ -63,7 +63,7 @@ What is near?
 $\textsc{Dist}:\mathcal X\times \mathcal X \rightarrow \mathbb R_+$ is
 a non-negative distance function between two data points.
 
-e.g. for $\mathcal X=\RR^p$ we use
+e.g. for $\mathcal X=\mathbb R^p$ we use
 \begin{itemize}
 \item L1 distance $\textsc{Dist}(x,x') = ||x-x'||_1 = \sum_{j=1}^p |x_j-x_j'|$
 \item L2 distance $\textsc{Dist}(x,x') = ||x-x'||_2 = \sqrt{
@@ -71,16 +71,16 @@ e.g. for $\mathcal X=\RR^p$ we use
 \end{itemize}
 
 Compute distances $d_1,\dots,d_n\in\mathbb R_+$ where 
-$d_i\textsc{Dist}(x_i,x)$.
+$d_i=\textsc{Dist}(x_i,x)$.
 
 Example graph, draw horizontal line segments $d_i$ between $x,x_i$.
 
-Define neighbors function $N_{D,K} = \{t_1, t_2, \dots, t_K\}$ where
-$t_1,\dots,t_n\in\{1,\dots,n\}$ are indices such that
-$d_{t_1},x)\leq \cdots \leq d_{t_n}$.
+Define neighbors function $N_{D,K}(x') = \{t_1, t_2, \dots, t_K\}$, where\\
+$t_1,\dots,t_n\in\{1,\dots,n\}$ are indices such that\\
+distances $d_{t_1}\leq \cdots \leq d_{t_n}$ are sorted ascending.
 
 Predict the mean output value of the $K$ nearest
-neighbors, $$f_{D,K}(x) = \frac 1 K \sum_{i\in N_{D,K}} y_i$$
+neighbors, $$f_{D,K}(x') = \frac 1 K \sum_{i\in N_{D,K}(x')} y_i$$
 
 \begin{itemize}
 \item For regression this is the mean.
