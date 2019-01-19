@@ -1,12 +1,13 @@
 Package: myMeanPkg
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Compute the mean using C++
+Version: 2019.01.19
+Author: Toby Dylan Hocking
+Maintainer: Toby Dylan Hocking <toby.hocking@nau.edu>
+Description: Demonstrates how to use C++ code
+    with R using the .C interface.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: RcppEigen
+RoxygenNote: 6.1.0

@@ -84,6 +84,10 @@ For each C++ function in that package you should have
 Use
 - Ctrl-shift-B to compile/build.
 - Ctrl-shift-T to test.
+- Ctrl-shift-E to check.
+
+In the project/package, turn on doc generation using Tools -> Project
+Options -> Build Tools -> Generate Documentation -> Build & Reload.
 
 Rstudio does not jump to pre-processor errors, e.g. missing
 #include. (even after upgrade to most recent version)
