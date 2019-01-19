@@ -1,0 +1,2 @@
+useDynLib(myMeanPkg)
+exportPattern("^[[:alpha:]]+")
