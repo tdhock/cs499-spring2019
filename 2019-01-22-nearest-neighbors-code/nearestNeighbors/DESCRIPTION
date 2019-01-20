@@ -1,0 +1,14 @@
+Package: nearestNeighbors
+Type: Package
+Title: Compute Nearest neighbors using C++
+Version: 2019.01.19
+Author: Toby Dylan Hocking
+Maintainer: Toby Dylan Hocking <toby.hocking@nau.edu>
+Description: Efficient computation of nearest neighbors
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+LinkingTo: RcppEigen
+RoxygenNote: 6.1.0
+Imports: data.table
+Suggests: ggplot2
