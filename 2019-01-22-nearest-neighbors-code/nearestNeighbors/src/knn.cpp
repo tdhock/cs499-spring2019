@@ -19,16 +19,20 @@ int Predict1toMaxNeighbors
   if(max_neighbors < 1){
     return ERROR_TOO_FEW_NEIGHBORS;
   }
+  // These two maps provide a convenient matrix/vector interface to
+  // access the data at these pointers.
   Eigen::Map< Eigen::MatrixXd > train_inputs_mat(train_inputs_ptr, nrow, ncol);
   Eigen::Map< Eigen::VectorXd > test_input_vec(test_input_ptr, ncol);
-  Eigen::Map< Eigen::VectorXd > test_prediction_vec(test_prediction_ptr, ncol);
-  Eigen::Map< Eigen::VectorXd > train_label_vec(train_label_ptr, nrow);
+  // These two vectors make it easy to do a dynamic memory allocation.
   Eigen::VectorXd distance_vec(nrow);
   Eigen::VectorXi sorted_index_vec(nrow);//to be sorted by dist.
+  //std::cout << "Before distance computation" << std::endl;
   for(int i=0; i<nrow; i++){
     distance_vec(i) = (train_inputs_mat.row(i).transpose()-test_input_vec).norm();
+    //distance_vec(i) = (train_inputs_mat.row(i)-test_input_vec).norm();
     sorted_index_vec(i) = i;//not sorted yet.
   }
+  //std::cout << "After distance computation" << std::endl;
   std::sort
     (sorted_index_vec.data(),
      sorted_index_vec.data()+sorted_index_vec.size(),
@@ -40,8 +44,8 @@ int Predict1toMaxNeighbors
   for(int model_i=0; model_i<max_neighbors; model_i++){
     int neighbors = model_i+1;
     int row = sorted_index_vec(model_i);
-    total += train_label_vec(row);
-    test_prediction_vec(model_i) = total / neighbors;
+    total += train_label_ptr[row];
+    test_prediction_ptr[model_i] = total / neighbors;
   }
   return 0;
 }
