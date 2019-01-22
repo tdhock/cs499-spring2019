@@ -42,8 +42,8 @@ SVM.
 
 MIDTERM EXAM on smooth optimization algorithms for supervised learning
 
-- Lecture 19 Tue Mar 19: 
-- Lecture 20 Thu Mar 21: 
+- Lecture 19 Tue Mar 19: spring
+- Lecture 20 Thu Mar 21: break
 - Lecture 21 Tue Mar 26: 
 - Lecture 22 Thu Mar 28: 
 - Lecture 23 Tue Apr 02: 

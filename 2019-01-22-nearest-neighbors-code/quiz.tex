@@ -1,0 +1,41 @@
+\documentclass{article}[12pt]
+
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} Jan 22
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+Below I have written pseudo-code for a version of the $k$-nearest
+neighbors algorithm. Fill in the blank on line 12 so that the
+algorithm computes predictions $\hat y_k$ for all
+$k\in\{1,\dots, K_{\text{max}}\}$.
+
+\begin{algorithmic}[1]
+  \State Function $\textsc{Pred1toKmaxNearestNeighbors}$
+  \State Inputs: train inputs/features $x_1,\dots,x_n$, outputs/labels $y_1,\dots,y_n$,\\ \ \ \ test input/feature $x'$, max number of neighbors $K_{\text{max}}$:
+  \For{$i=1$ to $n$}:
+  \State $d_i\gets \textsc{Distance}(x', x_i)$
+  \EndFor
+  \State $t_1,\dots,t_n\gets \textsc{SortedIndices}(d_1,\dots,d_n)$
+  \State $\text{totalY}\gets 0.0$
+  \For{$k=1$ to $K_{\text{max}}$}:
+  \State $i\gets t_k$
+  \State $\text{totalY} \texttt{ += } y_i$
+  \State $\hat y_i\gets \underline{\hspace{1in}}$
+  \EndFor
+  \State Output: predictions $\hat y_1, \dots, \hat y_k$.
+\end{algorithmic}
+
+\end{document}

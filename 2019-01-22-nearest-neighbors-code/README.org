@@ -1,0 +1,106 @@
+** R package overview
+
+- DESCRIPTION and NAMESPACE are meta-data files.
+- R/ contains R code.
+- src/ contains C/C++ code.
+- tests/ contains test files (R code).
+- man/ contains documentation files.
+
+** C++ code
+
+The idea is to write your ML algo in portable C++ code that does not
+use any R-specific features (e.g. =my_mean.cpp= and =my_mean.h=), so
+then your algo can easily be used with other systems (such as python
+or a command line program). You will have to write an interface to use
+your ML algo with each of these systems. We explain how to do this
+with R below.
+
+For each R package with C++ code you need to have:
+- useDynLib(pkgName) in NAMESPACE
+- LinkingTo: RcppEigen in DESCRIPTION
+- the following in src/interface.cpp:
+
+#+BEGIN_SRC c++
+  #include <R.h>//for error
+  #include <R_ext/Rdynload.h>//for registration
+  #include "my_mean.h"
+  #include "eigen_mean.h"
+
+  // interface functions.
+  void my_mean_interface(int *data_ptr, int *data_count, double *output_ptr){
+    int status = my_mean_C(data_ptr, *data_count, output_ptr);
+    if(status == MY_MEAN_ERROR_NO_DATA){
+      error("no data");
+    }
+    if(status != 0){
+      error("unrecognized error ", status);
+    }
+  }
+  void eigen_mean_interface(double *data_ptr, int *data_count, double *output_ptr){
+    int status = eigen_mean_Cpp(data_ptr, *data_count, output_ptr);
+    if(status == EIGEN_MEAN_ERROR_NO_DATA){
+      error("no data");
+    }
+    if(status != 0){
+      error("unrecognized error ", status);
+    }
+  }
+
+  // Code required to register these interface functions with R.
+  R_CMethodDef cMethods[] = {
+    {"my_mean_interface", (DL_FUNC) &my_mean_interface, 3},
+    {"eigen_mean_interface", (DL_FUNC) &eigen_mean_interface, 3},
+    {NULL, NULL, 0}
+  };
+  extern "C" {
+    void R_init_myMeanPkg(DllInfo *info) {
+      R_registerRoutines(info, cMethods, NULL, NULL, NULL);
+      //R_useDynamicSymbols call says the DLL is not to be searched for
+      //entry points specified by character strings so .C etc calls will
+      //only find registered symbols.
+      R_useDynamicSymbols(info, FALSE);
+    }
+  }
+#+END_SRC
+
+For each C++ function in that package you should have
+- a C++ code file src/my_mean.cpp with the function that
+  implements your ML algo e.g. =int my_mean_C=. Its return value should
+  be an integer status code (0=success, non-zero for different
+  errors), and its arguments should typically be =double*= for data
+  input/output and =int= for sizes.
+- a C++ header file src/my_mean.h which defines the prototype of your
+  ML algo function, along with error/status codes.
+- an interface function defined in src/interface.cpp with arguments
+  that are all pointers, e.g. =void my_mean_interface(int *data_ptr, int *data_count, double *out_ptr)=. 
+  It should first call the corresponding C++
+  function =my_mean_C= and if it returns non-zero, call =error= with
+  an informative error message (that will be displayed in R.
+- a line =#include "my_mean.h"= in src/interface.cpp
+- a line like ={"my_mean_interface", (DL_FUNC) &my_mean_interface, 3},= in cMethods in src/interface.cpp.
+
+** Rstudio setup
+
+Use
+- Ctrl-shift-B to compile/build.
+- Ctrl-shift-T to test.
+- Ctrl-shift-E to check.
+
+In the project/package, turn on doc generation using Tools -> Project
+Options -> Build Tools -> Generate Documentation -> Build & Reload.
+
+Rstudio does not jump to pre-processor errors, e.g. missing
+#include. (even after upgrade to most recent version)
+
+Doc page
+https://support.rstudio.com/hc/en-us/articles/200486088-Using-Rcpp-with-RStudio
+mentions code completion but it is not available by default on my
+system. Tried 
+
+#+BEGIN_SRC shell-script
+sudo apt install libclang-dev
+#+END_SRC
+
+After re-starting Rstudio, still no completion. Trying to
+re-install. Still doesn't work. Giving up.
+

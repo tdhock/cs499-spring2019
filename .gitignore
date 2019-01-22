@@ -9,3 +9,6 @@ quiz.pdf
 *.nav
 *.toc
 *.out
+.Rproj.user
+*.o
+*.so

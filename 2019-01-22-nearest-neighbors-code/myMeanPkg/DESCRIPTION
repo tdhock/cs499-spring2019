@@ -1,0 +1,13 @@
+Package: myMeanPkg
+Type: Package
+Title: Compute the mean using C++
+Version: 2019.01.19
+Author: Toby Dylan Hocking
+Maintainer: Toby Dylan Hocking <toby.hocking@nau.edu>
+Description: Demonstrates how to use C++ code
+    with R using the .C interface.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+LinkingTo: RcppEigen
+RoxygenNote: 6.1.0
