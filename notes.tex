@@ -1,0 +1,156 @@
+\documentclass{article}
+
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+
+\begin{document}
+
+Each section is a new lecture.
+
+\section{Applications}
+\begin{itemize}
+\item slides on applications of machine learning.
+\item calculus/programming quiz.
+\end{itemize}
+
+\section{Training data in supervised learning}
+
+Training data: $D= \{(x_1,y_1), \dots, (x_n,y_n)\}$, given/known.
+
+Inputs $x_i\in\mathcal X$, outputs
+$y_i\in\mathcal y$.
+
+For each example, what is $\mathcal X,\mathcal Y$? 
+\begin{itemize}
+\item Image classification
+\item Image segmntation
+\item Translation
+\item Spam filtering
+\end{itemize}
+
+Usually $\mathcal X = \mathbb R^p$ (e.g. word counts in emails).
+
+Notation. 
+\begin{itemize}
+\item Inputs $x\in\mathbb R^p$.
+\item $p$ = dimension of each input.
+\item $n$ = number of training examples.
+\item Outputs $y\in\mathbb R$ for regression, $y\in\{0,1\}$ for binary
+  classification.
+\item $f:\mathcal X\rightarrow \mathcal Y$ is the prediction function
+  we want to learn.
+\item Regression function $f:\mathbb R^p\rightarrow\mathbb R$
+\item Binary classification function $f:\mathbb R^p\rightarrow \{0,1\}$.
+\end{itemize}
+
+Geometric interpretation of regression, height son/father (linear
+pattern), species versus temperature (non-linear pattern).
+
+Draw residual $r_i$ on graphs as vertical line segments.
+
+\paragraph{Test data.} $D'= \{ (x'_1,y'_1), \dots, (x'_m,y'_m)\}$, unknown.
+Goal is generalization to new/test data: algo $\textsc{Learn}(D) = f$,
+with $f(x'_i)\approx y'_i$ for all test data, i.e. minimize
+\begin{equation}
+  \text{Err}_{D'}(f) = \sum_{(x',y')\in D'} \ell[f(x'), y']
+\end{equation}
+where $\ell$ is a loss function:
+\begin{itemize}
+\item In binary classification we typically use the
+  mis-classification-rate/0-1-loss $\ell[f(x),y]=I[c_f(x)!=y]$, where
+  the binary classifier $c_f(x)=0$ if $f(x)<0.5$ and 1 otherwise.
+\item In regression we use the squared error $\ell[f(x),y]=[f(x)-y]^2$.
+\end{itemize}
+Since $D'$ is unknown, we need to assume that $D,D'\sim \mathcal P$.
+
+\paragraph{Nearest neighbors algorithm.} What is near?
+$\textsc{Dist}:\mathcal X\times \mathcal X \rightarrow \mathbb R_+$ is
+a non-negative distance function between two data points.
+
+e.g. for $\mathcal X=\mathbb R^p$ we use
+\begin{itemize}
+\item L1 distance $\textsc{Dist}(x,x') = ||x-x'||_1 = \sum_{j=1}^p |x_j-x_j'|$
+\item L2 distance $\textsc{Dist}(x,x') = ||x-x'||_2 = \sqrt{
+\sum_{j=1}^p (x_j-x_j')^2}$
+\end{itemize}
+Draw geometric interpretation of L1 and L2 distances.
+
+Compute distances $d_1,\dots,d_n\in\mathbb R_+$ where 
+$d_i=\textsc{Dist}(x_i,x)$.
+
+Example graph, draw horizontal line segments $d_i$ between $x,x_i$.
+
+Define neighbors function $N_{D,K}(x') = \{t_1, t_2, \dots, t_K\}$, where\\
+$t_1,\dots,t_n\in\{1,\dots,n\}$ are indices such that\\
+distances $d_{t_1}\leq \cdots \leq d_{t_n}$ are sorted ascending.
+
+Predict the mean output value of the $K$ nearest
+neighbors, $$f_{D,K}(x') = \frac 1 K \sum_{i\in N_{D,K}(x')} y_i$$
+
+\begin{itemize}
+\item For regression this is the mean.
+\item For binary classification the mean is intepreted as a
+  probability, predict 1 if greater than 0.5, and predict 0 otherwise.
+\end{itemize}
+
+\section{Nearest neighbors model selection and code}
+\begin{itemize}
+\item Review of supervised learning.
+\item Definition of nearest neighbors prediction function $f_{D,K}(x)$.  
+\item How to choose $K$? Discussion.
+\item Formal definition of total error.
+\item Visualizations. 1d regression and binary classification.
+\item Draw train/validation matrices. Validation error.
+\item Pseudocode for computing $f_{D,K}(x)$.
+\end{itemize}
+
+\begin{equation}
+  \text{Verr}_{D,D'}(k) = \sum_{(x',y')\in D'} \ell[f_{D,k}(x'), y']
+\end{equation}
+
+\begin{algorithmic}[1]
+  \State Function $\textsc{PredKNearestNeighbors}$
+  \State Inputs: train inputs/features $x_1,\dots,x_n$, outputs/labels $y_1,\dots,y_n$,\\ \ \ \ test input/feature $x'$, max number of neighbors $K_{\text{max}}$:
+  \For{$i=1$ to $n$}:
+  \State $d_i\gets \textsc{Distance}(x', x_i)$
+  \EndFor
+  \State $t_1,\dots,t_n\gets \textsc{SortedIndices}(d_1,\dots,d_n)$
+  \State $\text{totalY}\gets 0.0$
+  \For{$k=1$ to $K_{\text{max}}$}:
+  \State $i\gets t_k$
+  \State $\text{totalY} \texttt{ += } y_i$
+  \State Output: prediction $\text{totalY}/K_{\text{max}}$
+\end{algorithmic}
+Total complexity: $O(np + n\log n)$ where the Distance sub-routine is $O(p)$.
+
+\section{Cross-validation and C++ code}
+Remember we assume that training data and test data are randomly drawn
+from a common probability distribution $\mathcal P$. To simulate that
+process, we randomly assign a fold ID for each observation
+$z_1,\dots,z_n\in\{1,\dots, \text{NumFolds}\}$. We then define
+$\text{NumFolds}$ train/validation splits
+\begin{equation}
+  D_s = \{(x_i,y_i)|z_i = s\} \text{ --- validation set $s$}
+  D_{-s} = \{(x_i,y_i)|z_i \neq s\} \text{ --- train set $s$}
+\end{equation}
+Draw train/validation/test matrices for $s=1$, $s=2$, etc.
+
+Cross-validation data visualizations.
+
+Mean validation error over all train/validation splits (folds):
+\begin{equation}
+  \text{MeanVerr}(k) = \text{Verr}_{D_{-s},D_{s}}(k)
+\end{equation}
+
+Overall we choose the parameter $\hat k = \argmin_k \text{MeanVerr}(k)$.
+
+And the learning algorithm is $\textsc{LearnKNN}(D) = f_{D, \hat k}$.
+
+How to code? First thing to do is write a sub-routine
+\textsc{OptimalNeighborsCV} which computes the 
+
+TODO: Geometric interpretation of binary classification in 1d,2d.
+
+\end{document}
