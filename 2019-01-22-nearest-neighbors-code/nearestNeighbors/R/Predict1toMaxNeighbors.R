@@ -106,7 +106,7 @@ NearestNeighborsCV <- structure(function
   if(missing(fold.vec)){
     if(!all(
       is.integer(n.folds),
-      length(n.folds),
+      length(n.folds)==1,
       is.finite(n.folds),
       1 < n.folds,
       n.folds <= nrow(input.mat)
