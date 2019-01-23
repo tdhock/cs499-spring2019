@@ -1,0 +1,70 @@
+\documentclass{article}[12pt]
+
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{graphicx}
+\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} Jan 24
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+The image below represents a training data set with $n=70$
+observations, one for each individual image of a digit. In order to
+perform cross-validation, fold ID numbers $\in\{1,2,3\}$ have been
+assigned to all observations/images in the corresponding row/letter.
+
+%  Assume you
+% are given the corresponding matrix of pixel intensities,
+% $X\in\mathbb R^{70\times 256}$ (each row is an observation/image, each
+% column is the intensity of one pixel -- larger values are whiter and
+% smaller values are darker). Further assume you are given the
+% corresponding outputs/labels $y\in\{0,1,\dots,9\}^n$.
+
+\newcommand{\myskip}{\vskip 0.8cm}
+\parbox{0.1\textwidth}{
+A, fold=1
+\myskip
+B, fold=2
+\myskip
+C, fold=2
+\myskip
+D, fold=1
+\myskip
+E, fold=3
+\myskip
+F, fold=3
+\myskip
+G, fold=3
+}
+\parbox{0.9\textwidth}{
+  \includegraphics[width=0.9\textwidth]{mnist-digits}
+}
+
+\begin{enumerate}
+\vskip 1cm
+\item For fold/split 1 which observations/letters are used for the
+  training set?  \underline{\hspace{1.5in}} Which observations/letters
+  are used for validation set? \underline{\hspace{1.5in}}
+
+\vskip 1cm
+\item For fold/split 2. Training set = \underline{\hspace{1.5in}},
+  Validation set = \underline{\hspace{1.5in}}.
+
+\vskip 1cm
+\item For fold/split 3. Training set = \underline{\hspace{1.5in}},
+  Validation set = \underline{\hspace{1.5in}}.
+\end{enumerate}
+
+
+
+\end{document}
