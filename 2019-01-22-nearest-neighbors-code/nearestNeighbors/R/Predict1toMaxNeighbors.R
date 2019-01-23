@@ -73,16 +73,16 @@ Predict1toMaxNeighborsMatrix <- function
 
 loss.function.list <- list(
   mse=function(pred, label){
-    (pred-label)^2
+    colMeans((pred-label)^2)
   },
   misclassification=function(pred.prob, label){
     pred.label <- ifelse(pred.prob<0.5, 0, 1)
-    pred.label != label
+    colMeans(pred.label != label)
   })
 
-NearestNeighborsCVError <- structure(function
-### Nearest neighbor cross-validation error.
-(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL){
+NearestNeighborsCV <- structure(function
+### Fit nearest neighbors model using k-fold CV.
+(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL, LAPPLY=parallel::mclapply){
   if(is.null(loss.function)){
     loss.name <- if(all(label.vec %in% c(0,1))){
       "misclassification"
@@ -128,46 +128,36 @@ NearestNeighborsCVError <- structure(function
       label.vec[is.train],
       input.mat,
       max.neighbors)
-    loss.mat <- loss.function(pred.mat, label.vec)
     set.list <- list(train=is.train, validation=!is.train)
     loss.dt.list <- list()
     for(set.name in names(set.list)){
       is.set <- set.list[[set.name]]
-      set.mat <- loss.mat[is.set,]
+      set.pred.mat <- pred.mat[is.set,]
+      set.label.vec <- label.vec[is.set]
+      loss <- loss.function(set.pred.mat, set.label.vec)
+      if(!all(
+        is.numeric(loss),
+        length(loss)==max.neighbors
+      ))stop(
+        "loss.function(pred.mat[n x k], label.vec[n]) ",
+        "must return k-vector of loss values")
       loss.dt.list[[set.name]] <- data.table(
         validation.fold,
         set.name,
         neighbors=1:max.neighbors,
-        loss=colMeans(set.mat))
+        loss)
     }
     do.call(rbind, loss.dt.list)
   }
-  do.call(rbind, parallel::mclapply(unique(fold.vec), OneFold))
-}, ex=function(){
-
-  err.dt <- with(mixture.example, NearestNeighborsCVError(x, y, 20L))
-
-  library(ggplot2)
-  ggplot()+
-    theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
-    facet_grid(validation.fold ~ .)+
-    geom_line(aes(
-      neighbors, loss, color=set.name),
-      data=err.dt)
-  
-})
-
-NearestNeighborsCV <- structure(function
-### Fit nearest neighbors model using k-fold CV.
-(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL){
-  err.dt <- NearestNeighborsCVError(
-    input.mat, label.vec, max.neighbors, fold.vec, n.folds, loss.function)
+  err.dt <- do.call(rbind, LAPPLY(unique(fold.vec), OneFold))
   mean.dt <- err.dt[set.name=="validation", list(
-    mean.loss=mean(loss)
-  ), by=list(neighbors)]
+    mean.loss=mean(loss),
+    sd.loss=sd(loss)
+  ), by=list(neighbors, set.name)]
   selected.neighbors <- mean.dt[which.min(mean.loss), neighbors]
   list(
+    fold.loss=err.dt,
+    mean.loss=mean.dt,
     input.mat=input.mat,
     label.vec=label.vec,
     selected.neighbors=selected.neighbors,
@@ -177,6 +167,19 @@ NearestNeighborsCV <- structure(function
       pred.mat[, selected.neighbors]
     })
 }, ex=function(){
+
+  library(nearestNeighbors)
+  data(mixture.example, package="ElemStatLearn")
+  err.dt <- with(mixture.example, NearestNeighborsCV(x, y, 20L))
+
+  library(ggplot2)
+  ggplot()+
+    theme_bw()+
+    theme(panel.margin=grid::unit(0, "lines"))+
+    facet_grid(validation.fold ~ .)+
+    geom_line(aes(
+      neighbors, loss, color=set.name),
+      data=err.dt)
 
   max.neighbors <- 50L
   set.seed(1)

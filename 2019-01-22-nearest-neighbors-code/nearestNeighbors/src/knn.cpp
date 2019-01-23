@@ -28,7 +28,7 @@ int Predict1toMaxNeighbors
   Eigen::VectorXi sorted_index_vec(nrow);//to be sorted by dist.
   //std::cout << "Before distance computation" << std::endl;
   for(int i=0; i<nrow; i++){
-    distance_vec(i) = (train_inputs_mat.row(i).transpose()-test_input_vec).norm();
+    distance_vec(i) = (train_inputs_mat.row(i).transpose()-test_input_vec).norm(); 
     //distance_vec(i) = (train_inputs_mat.row(i)-test_input_vec).norm();
     sorted_index_vec(i) = i;//not sorted yet.
   }
@@ -83,3 +83,5 @@ int Predict1toMaxNeighborsMatrix
   }
   return 0;
 }
+
+
