@@ -16,11 +16,13 @@ TuTh 9:35-10:50
   - 1d regression 4-fold cross-validation [[http://bl.ocks.org/tdhock/raw/ead4b9d3ea8f8d670ec2259382d3cc3c/][viz]], [[file:2019-01-17-nearest-neighbors/viz-4folds.R][code]]
   - 2d regression 3-fold cross-validation [[http://bl.ocks.org/tdhock/raw/b966942e93269d8e764f9e1005e13275/][viz]], [[file:2019-01-17-nearest-neighbors/viz-ozone.R][code]]
   - 2d classification ex from Hastie book [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][viz+code]]
-- Lecture 5 Tue Jan 29: 
-  - gradient descent for linear regression [[http://bl.ocks.org/tdhock/raw/fc2719c42196959b2239d82f9d444fe0/][viz]], [[file:2019-01-29-linear-regression/viz.R][code]].
-  - gradient descent choose step size [[http://bl.ocks.org/tdhock/raw/0106fdf9c239ab0ff7b49b90c0b654c4/][viz]], [[file:2019-01-29-linear-regression/viz.step.size.R][code]].
+- Lecture 5 Tue Jan 29: R package development
+  - How to write [[file:2019-01-22-nearest-neighbors-code/README.org][R/C++ interface code]].
+  - TODO link to videos.
 - Lecture 6 Thu Jan 31: 
 - Lecture 7 Tue Feb 05: 
+  - gradient descent for linear regression [[http://bl.ocks.org/tdhock/raw/fc2719c42196959b2239d82f9d444fe0/][viz]], [[file:2019-01-29-linear-regression/viz.R][code]].
+  - gradient descent choose step size [[http://bl.ocks.org/tdhock/raw/0106fdf9c239ab0ff7b49b90c0b654c4/][viz]], [[file:2019-01-29-linear-regression/viz.step.size.R][code]].
 - Lecture 8 Thu Feb 07: 
 - Lecture 9 Tue Feb 12: 
 - Lecture 10 Thu Feb 14: 

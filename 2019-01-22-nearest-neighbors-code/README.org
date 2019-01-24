@@ -1,6 +1,7 @@
 ** R package overview
 
-- DESCRIPTION and NAMESPACE are meta-data files.
+- DESCRIPTION and NAMESPACE are meta-data files (describe the
+  author/purpose of package).
 - R/ contains R code.
 - src/ contains C/C++ code.
 - tests/ contains test files (R code).
