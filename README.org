@@ -4,6 +4,16 @@ Optimization Algorithms for Machine Learning
 
 TuTh 9:35-10:50
 
+** How to ace this class
+
+Before class you should read the suggested book chapters. When you read, write a summary in your own words of every paragraph or section. Also write questions that you have during your reading so you can ask in class (if related to the lecture topic) or in office hours.
+
+During class, instead of copying what I write on the whiteboard, I would suggest to try to write what you understood in your own words. Also I would suggest to ask questions in class as soon as you need clarification.
+
+After class, you should review your notes with one of your classmates (ask one of the students who seem to be correctly answering a lot of questions). Ask each other questions and try to teach/summarize some of the material with each other -- that is one of the best ways to learn.
+
+Finally after doing all of the above, please email me to ask for an office hour.
+
 ** Lectures
   
 - [[file:2019-01-15-applications/][Lecture 1 Tue Jan 15]]: Applications of
