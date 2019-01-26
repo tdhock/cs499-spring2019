@@ -1,4 +1,4 @@
-Coding project 1: nearest neighbors for regression and binary classification.
+** Coding project 1: nearest neighbors for regression and binary classification.
 
 For this project you will be writing an R package that implements a version of the nearest neighbors algorithm.
 You are allowed and encouraged to discuss your code/ideas with other students,
@@ -9,7 +9,7 @@ Any violations will result in one or more of the following:
 - a failing grade in this class,
 - expulsion from NAU.
 
-Coding two algorithms/functions.
+*** Coding two algorithms/functions.
 - nearest neighbors prediction function for regression and binary classification.
   - write a C++ function NN1toKmaxPredict
     which takes a training data set and an entire test matrix,
@@ -73,7 +73,7 @@ Coding two algorithms/functions.
     (2) the predict function returns a numeric vector of the expected size, and 
     (3) for an invalid input, your function stops with an informative error message.
     
-Experiments/application: run your code on the following data sets.
+*** Experiments/application: run your code on the following data sets.
 - Binary classification.
   - ElemStatLearn::spam 2-class [4601, 57] output is last column (spam).
   - ElemStatLearn::SAheart 2-class [462, 9] output is last column (chd).
@@ -145,9 +145,9 @@ What is the optimal number of neighbors?
 ...
 #+END_SRC
 
-Your groups should submit a link to your repo on GitHub.
 
-Grading rubric: 100 points.
+*** Grading rubric: 100 points.
+Your groups should submit a link to your repo on GitHub.
 - 20 points for completeness of report.
   - 4 points for each data set (2 points each for loss matrix and train/validation loss plot)
 - 20 points if your R package passes with no WARNING/ERROR on https://win-builder.r-project.org/upload.aspx
