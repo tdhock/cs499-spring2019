@@ -107,7 +107,10 @@ Experiments/application: run your code on the following data sets.
   of neighbors selected by minimizing the mean validation loss function.
 - Write up your results in vignettes/report.Rmd that shows the R code that you used
   for the experiments/application, along with the output. 
-  The headings should be as follows:
+  - Documentation: [Vignettes chapter of R packages book](http://r-pkgs.had.co.nz/vignettes.html).
+  - Example [Rmd vignette source code](https://github.com/cran/glmnet/blob/master/vignettes/glmnet_beta.Rmd),
+    [vignette rendered to HTML](https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html).
+  - For this assignment the headings should be as follows:
 
 #+BEGIN_SRC
 ## Data set 1: spam
