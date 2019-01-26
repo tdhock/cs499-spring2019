@@ -1,0 +1,31 @@
+- nearest neighbors algorithm for regression and binary classification.
+  - write a C++ function Pred1toKmaxNN
+    which takes a training data set and an entire test matrix,
+    then computes a matrix of k-nearest neighbor predictions,
+    for k=1 to max_neighbors, and for every test observation.
+    Function arguments should be:
+    - problem dimensions: n_train_observations, n_test_observations, n_features.
+    - maximum number of neighbors: max_neighbors.
+    - a matrix training data inputs (n_train_observations x n_features). 
+    - a vector of training data outputs (n_train_observations).
+    - a test input matrix (n_test_observations x n_features).
+    - a matrix of predictions for the test data (n_test_observations x max_neighbors),
+      which is where you need to store the result.
+    Challenges:
+    - Use the L1/Manhattan distance 
+      (instead of the L2/Euclidean distance which we saw in class).
+    - Make sure to define a header file with error codes.
+      You should at least check that the problem dimensions and max number of neighbors are positive.
+  - create an R package and code an interface for your C++ function in src/interface.cpp.
+    If your function returns an error code, make sure to
+    call error() with an informative message that will be displayed in R.
+  - code an R function Pred1toKmaxNN that calls your C++ code via the .C function in R.
+  - write documentation for that R function,
+    with at least two examples of how to use it
+    (one for regression, one for binary classification).
+  - write tests for that R function, in tests/testthat/test-Pred1toKmaxNN.R.
+    You should at least test that (1) for valid inputs,
+    your function returns a valid numeric prediction matrix with
+    the expected dimensions, and (2) for invalid inputs, 
+    your function stops with an informative error message.
+    
