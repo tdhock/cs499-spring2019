@@ -167,5 +167,6 @@ Extra credit:
     you compute the test loss matrices by writing a loop over all five data sets. 
     (rather than repeating the same CV code for each data set)
   - 5 points if, in your GitHub repo, you setup Travis-CI to check your R package,
-    and have a green badge that indicates a build that passes checks. See [blog](https://juliasilge.com/blog/beginners-guide-to-travis/)   
-    and [docs](https://docs.travis-ci.com/user/languages/r/)
+    and have a green badge that indicates a build that passes checks. 
+    See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
+    and [[https://docs.travis-ci.com/user/languages/r/][docs]].
