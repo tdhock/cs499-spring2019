@@ -1,6 +1,7 @@
 ** Coding project 1: nearest neighbors for regression and binary classification.
 
-For this project you will be writing an R package that implements a version of the nearest neighbors algorithm.
+For this project you will be writing an R package with C++ code
+that implements a version of the nearest neighbors algorithm.
 You are allowed and encouraged to discuss your code/ideas with other students,
 but it is strictly forbidden to copy any code/documentation/tests/etc from other groups,
 or any web pages. Your code/project must be written from scratch by the members of your group. 
