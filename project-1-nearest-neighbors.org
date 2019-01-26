@@ -9,6 +9,12 @@ Any violations will result in one or more of the following:
 - a failing grade in this class,
 - expulsion from NAU.
 
+*** Form a team with varied skills
+- math/stats.
+- R
+- C++
+- git/GitHub.
+
 *** Coding two algorithms/functions.
 - nearest neighbors prediction function for regression and binary classification.
   - write a C++ function NN1toKmaxPredict
@@ -83,8 +89,8 @@ Any violations will result in one or more of the following:
   - ElemStatLearn::ozone [111 x 3] output is first column (ozone).
 - For each data set, use 3-fold cross-validation to evaluate the prediction accuracy of your code.
   For each split s=1 to 3, set aside the data in fold s as a test set. 
-  Use your code to train a model on the other two folds 
-  (which should be used in your NNLearnCV function as the train/validation set), 
+  Use NNLearnCV to train a model on the other two folds 
+  (which should be used in your NNLearnCV function as internal train/validation sets/splits), 
   then make a prediction on the test fold s. 
 - For each train/test split, 
   to show that your algorithm is actually learning something 
@@ -145,7 +151,6 @@ What is the optimal number of neighbors?
 ...
 #+END_SRC
 
-
 *** Grading rubric: 100 points.
 Your groups should submit a link to your repo on GitHub.
 - 20 points for completeness of report.
@@ -156,17 +161,24 @@ Your groups should submit a link to your repo on GitHub.
   (I will run tests to make sure it accurately computes the nearest neighbors predictions).
 - 10 points for documentation.
 - 10 points for tests.
-- 10 points for commits in your git repo:
-  - 5 points if each group member has at least two substantial commits at least 1 week prior to deadline.
-  - 5 more points if each group member has at least two substantial commits at least 2 weeks prior to deadline.
+- 10 points for not waiting until the last minute,
+  as evidenced by commits in your git repo:
+  - 5 points if you have committed a preliminary version of the C++ code on or before Fri Feb 1.
+  - 5 more points if you have written some R code and documentation on or before Fri Feb 8.
 Extra credit:
-  - 5 points extra credit if, in your R package,
+  - 2 points extra credit if, in your R package,
     you write a test that makes sure your C++ nearest neighbors code 
     computes the same predictions as a nearest neighbor prediction computed in R code.
-  - 5 points extra credit if, in your Rmd report,
+  - 2 points extra credit if, in your Rmd report,
     you compute the test loss matrices by writing a loop over all five data sets. 
-    (rather than repeating the same CV code for each data set)
-  - 5 points if, in your GitHub repo, you setup Travis-CI to check your R package,
+    (rather than copying/repeating the same CV code for each data set) 
+    Hint: use store the data sets in a named list.
+  - 2 points extra credit if, in your Rmd report,
+    you use LaTeX code/MathJax to type the equations 
+    for the nearest neighbor prediction function f_{D,k}(x)
+    and the optimal number of neighbors \hat k 
+    (as estimated via minimizing the mean validation loss).
+  - 2 points if, in your GitHub repo, you setup Travis-CI to check your R package,
     and have a green badge that indicates a build that passes checks. 
     See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
