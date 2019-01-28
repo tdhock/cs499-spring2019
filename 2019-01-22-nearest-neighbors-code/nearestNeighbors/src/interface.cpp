@@ -1,6 +1,7 @@
 /* -*- compile-command: "R CMD INSTALL .." -*- */
 
 #include "knn.h"
+#include "knn_multiclass.h"
 #include <R.h>
 #include <R_ext/Rdynload.h>
 
@@ -57,9 +58,43 @@ void Predict1toMaxNeighborsMatrix_interface
   }
 }
 
+void Predict1toMaxNeighborsMatrixMultiClass_interface
+(double *train_inputs_ptr, //ntrain x ncol
+ int *train_label_ptr,  //ntrain
+ int *n_train_ptr, int *ncol_ptr, int *max_neighbors_ptr, int *n_test_ptr,
+ int *n_labels_ptr,
+ double *test_inputs_ptr,     //ncol x ntest
+ int *test_predictions_ptr //max_neighbors x ntest
+ ){
+  int status = Predict1toMaxNeighborsMatrixMultiClass
+    (train_inputs_ptr, //ntrain x ncol
+     train_label_ptr,  //ntrain
+     *n_train_ptr, *ncol_ptr, *max_neighbors_ptr, *n_test_ptr,
+      *n_labels_ptr,
+     test_inputs_ptr,     //ncol x ntest
+     test_predictions_ptr //max_neighbors x ntest
+     );
+  if(status == ERROR_MULTICLASS_TOO_MANY_NEIGHBORS){
+    error("too many neighbors (should be at most nrow)");
+  }
+  if(status == ERROR_MULTICLASS_TOO_FEW_NEIGHBORS){
+    error("too few neighbors (should be at least 1)");
+  }
+  if(status == ERROR_MULTICLASS_NO_TRAIN_DATA){
+    error("no train data");
+  }
+  if(status == ERROR_MULTICLASS_NO_TEST_DATA){
+    error("no test data");
+  }
+  if(status != 0){
+    error("unrecognized error ", status);
+  }
+}
+
 R_CMethodDef cMethods[] = {
   {"Predict1toMaxNeighbors_interface", (DL_FUNC) &Predict1toMaxNeighbors_interface, 7},
   {"Predict1toMaxNeighborsMatrix_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrix_interface, 8},
+  {"Predict1toMaxNeighborsMatrixMultiClass_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrixMultiClass_interface, 9},
   {NULL, NULL, 0}
 };
 

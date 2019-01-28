@@ -4,23 +4,47 @@ Optimization Algorithms for Machine Learning
 
 TuTh 9:35-10:50
 
+** How to ace this class
+
+Before class you should read the suggested book chapters. When you read, write a summary in your own words of every paragraph or section. Also write questions that you have during your reading so you can ask in class (if related to the lecture topic) or in office hours.
+
+During class, instead of copying what I write on the whiteboard, I would suggest to try to write what you understood in your own words. Also I would suggest to ask questions in class as soon as you need clarification.
+
+After class, you should review your notes with one of your classmates (ask one of the students who seem to be correctly answering a lot of questions). Ask each other questions and try to teach/summarize some of the material with each other -- that is one of the best ways to learn.
+
+Finally after doing all of the above, please email me to ask for an office hour.
+
 ** Lectures
   
 - [[file:2019-01-15-applications/][Lecture 1 Tue Jan 15]]: Applications of
   machine learning, syllabus, calculus/C quiz.
-- Lecture 2 Thu Jan 17: nearest neighbors.
+- Lecture 2 Thu Jan 17: supervised learning.
+- Lecture 3 Tue Jan 22: nearest neighbors.
+  - 1d regression one train/validation split [[http://bl.ocks.org/tdhock/raw/c2eee6069c806f42a0f539e08e19787a/][viz]], [[file:2019-01-17-nearest-neighbors/viz.R][code]].
+  - 1d classification one train/validation split [[http://bl.ocks.org/tdhock/raw/4ae012435fbbcb1d41a6219f3f47756e/][viz]], [[file:2019-01-17-nearest-neighbors/viz-class-1d.R][code]].
+- Lecture 4 Thu Jan 24: nearest neighbors CV data visualizations:
+  - 1d regression 4-fold cross-validation [[http://bl.ocks.org/tdhock/raw/ead4b9d3ea8f8d670ec2259382d3cc3c/][viz]], [[file:2019-01-17-nearest-neighbors/viz-4folds.R][code]].
+  - 2d regression 3-fold cross-validation [[http://bl.ocks.org/tdhock/raw/b966942e93269d8e764f9e1005e13275/][viz]], [[file:2019-01-17-nearest-neighbors/viz-ozone.R][code]].
+  - 2d classification ex from Hastie book [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][viz+code]].
+- Lecture 5 Tue Jan 29: R package development.
+  - Software you need to download:
+    - C++ compiler.
+      - Windows: [[https://cloud.r-project.org/bin/windows/Rtools/][Rtools]], [[http://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/][blog]].
+      - Mac: [[https://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-macos/][blog which explains how to install xcode/clang]].
+      - Debian/ubuntu: sudo apt-get install r-base r-base-dev.
+      - redhat/centos: sudo yum install R
+    - [[https://cloud.r-project.org/][R-3.5.2]] for running/executing R code.
+    - [[https://www.rstudio.com/products/rstudio/download/][RStudio IDE]] for writing R/C++ code.
+    - [[https://git-scm.com/downloads][git]] version control software.
+  - My tutorial about how to write [[file:2019-01-22-nearest-neighbors-code/README.org][R/C++ interface code]].
   - [[http://eigen.tuxfamily.org/dox/group__TutorialMapClass.html][Eigen]] C++ linear algebra library reference.
-  - nearest neighbors data visualizations:
-    - 1d regression one train/validation split [[http://bl.ocks.org/tdhock/raw/c2eee6069c806f42a0f539e08e19787a/][viz]]/[[file:2019-01-17-nearest-neighbors/viz.R][code]]
-    - 1d regression 4-fold cross-validation [[http://bl.ocks.org/tdhock/raw/ead4b9d3ea8f8d670ec2259382d3cc3c/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-4folds.R][code]]
-    - 1d classification one train/validation split [[http://bl.ocks.org/tdhock/raw/4ae012435fbbcb1d41a6219f3f47756e/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-class-1d.R][code]]
-    - 2d regression 3-fold cross-validation [[http://bl.ocks.org/tdhock/raw/b966942e93269d8e764f9e1005e13275/][viz]]/[[file:2019-01-17-nearest-neighbors/viz-ozone.R][code]]
-    - 2d classification ex from Hastie book [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][viz+code]]
-- Lecture 3 Tue Jan 22: 
-- Lecture 4 Thu Jan 24: 
-- Lecture 5 Tue Jan 29: 
+    - To use Eigen C++ code in an R package: install.packages("RcppEigen")
+  - [[https://happygitwithr.com/rstudio-git-github.html][Using RStudio with Git and GitHub]].
+  - [[https://www.youtube.com/watch?v=QCj8NFUjzos&list=PLwc48KSH3D1OkObQ22NHbFwEzof2CguJJ][Video screencast tutorials]].
 - Lecture 6 Thu Jan 31: 
 - Lecture 7 Tue Feb 05: 
+  - gradient descent for linear regression [[http://bl.ocks.org/tdhock/raw/fc2719c42196959b2239d82f9d444fe0/][viz]], [[file:2019-02-05-linear-regression/viz.R][code]].
+  - gradient descent choose step size [[http://bl.ocks.org/tdhock/raw/0106fdf9c239ab0ff7b49b90c0b654c4/][viz]], [[file:2019-02-05-linear-regression/viz.step.size.R][code]].
 - Lecture 8 Thu Feb 07: 
 - Lecture 9 Tue Feb 12: 
 - Lecture 10 Thu Feb 14: 

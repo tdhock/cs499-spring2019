@@ -1,0 +1,191 @@
+** Coding project 1: nearest neighbors for regression and binary classification.
+
+For this project you will be writing an R package with C++ code
+that implements a version of the nearest neighbors algorithm.
+You are allowed and encouraged to discuss your code/ideas with other students,
+but it is strictly forbidden to copy any code/documentation/tests/etc from other groups,
+or any web pages. Your code/project must be written from scratch by the members of your group. 
+Any violations will result in one or more of the following: 
+- a zero on this assignment, 
+- a failing grade in this class,
+- expulsion from NAU.
+
+*** Form a team with varied skills
+- math/stats.
+- R
+- C++
+- git/GitHub.
+
+*** Coding two algorithms/functions.
+- nearest neighbors prediction function for regression and binary classification.
+  - write a C++ function NN1toKmaxPredict
+    which takes a training data set and an entire test matrix,
+    then computes a matrix of k-nearest neighbor predictions,
+    for k=1 to max_neighbors, and for every test observation.
+    Function arguments should be:
+    - problem dimensions: n_train_observations, n_test_observations, n_features.
+    - maximum number of neighbors: max_neighbors.
+    - a matrix training data inputs (n_train_observations x n_features). 
+    - a vector of training data outputs (n_train_observations).
+    - a test input matrix (n_test_observations x n_features).
+    - a matrix of predictions for the test data (n_test_observations x max_neighbors),
+      which is where you need to store the result.
+    Challenges:
+    - Use the L1/Manhattan distance 
+      (instead of the L2/Euclidean distance which we saw in class).
+    - Make sure to define a header file with error codes.
+      You should at least check that the problem dimensions and max number of neighbors are positive.
+  - create an R package NearestNeighbors and code an interface for your C++ function in src/interface.cpp.
+    If your function returns an error code, make sure to
+    call error() with an informative message that will be displayed in R.
+  - code an R function NN1toKmaxPredict(X.mat, y.vec, testX.mat, max.neighbors)
+    that calls your C++ code via the .C function in R.
+  - write type/dimension checking code in the beginning of that function,
+    and stop() with an informative error message if there are any issues.
+  - write documentation for that R function,
+    with at least two examples of how to use it
+    (one for regression, one for binary classification).
+  - write tests for that R function, in tests/testthat/test-Pred1toKmaxNN.R.
+    You should at least test that (1) for a valid input (one of the data sets mentioned below),
+    your function returns a valid numeric prediction matrix with
+    the expected dimensions, and (2) for an invalid input, 
+    your function stops with an informative error message.
+    (3) Extra credit if you compute the predictions for one observation in R code,
+    and write a test that the C++ code computes the same thing.
+- learning algorithm using cross-validation to select the number of neighbors.
+  - write an R function NNLearnCV(X.mat, y.vec, max.neighbors=30, fold.vec=NULL, n.folds=5)
+    - X.mat, y.vec is a training data set.
+    - fold.vec is a vector of fold ID numbers. If fold.vec is NULL,
+      randomly assign fold IDs from 1 to n.folds.
+    - write type/dimension checking code in the beginning of that function,
+      and stop() with an informative error message if there are any issues.
+    - then perform cross-validation to compute two matrices of mean loss values
+      (max.neighbors rows x n.folds columns), one for the train sets, one for the validation sets.
+      If the labels (y.vec) are all in {0,1} then the loss function should be the 
+      01-loss (binary classification), otherwise use the square loss (regression).
+    - return a list with the following named elements:
+      - X.mat, y.vec: training data.
+      - train.loss.mat, validation.loss.mat (matrices of loss values for each fold and number of neighbors).
+      - train.loss.vec, validation.loss.vec (vectors with max.neighbors elements: mean loss over all folds).
+      - selected.neighbors (number of neighbors selected by minimizing the mean validation loss).
+      - predict(testX.mat), a function that takes a matrix of inputs/features
+        and returns a vector of predictions. It should check the type/dimension of testX.mat
+        and stop() with an informative error message if there are any issues.
+  - write documentation for that R function,
+    with at least two examples of how to use it
+    (one for regression, one for binary classification).
+  - write tests for that R function, in tests/testthat/test-NNLearnCV.R.
+    You should at least test that 
+    (1) for a valid input your function returns a list, 
+    (2) the predict function returns a numeric vector of the expected size, and 
+    (3) for an invalid input, your function stops with an informative error message.
+    
+*** Experiments/application: run your code on the following data sets.
+- Binary classification.
+  - ElemStatLearn::spam 2-class [4601, 57] output is last column (spam).
+  - ElemStatLearn::SAheart 2-class [462, 9] output is last column (chd).
+  - ElemStatLearn::zip.train: 10-class [7291, 256] output is first column. (ignore classes other than 0 and 1)
+- Regression.
+  - ElemStatLearn::prostate [97 x 8] output is lpsa column, ignore train column.
+  - ElemStatLearn::ozone [111 x 3] output is first column (ozone).
+- For each data set, use 3-fold cross-validation to evaluate the prediction accuracy of your code.
+  For each split s=1 to 3, set aside the data in fold s as a test set. 
+  Use NNLearnCV to train a model on the other two folds 
+  (which should be used in your NNLearnCV function as internal train/validation sets/splits), 
+  then make a prediction on the test fold s. 
+- For each train/test split, 
+  to show that your algorithm is actually learning something 
+  non-trivial from the inputs/features,
+  compute a baseline predictor that ignores the inputs/features.
+  - Regression: the mean of the training labels/outputs.
+  - Binary classification: the most frequent class/label/output in the training data.
+- For each data set, compute a 2 x 3 matrix of mean test loss values:
+  - each of the three columns are for a specific test set,
+  - the first row is for the nearest neighbors predictor,
+  - the second row is for the baseline/un-informed predictor.
+- Make one or more plot(s) or table(s) that compares these test loss values. 
+  For each of the five data sets, 
+  does your nearest neighbors algorithm achieve lower test loss than the baseline?
+- for each data set, run NNLearnCV on the entire data set,
+  and plot the mean validation loss as a function of the number of neighbors. 
+  plot the mean train loss in one color, and the mean validation loss in another color.
+  Is the train loss zero for K=1 neighbors, as expected?
+  Plot a point and/or text label to emphasize the number
+  of neighbors selected by minimizing the mean validation loss function.
+- Write up your results in vignettes/report.Rmd that shows the R code that you used
+  for the experiments/application, along with the output. 
+  - Documentation: [[http://r-pkgs.had.co.nz/vignettes.html][Vignettes chapter of R packages book]].
+  - Example [[https://github.com/cran/glmnet/blob/master/vignettes/glmnet_beta.Rmd][Rmd vignette source code]].
+    [[https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html][vignette rendered to HTML]].
+  - For this assignment the headings should be as follows:
+
+#+BEGIN_SRC
+## Data set 1: spam
+
+### Matrix of loss values
+
+print out and/or plot the matrix.
+
+comment on difference between NN and baseline.
+
+### Train/validation loss plot
+
+plot the two loss functions.
+
+What is the optimal number of neighbors?
+
+## Data set 2: SAheart
+
+### Matrix of loss values
+
+print out and/or plot the matrix.
+
+comment on difference between NN and baseline.
+
+### Train/validation loss plot
+
+plot the two loss functions.
+
+What is the optimal number of neighbors?
+
+## Data set 3: ...
+...
+#+END_SRC
+
+*** Grading rubric: 100 points.
+Your groups should submit a link to your repo on GitHub.
+- 20 points for completeness of report.
+  - 4 points for each data set (2 points each for loss matrix and train/validation loss plot)
+- 20 points if your R package passes with no WARNING/ERROR on
+  https://win-builder.r-project.org/
+  - minus 5 points for every WARNING/ERROR.
+- 20 points for group evaluations.
+- 10 points for accuracy of your R package and C++ code
+  (I will run tests to make sure it accurately computes the nearest neighbors predictions).
+- 10 points for R documentation pages, 5 points for each of the two
+  functions described above.
+  - 3 points for  informative example code.
+  - 2 points for documenting types/dimensions of inputs/outputs.
+- 10 points for tests, 2 points each for each of the five tests
+  mentioned above.
+- 10 points for not waiting until the last minute,
+  as evidenced by commits in your git repo:
+  - 5 points if you have committed a preliminary version of the C++ code on or before Fri Feb 1.
+  - 5 more points if you have written some R code and documentation on or before Fri Feb 8.
+Extra credit:
+  - 2 points extra credit if, in your R package,
+    you write a test that makes sure your C++ nearest neighbors code 
+    computes the same predictions as a nearest neighbor prediction computed in R code.
+  - 2 points extra credit if, in your Rmd report,
+    you compute the test loss matrices by writing a loop over all five data sets. 
+    (rather than copying/repeating the same CV code for each data set) 
+    Hint: use store the data sets in a named list.
+  - 2 points extra credit if, in your Rmd report,
+    you use LaTeX code/MathJax to type the equations 
+    for the nearest neighbor prediction function f_{D,k}(x)
+    and the optimal number of neighbors \hat k 
+    (as estimated via minimizing the mean validation loss).
+  - 2 points if, in your GitHub repo, you setup Travis-CI to check your R package,
+    and have a green badge that indicates a build that passes checks. 
+    See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
+    and [[https://docs.travis-ci.com/user/languages/r/][docs]].

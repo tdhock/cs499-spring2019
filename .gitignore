@@ -12,3 +12,5 @@ quiz.pdf
 .Rproj.user
 *.o
 *.so
+*.gz
+.httr-oauth
