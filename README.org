@@ -36,7 +36,7 @@ Finally after doing all of the above, please email me to ask for an office hour.
     - [[https://cloud.r-project.org/][R-3.5.2]] for running/executing R code.
     - [[https://www.rstudio.com/products/rstudio/download/][RStudio IDE]] for writing R/C++ code.
     - [[https://git-scm.com/downloads][git]] version control software.
-  - My tutorial about how to write [[file:2019-01-22-nearest-neighbors-code/README.org][R/C++ interface code]].
+  - My tutorial about how to write [[file:2019-01-29-nearest-neighbors-code/README.org][R/C++ interface code]].
   - [[http://eigen.tuxfamily.org/dox/group__TutorialMapClass.html][Eigen]] C++ linear algebra library reference.
     - To use Eigen C++ code in an R package: install.packages("RcppEigen")
   - [[https://happygitwithr.com/rstudio-git-github.html][Using RStudio with Git and GitHub]].
