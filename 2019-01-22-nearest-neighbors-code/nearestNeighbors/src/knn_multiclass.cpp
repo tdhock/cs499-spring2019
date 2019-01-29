@@ -82,7 +82,7 @@ int Predict1toMaxNeighborsMatrixMultiClass
   {
     Eigen::VectorXd distance_vec(n_train);
     Eigen::VectorXi sorted_index_vec(n_train), label_count_vec(n_labels);
-#pragma omp for
+    //#pragma omp for
     for(int test_i=0; test_i<n_test; test_i++){
       //std::cout << test_i << " " << n_test << std::endl;
       Predict1toMaxNeighborsMultiClass
