@@ -3,6 +3,7 @@
 #include "knn.h"
 #include <Eigen/Dense>
 #include <iostream>
+#include <omp.h> 
 
 int Predict1toMaxNeighbors
 (double *train_inputs_ptr, double *train_label_ptr,
@@ -26,7 +27,9 @@ int Predict1toMaxNeighbors
   // These two vectors make it easy to do a dynamic memory allocation.
   Eigen::VectorXd distance_vec(nrow);
   Eigen::VectorXi sorted_index_vec(nrow);//to be sorted by dist.
-  //std::cout << "Before distance computation" << std::endl;
+  //std::cout << "Before distance computation" << std::endl; if we put
+  //another pragma omp for here, it will be executed sequentially,
+  //unless we tell it to do it in parallel.
   for(int i=0; i<nrow; i++){
     distance_vec(i) = (train_inputs_mat.row(i).transpose()-test_input_vec).norm(); 
     //distance_vec(i) = (train_inputs_mat.row(i)-test_input_vec).norm();
@@ -72,6 +75,14 @@ int Predict1toMaxNeighborsMatrix
   if(max_neighbors < 1){
     return ERROR_TOO_FEW_NEIGHBORS;
   }
+  //omp_set_num_threads(2);
+  // dynamic overhead bad when each iteration is small. good when
+  // there is a lot of variability between thread runtimes.
+  //double t_start = omp_get_wtime();
+  //O(n_test) barriers if we put this inside the sub-routine,
+  //otherwise just one barrier as it is.
+  //#pragma omp parallel for 
+#pragma omp parallel for schedule (dynamic)
   for(int test_i=0; test_i<n_test; test_i++){
     Predict1toMaxNeighbors
       (train_inputs_ptr, train_label_ptr,
@@ -81,6 +92,8 @@ int Predict1toMaxNeighborsMatrix
        );
     //std::cout << test_predictions_mat.transpose() << std::endl << std::endl;
   }
+  //double t_end = omp_get_wtime();
+  //std::cout << "elapsed=" << t_end-t_start << std::endl;
   return 0;
 }
 

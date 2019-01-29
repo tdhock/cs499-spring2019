@@ -56,13 +56,43 @@ Any violations will result in one or more of the following:
   - write an R function NNLearnCV(X.mat, y.vec, max.neighbors=30, fold.vec=NULL, n.folds=5)
     - X.mat, y.vec is a training data set.
     - fold.vec is a vector of fold ID numbers. If fold.vec is NULL,
-      randomly assign fold IDs from 1 to n.folds.
-    - write type/dimension checking code in the beginning of that function,
-      and stop() with an informative error message if there are any issues.
-    - then perform cross-validation to compute two matrices of mean loss values
-      (max.neighbors rows x n.folds columns), one for the train sets, one for the validation sets.
-      If the labels (y.vec) are all in {0,1} then the loss function should be the 
-      01-loss (binary classification), otherwise use the square loss (regression).
+      randomly assign fold IDs from 1 to n.folds, i.e. 
+#+BEGIN_SRC R
+  fold.vec <- sample(rep(1:n.folds, l=nrow(X.mat)))
+#+END_SRC
+    - write type/dimension checking code in the beginning of that
+      function (make sure that fold.vec is the same size as y.vec,
+      which is the same as the number of rows in X.mat). Use stop()
+      with an informative error message if there are any issues.
+    - then perform cross-validation to compute two matrices of mean
+      loss values, (max.neighbors rows x n.folds columns), one for the
+      train sets (train.loss.mat), one for the validation sets
+      (validation.loss.mat). If the labels (y.vec) are all in {0,1}
+      then the loss function should be the 01-loss (binary
+      classification), otherwise use the square loss (regression).
+    - there should be a for loop over folds/splits. Inside that for
+      loop, run NN1toKmaxPredict to compute predictions, then a matrix
+      of loss values (one row for every data point, one column for
+      every number of neighbors), then use colMeans() and store the
+      result in one column of train.loss.mat/validation.loss.mat.
+      There should NOT be a for loop over data points in R code --
+      that would result in inefficient R code! Instead use matrix/vector
+      operations, as in the code below:
+#+BEGIN_SRC R
+  for(fold.i in seq_along(unique.folds)){
+    for(prediction.set.name in c("train", "validation")){
+      pred.mat <- NN1toKmaxPredict(
+	train.features, train.labels,
+	prediction.set.features, max.neighbors)
+      loss.mat <- if(labels.all.01){
+	ifelse(pred.mat>0.5, 1, 0) != y.vec #zero-one loss for binary classification.
+      }else{
+	(pred.mat-y.vec)^2 #square loss for regression.
+      }
+      train.or.validation.loss.mat[, fold.i] <- colMeans(loss.mat)
+    }
+  }
+#+END_SRC
     - return a list with the following named elements:
       - X.mat, y.vec: training data.
       - train.loss.mat, validation.loss.mat (matrices of loss values for each fold and number of neighbors).
@@ -76,7 +106,7 @@ Any violations will result in one or more of the following:
     (one for regression, one for binary classification).
   - write tests for that R function, in tests/testthat/test-NNLearnCV.R.
     You should at least test that 
-    (1) for a valid input your function returns a list, 
+    (1) for valid inputs including a user-specified fold.vec your function returns a list, 
     (2) the predict function returns a numeric vector of the expected size, and 
     (3) for an invalid input, your function stops with an informative error message.
     
@@ -189,3 +219,4 @@ Extra credit:
     and have a green badge that indicates a build that passes checks. 
     See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
+  - 2 points if you parallelize your C++ code using [[http://tdhock.github.io/blog/2019/omp/][OpenMP]].

@@ -10,7 +10,8 @@ zip.01.feature.mat <- zip.train.feature.mat[is.01,]
 set.seed(1)
 fit.auc <- nearestNeighbors::NearestNeighborsCV(
   zip.01.feature.mat, zip.01.label.vec, 100L,
-  LAPPLY=parallel::mclapply,
+  LAPPLY=lapply,
+  ##LAPPLY=parallel::mclapply,
   loss.function=function(pred.mat, label.vec){
     apply(pred.mat, 2, function(pred.vec){
       roc.df <- WeightedROC::WeightedROC(pred.vec, label.vec)

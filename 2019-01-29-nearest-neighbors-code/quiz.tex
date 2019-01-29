@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} Jan 29
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+Here are $n=4$ data with $p=2$ input dimensions. Each row is a person
+for which we have measured the height (first column of $X$, in
+centimeters), weight (second column in pounds). The output $y$ that we
+want to predict is a blood pressure measurement.
+
+\begin{equation*}
+  X = \left[\begin{array}{cc}
+              170 & 140 \\
+              200 & 160 \\
+              180 & 200 \\
+              140 & 150 
+\end{array}\right],\ 
+  y = \left[\begin{array}{c}
+              120 \\
+              115 \\
+              135 \\
+              140 
+\end{array}\right]
+\end{equation*}
+
+1. How would you represent these data in R? (fill in the blanks)
+
+\texttt{X <- matrix(c(%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}},%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}},%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}},%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}}),\\
+  nrow=\underline{\hspace{1cm}},
+  ncol=\underline{\hspace{1cm}})}
+
+\texttt{y <- c(%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}},%
+\underline{\hspace{1cm}},\underline{\hspace{1cm}})}
+
+2. Using \verb|.C("myPrint_interface", as.double(X), PACKAGE="myPkg")| we can
+access the inputs via a C++ function:
+
+\begin{verbatim}
+void myPrint_interface(double *X_ptr){
+  ...
+}
+\end{verbatim}
+
+Inside that function, what is the value of \verb|X_ptr[4]|? \underline{\hspace{1in}}
+
+\end{document}
