@@ -3,6 +3,7 @@
 #include "knn_multiclass.h"
 #include <Eigen/Dense>
 #include <iostream>
+#include <omp.h>
 
 int Predict1toMaxNeighborsMultiClass
 (double *train_inputs_ptr, int *train_label_ptr,
@@ -65,8 +66,6 @@ int Predict1toMaxNeighborsMatrixMultiClass
   Eigen::Map< Eigen::MatrixXd > test_inputs_mat(test_inputs_ptr, ncol, n_test);
   Eigen::Map< Eigen::MatrixXi > test_predictions_mat
     (test_predictions_ptr, max_neighbors, n_test);
-  Eigen::VectorXd distance_vec(n_train);
-  Eigen::VectorXi sorted_index_vec(n_train), label_count_vec(n_labels);
   if(n_train < 1){
     return ERROR_MULTICLASS_NO_TRAIN_DATA;
   }
@@ -79,17 +78,24 @@ int Predict1toMaxNeighborsMatrixMultiClass
   if(max_neighbors < 1){
     return ERROR_MULTICLASS_TOO_FEW_NEIGHBORS;
   }
-  for(int test_i=0; test_i<n_test; test_i++){
-    Predict1toMaxNeighborsMultiClass
-      (train_inputs_ptr, train_label_ptr,
-       n_train, ncol, max_neighbors, n_labels,
-       distance_vec.data(),
-       sorted_index_vec.data(),
-       label_count_vec.data(),
-       test_inputs_mat.col(test_i).data(),
-       test_predictions_mat.col(test_i).data()
-       );
-    //std::cout << test_predictions_mat.transpose() << std::endl << std::endl;
+#pragma omp parallel
+  {
+    Eigen::VectorXd distance_vec(n_train);
+    Eigen::VectorXi sorted_index_vec(n_train), label_count_vec(n_labels);
+#pragma omp for
+    for(int test_i=0; test_i<n_test; test_i++){
+      //std::cout << test_i << " " << n_test << std::endl;
+      Predict1toMaxNeighborsMultiClass
+	(train_inputs_ptr, train_label_ptr,
+	 n_train, ncol, max_neighbors, n_labels,
+	 distance_vec.data(),
+	 sorted_index_vec.data(),
+	 label_count_vec.data(),
+	 test_inputs_mat.col(test_i).data(),
+	 test_predictions_mat.col(test_i).data()
+	 );
+      //std::cout << test_predictions_mat.transpose() << std::endl << std::endl;
+    }
   }
   return 0;
 }

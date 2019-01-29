@@ -25,17 +25,20 @@ test_that("C++ and R agree", {
   expect_equal(as.integer(pred.mat), as.integer(pred.vec))
 })
 
-if(FALSE){
-
-  set.seed(1)
-  zip.feature.mat <- zip.train[,-1]
-  zip.label.vec <- as.integer(zip.train[,1])
-  fold.vec <- sample(rep(1:5, l=length(zip.label.vec)))
-  validation.fold <- 1
-  is.train <- fold.vec != validation.fold
+set.seed(1)
+zip.feature.mat <- zip.train[,-1]
+zip.label.vec <- as.integer(zip.train[,1])
+fold.vec <- sample(rep(1:5, l=length(zip.label.vec)))
+validation.fold <- 1
+is.train <- fold.vec != validation.fold
+system.time({
   pred.mat <- Predict1toMaxNeighborsMatrixMultiClass(
     zip.feature.mat[is.train,], zip.label.vec[is.train],
     zip.feature.mat, 50L)
+  })
+str(pred.mat)
+
+if(FALSE){
 
   library(data.table)
   library(ggplot2)
