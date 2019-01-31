@@ -107,7 +107,7 @@ neighbors, $$f_{D,K}(x') = \frac 1 K \sum_{i\in N_{D,K}(x')} y_i$$
 \end{itemize}
 
 \begin{equation}
-  \text{Verr}_{D,D'}(k) = \sum_{(x',y')\in D'} \ell[f_{D,k}(x'), y']
+  \mathcal L_{D,D'}(k) = \sum_{(x',y')\in D'} \ell[f_{D,k}(x'), y']
 \end{equation}
 
 \begin{algorithmic}[1]
@@ -125,15 +125,18 @@ neighbors, $$f_{D,K}(x') = \frac 1 K \sum_{i\in N_{D,K}(x')} y_i$$
 \end{algorithmic}
 Total complexity: $O(np + n\log n)$ where the Distance sub-routine is $O(p)$.
 
-\section{Cross-validation and C++ code}
+\section{Cross-validation}
+
+Interactive data viz.
+
 Remember we assume that training data and test data are randomly drawn
 from a common probability distribution $\mathcal P$. To simulate that
 process, we randomly assign a fold ID for each observation
-$z_1,\dots,z_n\in\{1,\dots, \text{NumFolds}\}$. We then define
+$z_1,\dots,z_n\in\{1,\dots, S_\text{max}\}$. We then define
 $\text{NumFolds}$ train/validation splits
 \begin{equation}
-  D_s = \{(x_i,y_i)|z_i = s\} \text{ --- validation set $s$}
-  D_{-s} = \{(x_i,y_i)|z_i \neq s\} \text{ --- train set $s$}
+  D_{z=s} = \{(x_i,y_i)|z_i = s\} \text{ --- validation set $s$}
+  D_{z\neq s} = \{(x_i,y_i)|z_i \neq s\} \text{ --- train set $s$}
 \end{equation}
 Draw train/validation/test matrices for $s=1$, $s=2$, etc.
 
@@ -141,16 +144,57 @@ Cross-validation data visualizations.
 
 Mean validation error over all train/validation splits (folds):
 \begin{equation}
-  \text{MeanVerr}(k) = \text{Verr}_{D_{-s},D_{s}}(k)
+  \text{MeanVerr}(k) = \mathcal L_{D_{z\neq s},D_{z=s}}(k)
 \end{equation}
 
 Overall we choose the parameter $\hat k = \argmin_k \text{MeanVerr}(k)$.
 
 And the learning algorithm is $\textsc{LearnKNN}(D) = f_{D, \hat k}$.
 
-How to code? First thing to do is write a sub-routine
-\textsc{OptimalNeighborsCV} which computes the 
+\subsection{Pseudocode}
 
-TODO: Geometric interpretation of binary classification in 1d,2d.
+We assume there are sub-routines
+\begin{itemize}
+\item
+  $\textsc{Pred1toKmaxNN}(D, x', K_{\text{max}}) = [ f_{D, 1}(x')
+  ... f_{D, K_{\text{max}}}(x') ]$ -- all predictions from $k=1$ to
+  $K_{\text{max}}$ neighbors for a single test point $x'$ based on the training
+  data set $D$.
+\item $\textsc{PredError}(D, D', K_{\text{max}})$ trains on $D$ and
+  computes $\mathcal L_{D,D'}(k)$, the validation error wrt $D'$ for
+  $k=1$ to $K_{\text{max}}$ neighbors.
+\end{itemize}
+
+Then the pseudo code for the learning algo is:
+
+\begin{algorithmic}[1]
+  \State Function $\textsc{LearnKNN}$
+  \State Inputs: train data $D$ ($n$ observations in $p$ dimensions), 
+  number of folds $S_{\text{max}}\in\{1,\dots, n\}$, 
+  max number of neighbors $K_{\text{max}}\in\{1, \dots, n\}$.
+  \State Randomly assign fold IDs $z\in\{1,\dots,S_{\text{max}}\}^n$
+  \For{each fold $s=1$ to $S_{\text{max}}$}:
+  \State $E_s\gets \textsc{PredError}(D_{z\neq s}, D_{z=s}, K_{\text{max}})\in\mathbb R^{K_{\text{max}}}$
+  \EndFor
+  Let
+  $E\gets[E_1 ... E_{S_{\text{max}}}]\in\mathbb R^{K_{\text{max}}\times
+    S_{\text{max}}}$ be the matrix of error/loss values for all
+  folds/columns and neighbors/rows.
+  \State $\text{MeanVerr}\gets \textsc{colMeans}(E)\in\mathbb R^{K_{\text{max}}}$
+  \State The optimal number of neighbors is $\hat k = \argmin_k \text{MeanVerr}_k$
+  \State return $f_{D,\hat k}$
+\end{algorithmic}
+
+\section{R package development}
+
+Choose groups.
+
+\section{Coding nearest neighbors prediction}
+
+For one test point, demo code in C++.
+
+\section{Linear regression / gradient descent}
+
+
 
 \end{document}
