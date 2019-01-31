@@ -36,10 +36,10 @@ Finally after doing all of the above, please email me to ask for an office hour.
     - [[https://cloud.r-project.org/][R-3.5.2]] for running/executing R code.
     - [[https://www.rstudio.com/products/rstudio/download/][RStudio IDE]] for writing R/C++ code.
     - [[https://git-scm.com/downloads][git]] version control software.
-  - My tutorial about how to write [[file:2019-01-22-nearest-neighbors-code/README.org][R/C++ interface code]].
   - [[https://happygitwithr.com/rstudio-git-github.html][Using RStudio with Git and GitHub]].
   - [[https://www.youtube.com/watch?v=QCj8NFUjzos&list=PLwc48KSH3D1OkObQ22NHbFwEzof2CguJJ][Video screencast tutorials]].
 - Lecture 6 Thu Jan 31: Coding nearest neighbors prediction in C++
+  - My tutorial about how to write [[file:2019-01-29-nearest-neighbors-code/README.org][R/C++ interface code]].
   - [[http://eigen.tuxfamily.org/dox/group__TutorialMapClass.html][Eigen]] C++ linear algebra library reference manual.
     - To use Eigen C++ code in an R package: install.packages("RcppEigen")
   - [[https://en.cppreference.com/w/cpp/algorithm/sort][std::sort]] reference manual.

@@ -19,15 +19,29 @@ with R below.
 For each R package with C++ code you need to have:
 - useDynLib(pkgName) in NAMESPACE
 - LinkingTo: RcppEigen in DESCRIPTION
+- the following in src/my_mean.cpp:
+#+BEGIN_SRC c++
+#include "mymean.h"
+
+int my_mean_C(int *data_ptr, int data_count, double *output_ptr){
+  if(data_count==0){
+    return MY_MEAN_ERROR_NO_DATA;
+  }
+  double total = 0.0;
+  for(int data_i=0; data_i<data_count; data_i++){
+    total += data_ptr[data_i];
+  }
+  *output_ptr = total/data_count;
+  return 0;
+}
+#+END_SRC
 - the following in src/interface.cpp:
 
 #+BEGIN_SRC c++
   #include <R.h>//for error
   #include <R_ext/Rdynload.h>//for registration
   #include "my_mean.h"
-  #include "eigen_mean.h"
 
-  // interface functions.
   void my_mean_interface(int *data_ptr, int *data_count, double *output_ptr){
     int status = my_mean_C(data_ptr, *data_count, output_ptr);
     if(status == MY_MEAN_ERROR_NO_DATA){
@@ -37,24 +51,14 @@ For each R package with C++ code you need to have:
       error("unrecognized error ", status);
     }
   }
-  void eigen_mean_interface(double *data_ptr, int *data_count, double *output_ptr){
-    int status = eigen_mean_Cpp(data_ptr, *data_count, output_ptr);
-    if(status == EIGEN_MEAN_ERROR_NO_DATA){
-      error("no data");
-    }
-    if(status != 0){
-      error("unrecognized error ", status);
-    }
-  }
 
-  // Code required to register these interface functions with R.
+  // Code required to register the interface function with R.
   R_CMethodDef cMethods[] = {
     {"my_mean_interface", (DL_FUNC) &my_mean_interface, 3},
-    {"eigen_mean_interface", (DL_FUNC) &eigen_mean_interface, 3},
     {NULL, NULL, 0}
   };
   extern "C" {
-    void R_init_myMeanPkg(DllInfo *info) {
+    void R_init_myMeanPkg(DllInfo *info) { // Make sure it is R_init_yourPackageName
       R_registerRoutines(info, cMethods, NULL, NULL, NULL);
       //R_useDynamicSymbols call says the DLL is not to be searched for
       //entry points specified by character strings so .C etc calls will
@@ -77,8 +81,15 @@ For each C++ function in that package you should have
   It should first call the corresponding C++
   function =my_mean_C= and if it returns non-zero, call =error= with
   an informative error message (that will be displayed in R.
-- a line =#include "my_mean.h"= in src/interface.cpp
-- a line like ={"my_mean_interface", (DL_FUNC) &my_mean_interface, 3},= in cMethods in src/interface.cpp.
+- an include line at the top of src/interface.cpp:
+#+BEGIN_SRC c++
+#include "my_mean.h"
+#+END_SRC
+- an line with the name, function pointer, and number of arguments in
+  cMethods in src/interface.cpp:
+#+BEGIN_SRC c++
+{"my_mean_interface", (DL_FUNC) &my_mean_interface, 3},
+#+END_SRC
 
 ** Rstudio setup
 
@@ -105,3 +116,23 @@ sudo apt install libclang-dev
 After re-starting Rstudio, still no completion. Trying to
 re-install. Still doesn't work. Giving up.
 
+** Makevars
+
+src/Makevars is a [[https://en.wikipedia.org/wiki/Makefile][Makefile]] that can contain command line options to
+pass to the compiler/linker
+
+#+BEGIN_SRC makefile-gmake
+CXX_STD = CXX11 #generates -std=gnu++11 option for g++ when compiling
+PKG_CPPFLAGS=-UNDEBUG -g -fopenmp #passed to g++ when compiling
+PKG_LIBS=-lgomp #passed to g++ when creating a shared library
+#+END_SRC
+
+The [[http://tdhock.github.io/blog/2019/UNDEBUG/][-UNDEBUG]] flag enables assertion errors which are thrown for
+dimension mismatches in Eigen matrix operations (very useful for
+debugging). To find the line number in your code that caused the
+error, you can use [[http://tdhock.github.io/blog/2019/gdb/][gdb]] (the -g flag enables debugging). Although
+useful for debugging, -UNDEBUG and -g should be disabled after
+debugging, for optimal performance.
+
+The -fopenmp and -lgomp flags are used for parallelizing C++ code
+using [[http://tdhock.github.io/blog/2019/omp/][OpenMP]].
