@@ -34,7 +34,21 @@ Finally after doing all of the above, please email me to ask for an office hour.
       - Debian/ubuntu: sudo apt-get install r-base r-base-dev.
       - redhat/centos: sudo yum install R
     - [[https://cloud.r-project.org/][R-3.5.2]] for running/executing R code.
-    - [[https://www.rstudio.com/products/rstudio/download/][RStudio IDE]] for writing R/C++ code.
+    - If you already know how to use Emacs, I recommend using [[http://ess.r-project.org/][Emacs
+      Speaks Statistics (ESS)]], which provides an R-mode for editing
+      and running R/C++ code.
+      - Easiest way to install emacs+ess is [[https://vigou3.gitlab.io/emacs-modified-windows/][Vincent Goulet's
+      distribution]].
+      - Otherwise you can get ESS via the emacs package manager.
+      - or manually download/install ([[http://members.cbio.mines-paristech.fr/~thocking/primer.html][my instructions]]).
+      - Tips: I put =(global-set-key [f9] 'compile)= into my
+        =~/.emacs= so I can compile by hitting the F9 key.
+      - See the first line of [[file:2019-01-29-nearest-neighbors-code/nearestNeighbors/src/knn.cpp][knn.cpp]] to see an example of how to
+        customize compilation -- typically R CMD INSTALL can be used
+        to re-compile the C++ code (hit TAB key to scroll to next
+        error in compilation buffer), then I run an R script that
+        tests if my C++ code is working properly.
+    - Otherwise, you can use [[https://www.rstudio.com/products/rstudio/download/][RStudio IDE]] for writing R/C++ code.
     - [[https://git-scm.com/downloads][git]] version control software.
   - [[https://happygitwithr.com/rstudio-git-github.html][Using RStudio with Git and GitHub]].
   - [[https://www.youtube.com/watch?v=QCj8NFUjzos&list=PLwc48KSH3D1OkObQ22NHbFwEzof2CguJJ][Video screencast tutorials]].
