@@ -8,12 +8,15 @@
 void Predict1toMaxNeighbors_interface
 (double *train_inputs_ptr, double *train_label_ptr,
  int* nrow_ptr, int* ncol_ptr, int* max_neighbors_ptr,
+ double *distance_ptr,
+ int *sorted_index_ptr,
  double *test_input_ptr,
  double *test_prediction_ptr
  ){
   int status = Predict1toMaxNeighbors
     (train_inputs_ptr, train_label_ptr,
      *nrow_ptr, *ncol_ptr, *max_neighbors_ptr,
+     distance_ptr, sorted_index_ptr,
      test_input_ptr,
      test_prediction_ptr);
   if(status == ERROR_TOO_MANY_NEIGHBORS){

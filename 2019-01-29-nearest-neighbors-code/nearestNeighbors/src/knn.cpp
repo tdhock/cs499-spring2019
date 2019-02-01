@@ -8,6 +8,8 @@
 int Predict1toMaxNeighbors
 (double *train_inputs_ptr, double *train_label_ptr,
  int nrow, int ncol, int max_neighbors,
+ double *distance_ptr, //nrow
+ int *sorted_index_ptr, //nrow
  double *test_input_ptr,     // ncol
  double *test_prediction_ptr // max_neighbors
  ){
@@ -24,29 +26,26 @@ int Predict1toMaxNeighbors
   // access the data at these pointers.
   Eigen::Map< Eigen::MatrixXd > train_inputs_mat(train_inputs_ptr, nrow, ncol);
   Eigen::Map< Eigen::VectorXd > test_input_vec(test_input_ptr, ncol);
-  // These two vectors make it easy to do a dynamic memory allocation.
-  Eigen::VectorXd distance_vec(nrow);
-  Eigen::VectorXi sorted_index_vec(nrow);//to be sorted by dist.
   //std::cout << "Before distance computation" << std::endl; if we put
   //another pragma omp for here, it will be executed sequentially,
   //unless we tell it to do it in parallel.
   for(int i=0; i<nrow; i++){
-    distance_vec(i) = (train_inputs_mat.row(i).transpose()-test_input_vec).norm(); 
+    distance_ptr[i] = (train_inputs_mat.row(i).transpose()-test_input_vec).norm(); 
     //distance_vec(i) = (train_inputs_mat.row(i)-test_input_vec).norm();
-    sorted_index_vec(i) = i;//not sorted yet.
+    sorted_index_ptr[i] = i;//not sorted yet.
   }
   //std::cout << "After distance computation" << std::endl;
   std::sort
-    (sorted_index_vec.data(),
-     sorted_index_vec.data()+sorted_index_vec.size(),
+    (sorted_index_ptr,
+     sorted_index_ptr+nrow,
      [&distance_vec](int lhs, int rhs){
-      return distance_vec(lhs) < distance_vec(rhs);
+      return distance_ptr[lhs] < distance_ptr[rhs];
     });
   //std::cout << sorted_index_vec << std::endl << std::endl;
   double total = 0.0;
   for(int model_i=0; model_i<max_neighbors; model_i++){
     int neighbors = model_i+1;
-    int row = sorted_index_vec(model_i);
+    int row = sorted_index_ptr[model_i];
     total += train_label_ptr[row];
     test_prediction_ptr[model_i] = total / neighbors;
   }
@@ -82,11 +81,17 @@ int Predict1toMaxNeighborsMatrix
   //O(n_test) barriers if we put this inside the sub-routine,
   //otherwise just one barrier as it is.
   //#pragma omp parallel for 
-#pragma omp parallel for schedule (dynamic)
+#pragma omp parallel
+  {
+    Eigen::VectorXd distance_vec(n_train);
+    Eigen::VectorXi sorted_index_vec(n_train);//to be sorted by dist.
+#pragma omp for
   for(int test_i=0; test_i<n_test; test_i++){
     Predict1toMaxNeighbors
       (train_inputs_ptr, train_label_ptr,
        n_train, ncol, max_neighbors,
+       distance_vec.data(),
+       sorted_index_vec.data(),
        test_inputs_mat.col(test_i).data(),
        test_predictions_mat.col(test_i).data()
        );
