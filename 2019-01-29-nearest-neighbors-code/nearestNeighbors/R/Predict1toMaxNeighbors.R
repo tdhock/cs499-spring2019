@@ -97,7 +97,11 @@ loss.function.list <- list(
 
 NearestNeighborsCV <- structure(function
 ### Fit nearest neighbors model using k-fold CV.
-(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL, LAPPLY=parallel::mclapply, weight.vec=rep(1, nrow(input.mat))){
+(input.mat, label.vec, max.neighbors, fold.vec,
+  n.folds=5L, loss.function=NULL,
+  LAPPLY=if(requireNamespace("future.apply", quietly=TRUE))future.apply::future_lapply else lapply,
+  weight.vec=rep(1, nrow(input.mat))
+){
   if(is.null(loss.function)){
     loss.name <- if(all(label.vec %in% c(0,1))){
       "misclassification"
@@ -114,10 +118,10 @@ NearestNeighborsCV <- structure(function
   }
   if(!all(
     is.numeric(weight.vec),
-    length(weight.vec)==nrow(X.train),
+    length(weight.vec)==nrow(input.mat),
     0 < weight.vec
   )){
-    stop("weight.vec must be a postiive numeric vector of size nrow(X.train)")
+    stop("weight.vec must be a postiive numeric vector of size nrow(input.mat)")
   }
   if(!all(
     is.numeric(label.vec),
@@ -150,7 +154,7 @@ NearestNeighborsCV <- structure(function
       label.vec[is.train],
       input.mat,
       max.neighbors,
-      w.train=weight.vec)
+      w.train=weight.vec[is.train])
     set.list <- list(train=is.train, validation=!is.train)
     loss.dt.list <- list()
     for(set.name in names(set.list)){
@@ -172,7 +176,13 @@ NearestNeighborsCV <- structure(function
     }
     do.call(rbind, loss.dt.list)
   }
-  err.dt <- do.call(rbind, LAPPLY(unique(fold.vec), OneFold))
+  result.list <- LAPPLY(unique(fold.vec), OneFold)
+  is.error <- sapply(result.list, class) == 'try-error'
+  if(any(is.error)){
+    print(result.list[is.error])
+    stop("errors from LAPPLY")
+  }
+  err.dt <- do.call(rbind, result.list)
   mean.dt <- err.dt[set.name=="validation", list(
     mean.loss=mean(loss),
     sd.loss=sd(loss)
@@ -193,7 +203,7 @@ NearestNeighborsCV <- structure(function
 
   library(nearestNeighbors)
   data(mixture.example, package="ElemStatLearn")
-  err.dt <- with(mixture.example, NearestNeighborsCV(x, y, 20L))
+  fit <- with(mixture.example, NearestNeighborsCV(x, y, 20L, LAPPLY=lapply))
 
   library(ggplot2)
   ggplot()+
