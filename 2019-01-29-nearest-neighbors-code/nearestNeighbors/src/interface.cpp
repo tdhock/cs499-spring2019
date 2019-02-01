@@ -6,7 +6,7 @@
 #include <R_ext/Rdynload.h>
 
 void Predict1toMaxNeighbors_interface
-(double *train_inputs_ptr, double *train_label_ptr,
+(double *train_inputs_ptr, double *train_label_ptr, double *train_weight_ptr,
  int* nrow_ptr, int* ncol_ptr, int* max_neighbors_ptr,
  double *distance_ptr,
  int *sorted_index_ptr,
@@ -14,7 +14,7 @@ void Predict1toMaxNeighbors_interface
  double *test_prediction_ptr
  ){
   int status = Predict1toMaxNeighbors
-    (train_inputs_ptr, train_label_ptr,
+    (train_inputs_ptr, train_label_ptr, train_weight_ptr,
      *nrow_ptr, *ncol_ptr, *max_neighbors_ptr,
      distance_ptr, sorted_index_ptr,
      test_input_ptr,
@@ -34,13 +34,13 @@ void Predict1toMaxNeighbors_interface
 }
 
 void Predict1toMaxNeighborsMatrix_interface
-(double *train_inputs_ptr, double *train_label_ptr,
+(double *train_inputs_ptr, double *train_label_ptr, double *train_weight_ptr,
  int* n_train_ptr, int* ncol_ptr, int* max_neighbors_ptr, int* n_test_ptr,
  double *test_input_ptr,
  double *test_prediction_ptr
  ){
   int status = Predict1toMaxNeighborsMatrix
-    (train_inputs_ptr, train_label_ptr,
+    (train_inputs_ptr, train_label_ptr, train_weight_ptr,
      *n_train_ptr, *ncol_ptr, *max_neighbors_ptr, *n_test_ptr,
      test_input_ptr,
      test_prediction_ptr);
@@ -64,6 +64,7 @@ void Predict1toMaxNeighborsMatrix_interface
 void Predict1toMaxNeighborsMatrixMultiClass_interface
 (double *train_inputs_ptr, //ntrain x ncol
  int *train_label_ptr,  //ntrain
+ double *train_weight_ptr,
  int *n_train_ptr, int *ncol_ptr, int *max_neighbors_ptr, int *n_test_ptr,
  int *n_labels_ptr,
  double *test_inputs_ptr,     //ncol x ntest
@@ -95,8 +96,8 @@ void Predict1toMaxNeighborsMatrixMultiClass_interface
 }
 
 R_CMethodDef cMethods[] = {
-  {"Predict1toMaxNeighbors_interface", (DL_FUNC) &Predict1toMaxNeighbors_interface, 7},
-  {"Predict1toMaxNeighborsMatrix_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrix_interface, 8},
+  {"Predict1toMaxNeighbors_interface", (DL_FUNC) &Predict1toMaxNeighbors_interface, 10},
+  {"Predict1toMaxNeighborsMatrix_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrix_interface, 9},
   {"Predict1toMaxNeighborsMatrixMultiClass_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrixMultiClass_interface, 9},
   {NULL, NULL, 0}
 };

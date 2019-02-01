@@ -6,7 +6,7 @@
 #include <omp.h> 
 
 int Predict1toMaxNeighbors
-(double *train_inputs_ptr, double *train_label_ptr,
+(double *train_inputs_ptr, double *train_label_ptr, double *train_weight_ptr,
  int nrow, int ncol, int max_neighbors,
  double *distance_ptr, //nrow
  int *sorted_index_ptr, //nrow
@@ -38,16 +38,18 @@ int Predict1toMaxNeighbors
   std::sort
     (sorted_index_ptr,
      sorted_index_ptr+nrow,
-     [&distance_vec](int lhs, int rhs){
+     [&distance_ptr](int lhs, int rhs){
       return distance_ptr[lhs] < distance_ptr[rhs];
     });
   //std::cout << sorted_index_vec << std::endl << std::endl;
-  double total = 0.0;
+  double total_label = 0.0;
+  double total_weight = 0.0;
   for(int model_i=0; model_i<max_neighbors; model_i++){
     int neighbors = model_i+1;
     int row = sorted_index_ptr[model_i];
-    total += train_label_ptr[row];
-    test_prediction_ptr[model_i] = total / neighbors;
+    total_label += train_label_ptr[row];
+    total_weight += train_weight_ptr[row];
+    test_prediction_ptr[model_i] = total_label / total_weight;
   }
   return 0;
 }
@@ -55,6 +57,7 @@ int Predict1toMaxNeighbors
 int Predict1toMaxNeighborsMatrix
 (double *train_inputs_ptr, //ntrain x ncol
  double *train_label_ptr,  //ntrain
+ double *train_weight_ptr,
  int n_train, int ncol, int max_neighbors, int n_test,
  double *test_inputs_ptr,     //ncol x ntest
  double *test_predictions_ptr //max_neighbors x ntest
@@ -86,16 +89,17 @@ int Predict1toMaxNeighborsMatrix
     Eigen::VectorXd distance_vec(n_train);
     Eigen::VectorXi sorted_index_vec(n_train);//to be sorted by dist.
 #pragma omp for
-  for(int test_i=0; test_i<n_test; test_i++){
-    Predict1toMaxNeighbors
-      (train_inputs_ptr, train_label_ptr,
-       n_train, ncol, max_neighbors,
-       distance_vec.data(),
-       sorted_index_vec.data(),
-       test_inputs_mat.col(test_i).data(),
-       test_predictions_mat.col(test_i).data()
-       );
-    //std::cout << test_predictions_mat.transpose() << std::endl << std::endl;
+    for(int test_i=0; test_i<n_test; test_i++){
+      Predict1toMaxNeighbors
+	(train_inputs_ptr, train_label_ptr, train_weight_ptr,
+	 n_train, ncol, max_neighbors,
+	 distance_vec.data(),
+	 sorted_index_vec.data(),
+	 test_inputs_mat.col(test_i).data(),
+	 test_predictions_mat.col(test_i).data()
+	 );
+      //std::cout << test_predictions_mat.transpose() << std::endl << std::endl;
+    }
   }
   //double t_end = omp_get_wtime();
   //std::cout << "elapsed=" << t_end-t_start << std::endl;
