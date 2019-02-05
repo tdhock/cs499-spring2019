@@ -37,8 +37,7 @@ Finally after doing all of the above, please email me to ask for an office hour.
     - If you already know how to use Emacs, I recommend using [[http://ess.r-project.org/][Emacs
       Speaks Statistics (ESS)]], which provides an R-mode for editing
       and running R/C++ code.
-      - Easiest way to install emacs+ess is [[https://vigou3.gitlab.io/emacs-modified-windows/][Vincent Goulet's
-      distribution]].
+      - Easiest way to install emacs+ess is [[https://vigou3.gitlab.io/emacs-modified-windows/][Vincent Goulet's distribution]].
       - Otherwise you can get ESS via the emacs package manager.
       - or manually download/install ([[http://members.cbio.mines-paristech.fr/~thocking/primer.html][my instructions]]).
       - Tips: I put =(global-set-key [f9] 'compile)= into my
