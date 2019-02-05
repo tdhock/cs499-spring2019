@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{fullpage}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \begin{document}
 
@@ -121,6 +122,7 @@ neighbors, $$f_{D,K}(x') = \frac 1 K \sum_{i\in N_{D,K}(x')} y_i$$
   \For{$k=1$ to $K_{\text{max}}$}:
   \State $i\gets t_k$
   \State $\text{totalY} \texttt{ += } y_i$
+  \EndFor
   \State Output: prediction $\text{totalY}/K_{\text{max}}$
 \end{algorithmic}
 Total complexity: $O(np + n\log n)$ where the Distance sub-routine is $O(p)$.
@@ -195,6 +197,81 @@ For one test point, demo code in C++.
 
 \section{Linear regression / gradient descent}
 
+Want to minimize squared error on test data, but we don't have them,
+so instead we do
+\begin{equation}
+  \min_f \sum_{i=1}^n [f(x_i)-y_i]^2
+\end{equation}
+We parameterize a linear function using a weight vector $w\in\mathbb R^p$,
+$f_w(x_i)=w^T x_i$. 
+
+The input feature matrix is 
+\begin{equation}
+  X = \left[\begin{array}{c}
+              x_1^T \\
+              \vdots \\
+              x_n^T
+\end{array}\right]\in\mathbb R^{n\times p}
+\end{equation}
+So for a partcular weight vector $w$ the prediction vector is
+\begin{equation}
+  Xw = \left[\begin{array}{c}
+              x_1^T w \\
+              \vdots \\
+              x_n^T w
+\end{array}\right]\in\mathbb R^{n}
+\end{equation}
+So the least squares regression problem is
+\begin{equation}
+  \min_{w\in\mathbb R^p} || Xw - y||_2^2
+\end{equation}
+Notation about matrix/vector dimensions.
+
+What is a norm $||\cdot||$ = size of a vector.
+
+Squared L2 norm $||v||_2^2 = v^T v$.
+
+L1 norm $||v||_1 = \sum_{j=1}^p |v_j|$.
+
+Univariate linear regression: $p=2$, $x_i=[1\ x_{i,2}]$.
+\begin{equation}
+  X = \left[\begin{array}{cc}
+              1 & x_{1,2} \\
+              \vdots & \vdots \\
+              1 & x_{n,2}
+\end{array}\right]\in\mathbb R^{n\times 2}
+\end{equation}
+and
+$f(x_i) = w^T x_i = \underline{w_1}_{\text{intercept}} +
+\underline{w_2}_{\text{slope}} x_{i,2}$. Draw figure on board then
+show data viz.
+
+Gradient is defined for any $w$ as the direction of steepest ascent:
+\begin{equation}
+  \nabla \mathcal L(w) = \left[\begin{array}{c}
+              \frac{d}{dw_1} \mathcal L(w)\\
+              \vdots \\
+              \frac{d}{dw_p} \mathcal L(w)\\
+\end{array}\right]\in\mathbb R^{p}
+\end{equation}
+For $p=1$ we have 
+\begin{equation}
+  \nabla \mathcal L(w) = \mathcal L'(w) = \frac{d}{dw}\mathcal L(w) = 
+  \sum_{i=1}^n 2x_i(w x_i - y_i).
+\end{equation}
+In general we have
+\begin{equation}
+  \nabla \mathcal L(w) = 
+  \nabla_w ||Xw - y||_2^2 = 
+  2X^T(Xw-y).
+\end{equation}
+Algorithm: $w^{(0)}=0$ be the initial guess.
+Then for any stepsize $\alpha>0$ define update rules for any iteration $t>0$:
+\begin{equation}
+  w^{(t)} = w^{(t-1)} - \alpha \nabla \mathcal L(w^{(t-1)}).
+\end{equation}
+Example: gradient descent on $\mathcal L(w)=(x+5)^2$. Start at the
+origin. Compute gradient, first step.
 
 
 \end{document}
