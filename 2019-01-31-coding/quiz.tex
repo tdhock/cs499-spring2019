@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} Jan 31
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+Here is a block of C++ code which declares some variables that will be
+used for computing the nearest neighbors predictions for a multi-class
+classification problem with \verb|n_labels=10| classes. Assume there
+are \verb|nrow=1000| training observations in a feature/input space of
+size \verb|ncol=256|. For each line of code, indicate (1) the total
+number of elements stored in the corresponding C array, (2) the
+underlying C type of each of those elements, double or int, and (3)
+YES if that line of code performs a dynamic memory allocation to get a
+new C array, otherwise NO.
+\newcommand{\oneblank}{\underline{\hspace{2in}}}
+\newcommand{\blanks}{(1)\oneblank (2)\oneblank (3)\oneblank\vskip 1cm}
+\begin{verbatim}
+  Eigen::Map< Eigen::MatrixXd > train_inputs_mat(train_inputs_ptr, nrow, ncol);
+\end{verbatim}
+\blanks
+\begin{verbatim}
+  Eigen::Map< Eigen::VectorXd > test_input_vec(test_input_ptr, ncol);
+\end{verbatim}
+\blanks
+\begin{verbatim}
+  Eigen::VectorXd distance_vec(nrow);
+\end{verbatim}
+\blanks
+\begin{verbatim}
+  Eigen::VectorXi sorted_index_vec(nrow);
+\end{verbatim}
+\blanks
+\begin{verbatim}
+  Eigen::VectorXi label_count_vec(n_labels);
+\end{verbatim}
+\blanks
+
+\end{document}
