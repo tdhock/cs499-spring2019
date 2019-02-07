@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+%\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} 7 Feb
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+\textbf{Poisson regression} is a  machine learning problem
+where the output/label $y_i\in\{0,1, \dots \}$ is integer-valued, and
+the input/features $x_i\in\mathbb R^p$ is a real vector as usual. For
+example $y_i$ could be the number of pennies in your wallet, the
+number of cars in your garage, or the number of books in your backpack
+--- all of these are non-negative integers.
+
+This case needs special treatment because if you use standard linear
+regression, with the square loss, you end up with a prediction
+function $f(x_i)\in\mathbb R$ that predicts real numbers, and it does
+not make sense to predict a negative number (or a non-integer number)
+of pennies/cars/books. We will derive a loss function to use in this case.
+
+We assume $y_i\sim \text{Poisson}(\lambda_i)$ where
+$\lambda_i\in\mathbb R_+$ is a non-negative real number --- it is
+called the mean or rate parameter. The Poisson probability mass function is
+\begin{equation*}
+  \text{Pr}(y_i, \lambda_i) = \frac{\lambda_i^{y_i} e^{-\lambda_i}}{y_i!}
+\end{equation*}
+
+Derive an expression in terms of $y_i$ and $\lambda_i$ for the
+log-likelihood of the mean parameter $\lambda_i$ given a single label
+$y_i$: 
+
+\vskip 1in
+
+$\log\text{Pr}(y_i, \lambda_i)$ = \underline{\hspace{5in}}
+
+We learn a linear function
+$f(x_i)=w^T x_i = \log \lambda_i\in\mathbb R$, which means that
+$\lambda_i = e^{w^T x_i}$. 
+
+The negative log-likelihood of a particular weight vector
+$w\in\mathbb R^p$ is therefore
+\begin{eqnarray*}
+  -\text{LogLik}(w) &=& - \sum_{i=1}^n \log\text{Pr}(y_i, e^{w^T x_i})\\
+\vspace{ 1in}
+  &=& \sum_{i=1}^n \underline{\hspace{5in}}
+\end{eqnarray*}
+
+In the blank above, write an expression for the negative log-likelihood in terms of $y_i,x_i,w$. There should be three terms that are
+added/subtracted together. Circle the term that does NOT depend on $w$
+--- the other two terms can be used as a loss function to minimize.
+
+\end{document}
