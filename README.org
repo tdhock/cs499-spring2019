@@ -4,6 +4,10 @@ Optimization Algorithms for Machine Learning
 
 TuTh 9:35-10:50
 
+** Coding projects
+
+- [[file:project-1-nearest-neighbors.org][Project 1: nearest neighbors]]
+
 ** How to ace this class
 
 Before class you should read the suggested book chapters. When you read, write a summary in your own words of every paragraph or section. Also write questions that you have during your reading so you can ask in class (if related to the lecture topic) or in office hours.
