@@ -189,7 +189,7 @@ Your groups should submit a link to your repo on GitHub.
 - 20 points if your R package passes with no WARNING/ERROR on
   https://win-builder.r-project.org/
   - minus 5 points for every WARNING/ERROR.
-- 20 points for group evaluations.
+- 20 points for group evaluations -- this is to make sure that each group member participates more or less equally. You will get points deducted if your fellow group members give you a bad evaluation.
 - 10 points for accuracy of your R package and C++ code
   (I will run tests to make sure it accurately computes the nearest neighbors predictions).
 - 10 points for R documentation pages, 5 points for each of the two
