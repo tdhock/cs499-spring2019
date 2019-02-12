@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{fullpage}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\Lik}{Lik}
 
 \begin{document}
 
@@ -242,8 +243,8 @@ Univariate linear regression: $p=2$, $x_i=[1\ x_{i,2}]$.
 \end{array}\right]\in\mathbb R^{n\times 2}
 \end{equation}
 and
-$f(x_i) = w^T x_i = \underline{w_1}_{\text{intercept}} +
-\underline{w_2}_{\text{slope}} x_{i,2}$. Draw figure on board then
+$f(x_i) = w^T x_i = \underbrace{w_1}_{\text{intercept}} +
+\underbrace{w_2}_{\text{slope}} x_{i,2}$. Draw figure on board then
 show data viz.
 
 Gradient is defined for any $w$ as the direction of steepest ascent:
@@ -273,5 +274,113 @@ Then for any stepsize $\alpha>0$ define update rules for any iteration $t>0$:
 Example: gradient descent on $\mathcal L(w)=(x+5)^2$. Start at the
 origin. Compute gradient, first step.
 
+\section{Logistic regression}
+
+Definitions of argmin, min.
+\begin{equation*}
+  \argmin_{w\in\mathbb R^p}\mathcal L(w) = \{w^*\in\mathbb R^p|\mathcal L(w^*)\leq L(w_0) \forall w_0\in\mathbb R^p\}.
+\end{equation*}
+Draw quadratic function $x^2$ and $x^2+1$ which have the same argmin
+but different min.
+
+Definition of argmax: draw upside down quadratic function $-x^2$ to
+show relationship between argmin and argmax.
+
+Why do we need to do this derivation? 
+\begin{enumerate}
+\item For binary classification can't minimize zero-one loss via gradient
+descent.
+\item Using $w^T x_i\in\mathbb R$ directly for binary classification
+  does not make sense.
+\end{enumerate}
+
+Begin by re-deriving the least squares problem, assuming labels are
+normally distributed.
+
+For binary labels assume Bernoulli distribution. Exercise: Derive
+logistic loss, assuming $\tilde y_i\in\{-1,1\}$.
+
+\section{Logistic regression 2}
+
+Assume $y_i\sim \text{Bernoulli}(p_i)$ with
+$p_i = \sigma(w^T x_i)\in(0,1)$ and
+\begin{equation*}
+  \sigma(z) = \frac{1}{1+e^{-z}}.
+\end{equation*}
+The probability mass function is
+\begin{equation*}
+  \Pr(y_i, p_i) =
+  \begin{cases}
+    p_i & \text{ if } y_i=1\\
+    1-p_i & \text{ if } y_i=0.
+  \end{cases}
+\end{equation*}
+The log-likelihood is then
+\begin{eqnarray*}
+  \log\Lik(w) &=& \sum_{i=1}^n\log \Pr(y_i, \sigma(w^T x_i))\\
+&=& \sum_{i=1}^n \log[\sigma(w^T x_i)] I(y_i=1) + \log[1-\sigma(w^T x_i)] I(y_i=0)\\
+&=& \sum_{i=1}^n \log[\frac{1}{1+\exp(-w^T x_i)}] I(y_i=1) + 
+\log[\underbrace{1-\frac{1}{1+\exp(-w^T x_i)}}_{
+\frac{\exp(-w^T x_i)}{1+\exp(-w^T x_i)}
+}] I(y_i=0)\\
+&=& \sum_{i=1}^n \log[\frac{1}{1+\exp(-w^T x_i)}] I(\tilde y_i=1) + 
+\log[\frac{1}{1+\exp(w^T x_i)}] I(\tilde y_i=-1)\\
+&=& \sum_{i=1}^n \log[\frac{1}{1+\exp(-\tilde y_i w^T x_i)}]\\
+&=& \sum_{i=1}^n -\log[1+\exp(-\tilde y_i w^T x_i)]
+\end{eqnarray*}
+where the alternate labels are 
+\begin{equation*}
+  \tilde y_i =
+  \begin{cases}
+    -1 & \text{ if } y_i=1\\
+    1 & \text{ if } y_i=0.
+  \end{cases}
+\end{equation*}
+The logistic loss function that we want to minimize is thus
+\begin{equation*}
+  \mathcal L(w) = -\log\Lik(w) = \sum_{i=1}^n 
+\underbrace{\log[1+\exp(-\tilde y_i w^T x_i)]}_{
+\ell[w^T x_i, \tilde y_i]
+}.
+\end{equation*}
+The gradient is
+\begin{equation*}
+\nabla_w \ell[w^T x_i, \tilde y_i] = \frac{
+  -\tilde y_i x_i\exp(-\tilde y_i w^T x_i)
+}{
+  1+\exp(-\tilde y_i w^T x_i)
+}=\frac{
+  -\tilde y_i x_i
+}{
+  1+\exp(\tilde y_i w^T x_i)
+}
+\end{equation*}
+Draw the logistic loss for $y_i=1$ as a function of $w^T x_i$. 
+\begin{eqnarray*}
+\ell[w^T x_i, \tilde y_i] &=& \log[1+\exp(- w^T x_i)] \\
+\nabla_w \ell[w^T x_i, \tilde y_i] &=& \frac{
+  - x_i
+}{
+  1+\exp( w^T x_i)
+}
+\end{eqnarray*}
+\begin{itemize}
+\item As $w^T x_i\rightarrow \infty$ we have
+  $\exp(-w^T x_i)\rightarrow 0$ and
+  $\log [1+\exp(-\tilde y_i w^T x_i)]\rightarrow 0$.
+\item As $w^T x_i\rightarrow -\infty$ we have
+  $\exp(-w^T x_i)\rightarrow \infty$ and
+  $\log [1+\exp(-\tilde y_i w^T x_i)]\rightarrow \infty$.
+\end{itemize}
+
+
+The gradient $\nabla\mathcal L:\mathbb R^p\rightarrow\mathbb R^p$ is
+\begin{equation*}
+\nabla \mathcal L(w) = \frac{
+  -\tilde y_i x_i\exp(-\tilde y_i w^T x_i)
+}{
+  1+\exp(-\tilde y_i w^T x_i)
+}
+\end{equation*}
 
 \end{document}

@@ -1,0 +1,57 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+%\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} 12 Feb
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+\textbf{Logistic regression} is a  machine learning problem
+where the output/label $\tilde y_i\in\{-1,1 \}$ is binary-valued, and
+the inputs/features $x_i\in\mathbb R^p$ is a real vector as usual. 
+
+Let $X\in \mathbb R^{n\times p}$ be the input/feature matrix, and let
+$\tilde y\in\{-1,1\}^n$ be the vector of labels. Let
+\begin{equation*}
+  \tilde Y = \text{Diag}(\tilde y)=\left[
+    \begin{array}{ccc}
+      \tilde y_1& 0&0\\
+      0 & \ddots & 0\\
+      0 & 0 & \tilde y_n
+    \end{array}
+\right]\in\mathbb R^{n\times n}
+\end{equation*} 
+be a matrix with labels on the diagonal and zeros elsewhere.
+
+The total logistic
+loss for the linear prediction function $f(x_i)=w^T x_i$ is
+\begin{equation*}
+  \mathcal L(w) = \sum_{i=1}^n \log[ 1+ \exp(-\tilde y_i w^Tx_i)].
+\end{equation*}
+Let 
+\begin{equation*}
+  v = \left[
+  \begin{array}{c}
+    \frac{1}{1+\exp(\tilde y_1 w^T x_1)}\\
+    \vdots \\ 
+    \frac{1}{1+\exp(\tilde y_n w^T x_n)}
+  \end{array}
+\right]\in\mathbb R^n.
+\end{equation*}
+Derive an expression in terms of $X,\tilde Y,v$ for the gradient of the
+total logistic loss and put it in the blank below.
+
+\vskip 1in
+
+$\nabla \mathcal L(w)= $\underline{\hspace{2in}}
+
+\end{document}
