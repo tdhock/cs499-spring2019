@@ -5,7 +5,9 @@
 \usepackage{amsmath}
 \usepackage{fullpage}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\Lik}{Lik}
+\DeclareMathOperator*{\Diag}{Diag}
 
 \begin{document}
 
@@ -297,6 +299,35 @@ descent.
 Begin by re-deriving the least squares problem, assuming labels are
 normally distributed.
 
+Let $y_i\sim N(w^T x_i, s^2)$, draw probability density function.
+\begin{equation*}
+  \Pr(y_i, w^T x_i, s^2) = (2\pi s^2)^{-1/2} \exp\left[
+\frac{-1}{2s^2}(y_i-w^Tx_i)^2
+\right]
+\end{equation*}
+Let the likelihood of $w$ be
+\begin{equation*}
+  \Lik(w) = \prod_{i=1}^n \Pr(y_i, w^T x_i, s^2)
+\end{equation*}
+Then the log-likelihood is
+\begin{equation*}
+  \log\Lik(w) = \sum_{i=1}^n \log\Pr(y_i, w^T x_i, s^2)
+\end{equation*}
+Then we have 
+\begin{eqnarray*}
+  \argmax_w \log\Lik(w) 
+&=& \argmax_w \sum_{i=1}^n \underbrace{
+\frac{-1}{2}\log(2\pi s^2)
+}_{\text{constant wrt $w$}} -
+\frac{1}{2s^2}(y_i-w^Tx_i)^2\\
+&=& \argmax_w -\sum_{i=1}^n
+\underbrace{
+\frac{1}{2s^2}
+}_{\text{cst}}(y_i-w^Tx_i)^2\\
+&=& \argmin_w \sum_{i=1}^n
+(y_i-w^Tx_i)^2\\
+\end{eqnarray*}
+
 For binary labels assume Bernoulli distribution. Exercise: Derive
 logistic loss, assuming $\tilde y_i\in\{-1,1\}$.
 
@@ -358,8 +389,8 @@ The gradient is
 Draw the logistic loss for $y_i=1$ as a function of $w^T x_i$. 
 \begin{eqnarray*}
 \ell[w^T x_i, \tilde y_i] &=& \log[1+\exp(- w^T x_i)] \\
-\nabla_w \ell[w^T x_i, \tilde y_i] &=& \frac{
-  - x_i
+\nabla_{w^T x_i} \ell[w^T x_i, \tilde y_i] &=& \frac{
+  - 1
 }{
   1+\exp( w^T x_i)
 }
@@ -367,20 +398,34 @@ Draw the logistic loss for $y_i=1$ as a function of $w^T x_i$.
 \begin{itemize}
 \item As $w^T x_i\rightarrow \infty$ we have
   $\exp(-w^T x_i)\rightarrow 0$ and
-  $\log [1+\exp(-\tilde y_i w^T x_i)]\rightarrow 0$.
+  $\log [1+\exp(- w^T x_i)]\rightarrow 0$.
 \item As $w^T x_i\rightarrow -\infty$ we have
-  $\exp(-w^T x_i)\rightarrow \infty$ and
-  $\log [1+\exp(-\tilde y_i w^T x_i)]\rightarrow \infty$.
+  $\exp(-w^T x_i)\rightarrow \infty$,
+  $\ell[w^T x_i, \tilde y_i] = \log [1+\exp(- w^T x_i)]\rightarrow \infty$,
+  $\exp(w^T x_i)\rightarrow 0$, and $\nabla_{w^T x_i} \ell[w^T x_i, \tilde y_i] \rightarrow -1$.
 \end{itemize}
 
 
 The gradient $\nabla\mathcal L:\mathbb R^p\rightarrow\mathbb R^p$ is
 \begin{equation*}
-\nabla \mathcal L(w) = \frac{
-  -\tilde y_i x_i\exp(-\tilde y_i w^T x_i)
+\nabla \mathcal L(w) = \sum_{i=1}^n \nabla_w \ell[w^T x_i, \tilde y_i] = 
+\sum_{i=1}^n \frac{
+  -\tilde y_i x_i
 }{
-  1+\exp(-\tilde y_i w^T x_i)
-}
+  1+\exp(\tilde y_i w^T x_i)
+} = -X^T \tilde Y S(\tilde Y X w),
 \end{equation*}
+where $\tilde Y=\Diag(\tilde y)$ and $S:\mathbb R^n\rightarrow R^n$ is the componentwise application
+of the logistic link function,
+$S(v) = \left[
+    \begin{array}{ccc}
+      \sigma(v_1) & \cdots & \sigma(v_n)
+    \end{array}
+\right]^T$.
+
+Discuss gradient descent algorithm, same as least squares regression.
+
+Discuss learning algorithm which chooses the number of steps (early
+stopping) that minimizes the mean validation loss from CV.
 
 \end{document}
