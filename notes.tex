@@ -276,7 +276,7 @@ Then for any stepsize $\alpha>0$ define update rules for any iteration $t>0$:
 Example: gradient descent on $\mathcal L(w)=(x+5)^2$. Start at the
 origin. Compute gradient, first step.
 
-\section{Logistic regression}
+\section{Probabilistic interpretation of linear regression}
 
 Definitions of argmin, min.
 \begin{equation*}
@@ -331,7 +331,7 @@ Then we have
 For binary labels assume Bernoulli distribution. Exercise: Derive
 logistic loss, assuming $\tilde y_i\in\{-1,1\}$.
 
-\section{Logistic regression 2}
+\section{Logistic regression}
 
 Assume $y_i\sim \text{Bernoulli}(p_i)$ with
 $p_i = \sigma(w^T x_i)\in(0,1)$ and
@@ -427,5 +427,9 @@ Discuss gradient descent algorithm, same as least squares regression.
 
 Discuss learning algorithm which chooses the number of steps (early
 stopping) that minimizes the mean validation loss from CV.
+
+\section{L2 regularization}
+
+TODO
 
 \end{document}

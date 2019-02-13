@@ -60,12 +60,14 @@ Finally after doing all of the above, please email me to ask for an office hour.
   - [[http://eigen.tuxfamily.org/dox/group__TutorialMapClass.html][Eigen]] C++ linear algebra library reference manual.
     - To use Eigen C++ code in an R package: install.packages("RcppEigen")
   - [[https://en.cppreference.com/w/cpp/algorithm/sort][std::sort]] reference manual.
-- Lecture 7 Tue Feb 05: 
+- Lecture 7 Tue Feb 05: linear regression, gradient descent with early stopping.
   - gradient descent for linear regression [[http://bl.ocks.org/tdhock/raw/fc2719c42196959b2239d82f9d444fe0/][viz]], [[file:2019-02-05-linear-regression/viz.R][code]].
   - gradient descent choose step size [[http://bl.ocks.org/tdhock/raw/0106fdf9c239ab0ff7b49b90c0b654c4/][viz]], [[file:2019-02-05-linear-regression/viz.step.size.R][code]].
-- Lecture 8 Thu Feb 07: 
-- Lecture 9 Tue Feb 12: 
-- Lecture 10 Thu Feb 14: 
+- Lecture 8 Thu Feb 07: probabilistic interpretation of linear regression.
+- Lecture 9 Tue Feb 12: logistic regression.
+- Lecture 10 Thu Feb 14: L2 regularization.
+  - gradient descent for L2 regularized (ridge) linear regression,
+    [[http://bl.ocks.org/tdhock/raw/c003753d46b9b84e5de1bc612786df9d/][viz]], [[file:2019-02-14-L2-regularization/viz.R][code]].
 
 Coding project 1. R package for smooth optimization, linear/logistic
 regression, compare L2 regularization with early stopping.
