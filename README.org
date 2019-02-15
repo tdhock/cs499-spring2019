@@ -7,6 +7,7 @@ TuTh 9:35-10:50
 ** Coding projects
 
 - [[file:project-1-nearest-neighbors.org][Project 1: nearest neighbors]]
+- [[file:project-2-linear-models.org][Project 2: linear models]]
 
 ** How to ace this class
 
@@ -68,10 +69,6 @@ Finally after doing all of the above, please email me to ask for an office hour.
 - Lecture 10 Thu Feb 14: L2 regularization.
   - gradient descent for L2 regularized (ridge) linear regression,
     [[http://bl.ocks.org/tdhock/raw/c003753d46b9b84e5de1bc612786df9d/][viz]], [[file:2019-02-14-L2-regularization/viz.R][code]].
-
-Coding project 1. R package for smooth optimization, linear/logistic
-regression, compare L2 regularization with early stopping.
-
 - Lecture 11 Tue Feb 19: 
 - Lecture 12 Thu Feb 21: 
 - Lecture 13 Tue Feb 26: 
@@ -81,10 +78,7 @@ regression, compare L2 regularization with early stopping.
 - Lecture 17 Tue Mar 12: 
 - Lecture 18 Thu Mar 14: 
 
-Coding project 2. R package for non-smooth optimization, Lasso and
-SVM.
-
-MIDTERM EXAM on smooth optimization algorithms for supervised learning
+MIDTERM EXAM
 
 - Lecture 19 Tue Mar 19: spring
 - Lecture 20 Thu Mar 21: break
@@ -95,8 +89,6 @@ MIDTERM EXAM on smooth optimization algorithms for supervised learning
 - Lecture 25 Tue Apr 09: 
 - Lecture 26 Thu Apr 11: 
 
-Coding project 3. R package for unsupervised learning
-
 - Lecture 27 Tue Apr 16: paper review?
 - Lecture 28 Thu Apr 18: 
 - Lecture 29 Tue Apr 23: 
@@ -106,9 +98,7 @@ Coding project 3. R package for unsupervised learning
 - Lecture 33 Tue May 07:
 - Lecture 34 Thu May 09:
 
-Coding project 4. R package for algo from ML literature.
-
-FINAL EXAM on non-smooth, discrete, unsupervised algorithms
+FINAL EXAM 
 
 ** Books
 
