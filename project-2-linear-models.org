@@ -16,7 +16,7 @@ By now you know how to code functions in C++ or R so you have the choice.
 - if you code the algorithm in pure R, use matrix/vector arithmetic for efficiency (do NOT use for loops over data points or features)
 
 ** Linear models with early stopping regularization
-Function names: LMSquareLossIterations, LMLogisticLossIterations
+R Function names: LMSquareLossIterations, LMLogisticLossIterations
 - Inputs: X.mat (feature matrix, n_train x n_features), y.vec (label vector, n_train x 1), max.iterations (int scalar > 1), step.size.
 - Output: W.mat, matrix of weight vectors, one for each iteration, n_features x max.iterations. 
   Should be able to get a matrix of predictions via X.mat %*% W.mat
@@ -25,7 +25,7 @@ Function names: LMSquareLossIterations, LMLogisticLossIterations
 - make sure to compute a scaled input matrix, which has mean=0 and sd=1 for each column,
   and keep track of the mean/sd of each column, so you can return W.mat on the original scale
   (if you use the unscaled X.mat during gradient descent, it will not converge -- numerical instability).
-Function names: LMSquareLossEarlyStoppingCV, LMLogisticLossEarlyStoppingCV
+R Function names: LMSquareLossEarlyStoppingCV, LMLogisticLossEarlyStoppingCV
 - Inputs: X.mat, y.vec, fold.vec, max.iterations.
 - should use K-fold cross-validation based on the fold IDs provided in fold.vec
 - for each train/validation split, use LM___LossIterations to compute a sequence of models on the train data,
@@ -34,117 +34,61 @@ Function names: LMSquareLossEarlyStoppingCV, LMLogisticLossEarlyStoppingCV
 - minimize the mean validation loss to determine selected.steps, the optimal number of steps/iterations.
 - finally use LM__LossIterations(max.iterations=selected.steps) on the whole training data set.
 - Output a list with the following named elements:
+  - mean.validation.loss, mean.train.loss.vec (for plotting train/validation loss curves)
   - selected.steps
-  - mean.validation.loss
   - weight.vec, the weight vector found by using gradient descent with selected.steps on the whole training data set.
+  - predict(testX.mat), a function that takes a test features matrix and returns a vector of predictions 
+    (real numbers for regression, probabilities for binary classification).
   
-** Gradient descent algorithm 
 ** Linear models with L2 regularization
-- nearest neighbors prediction function for regression and binary classification.
-  - write a C++ function NN1toKmaxPredict
-    which takes a training data set and an entire test matrix,
-    then computes a matrix of k-nearest neighbor predictions,
-    for k=1 to max_neighbors, and for every test observation.
-    Function arguments should be:
-    - problem dimensions: n_train_observations, n_test_observations, n_features.
-    - maximum number of neighbors: max_neighbors.
-    - a matrix training data inputs (n_train_observations x n_features). 
-    - a vector of training data outputs (n_train_observations).
-    - a test input matrix (n_test_observations x n_features).
-    - a matrix of predictions for the test data (n_test_observations x max_neighbors),
-      which is where you need to store the result.
-    Challenges:
-    - Use the L1/Manhattan distance 
-      (instead of the L2/Euclidean distance which we saw in class).
-    - Make sure to define a header file with error codes.
-      You should at least check that the problem dimensions and max number of neighbors are positive.
-  - create an R package NearestNeighbors and code an interface for your C++ function in src/interface.cpp.
-    If your function returns an error code, make sure to
-    call error() with an informative message that will be displayed in R.
-  - code an R function NN1toKmaxPredict(X.mat, y.vec, testX.mat, max.neighbors)
-    that calls your C++ code via the .C function in R.
-  - write type/dimension checking code in the beginning of that function,
-    and stop() with an informative error message if there are any issues.
-  - write documentation for that R function,
-    with at least two examples of how to use it
-    (one for regression, one for binary classification).
-  - write tests for that R function, in tests/testthat/test-Pred1toKmaxNN.R.
-    You should at least test that (1) for a valid input (one of the data sets mentioned below),
-    your function returns a valid numeric prediction matrix with
-    the expected dimensions, and (2) for an invalid input, 
-    your function stops with an informative error message.
-    (3) Extra credit if you compute the predictions for one observation in R code,
-    and write a test that the C++ code computes the same thing.
-- learning algorithm using cross-validation to select the number of neighbors.
-  - write an R function NNLearnCV(X.mat, y.vec, max.neighbors=30, fold.vec=NULL, n.folds=5)
-    - X.mat, y.vec is a training data set.
-    - fold.vec is a vector of fold ID numbers. If fold.vec is NULL,
-      randomly assign fold IDs from 1 to n.folds, i.e. 
-#+BEGIN_SRC R
-  fold.vec <- sample(rep(1:n.folds, l=nrow(X.mat)))
-#+END_SRC
-    - write type/dimension checking code in the beginning of that
-      function (make sure that fold.vec is the same size as y.vec,
-      which is the same as the number of rows in X.mat). Use stop()
-      with an informative error message if there are any issues.
-    - then perform cross-validation to compute two matrices of mean
-      loss values, (max.neighbors rows x n.folds columns), one for the
-      train sets (train.loss.mat), one for the validation sets
-      (validation.loss.mat). If the labels (y.vec) are all in {0,1}
-      then the loss function should be the 01-loss (binary
-      classification), otherwise use the square loss (regression).
-    - there should be a for loop over folds/splits. Inside that for
-      loop, run NN1toKmaxPredict to compute predictions, then a matrix
-      of loss values (one row for every data point, one column for
-      every number of neighbors), then use colMeans() and store the
-      result in one column of train.loss.mat/validation.loss.mat.
-      There should NOT be a for loop over data points in R code --
-      that would result in inefficient R code! Instead use matrix/vector
-      operations, as in the code below:
-#+BEGIN_SRC R
-  for(fold.i in seq_along(unique.folds)){
-    for(prediction.set.name in c("train", "validation")){
-      pred.mat <- NN1toKmaxPredict(
-	train.features, train.labels,
-	prediction.set.features, max.neighbors)
-      loss.mat <- if(labels.all.01){
-	ifelse(pred.mat>0.5, 1, 0) != y.vec #zero-one loss for binary classification.
-      }else{
-	(pred.mat-y.vec)^2 #square loss for regression.
-      }
-      train.or.validation.loss.mat[, fold.i] <- colMeans(loss.mat)
-    }
-  }
-#+END_SRC
-    - return a list with the following named elements:
-      - X.mat, y.vec: training data.
-      - train.loss.mat, validation.loss.mat (matrices of loss values for each fold and number of neighbors).
-      - train.loss.vec, validation.loss.vec (vectors with max.neighbors elements: mean loss over all folds).
-      - selected.neighbors (number of neighbors selected by minimizing the mean validation loss).
-      - predict(testX.mat), a function that takes a matrix of inputs/features
-        and returns a vector of predictions. It should check the type/dimension of testX.mat
-        and stop() with an informative error message if there are any issues.
-  - write documentation for that R function,
-    with at least two examples of how to use it
-    (one for regression, one for binary classification).
-  - write tests for that R function, in tests/testthat/test-NNLearnCV.R.
+R Function names: LMSquareLossL2, LMLogisticLossL2.
+- Inputs: X.scaled.mat, y.vec, penalty (non-negative numeric scalar), opt.thresh (positive numeric scalar), initial.weight.vec.
+- these functions should assume that X.scaled.mat already has mean=0 and sd=1 for each of its columns,
+  and its job is to find the optimal weight vector that minimizes the following cost function:
+  \sum_{i=1}^n L[w^T x_i, y_i] + penalty * ||w||, where L is either the logistic or square loss.
+- On the documentation pages for these functions you should write the math/equation of the cost function that it minimizes.
+- opt.thresh should be a threshold on the L1-norm (sum of absolute values) of the gradient. 
+  I will test your code to make sure that the L1-norm of the gradient of your solution is less than opt.thresh.
+- Output: optimal weight vector for the given penalty parameter.
+R Function names: LMSquareLossL2penalties, LMLogisticLossL2penalties.
+- Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty values)
+- this function should begin by scaling X.mat to obtain X.scaled.mat with each column mean=0 and sd=1
+- it should then loop over penalty values, calling LM__LossL2 to get the optimal weight vector for each.
+- Output: W.mat (n_features x n_penalties), weight matrix on original scale,
+  that can be used to get predictions via X.mat %*% W.mat
+R Function names: LMSquareLossL2CV, LMLogisticLossL2CV.
+- Inputs: X.mat, y.vec, fold.vec, penalty.vec
+- should use K-fold cross-validation based on the fold IDs provided in fold.vec
+- for each train/validation split, use LM___LossL2penalties to compute optimal L2-penalized models on the train data,
+  then compute the validation loss of each model.
+- compute mean.validation.loss.vec, which is a vector (with n_penalties elements) of mean validation loss over all K folds.
+- minimize the mean validation loss to determine selected.penalty, the optimal penalty value.
+- finally use LM__LossL2penalties(penalty.vec=selected.penalty) on the whole training data set.
+- Output a list with the following named elements:
+  - mean.validation.loss, mean.train.loss.vec, penalty.vec, selected.penalty (for plotting train/validation loss curves)
+  - weight.vec, the weight vector found by using gradient descent with selected.penalty on the whole training data set.
+  - predict(testX.mat), a function that takes a test features matrix and returns a vector of predictions 
+    (real numbers for regression, probabilities for binary classification).
+  
+** Documentation and tests
+- for each R function, write documentation with at least one example of how to use it.
+- write at least two tests for each R function, in tests/testthat/test-xxx.R.
     You should at least test that 
-    (1) for valid inputs including a user-specified fold.vec your function returns a list, 
-    (2) the predict function returns a numeric vector of the expected size, and 
-    (3) for an invalid input, your function stops with an informative error message.
+    (1) for valid inputs your function returns an output of the expected type/dimension, 
+    (2) for an invalid input, your function stops with an informative error message.
     
-*** Experiments/application: run your code on the following data sets.
-- Binary classification.
+* Experiments/application: run your code on the following data sets.
+- Binary classification: LMLogisticLossL2CV, LMLogisticLossEarlyStoppingCV
   - ElemStatLearn::spam 2-class [4601, 57] output is last column (spam).
   - ElemStatLearn::SAheart 2-class [462, 9] output is last column (chd).
   - ElemStatLearn::zip.train: 10-class [7291, 256] output is first column. (ignore classes other than 0 and 1)
-- Regression.
+- Regression: LMSquareLossL2CV, LMSquareLossEarlyStoppingCV
   - ElemStatLearn::prostate [97 x 8] output is lpsa column, ignore train column.
   - ElemStatLearn::ozone [111 x 3] output is first column (ozone).
-- For each data set, use 3-fold cross-validation to evaluate the prediction accuracy of your code.
-  For each split s=1 to 3, set aside the data in fold s as a test set. 
-  Use NNLearnCV to train a model on the other two folds 
-  (which should be used in your NNLearnCV function as internal train/validation sets/splits), 
+- For each data set, use 4-fold cross-validation to evaluate the prediction accuracy of your code.
+  For each split s=1 to 4, set aside the data in fold s as a test set. 
+  Use ___CV to train a model on the other folds 
+  (which should be used in your ___CV function as internal train/validation sets/splits), 
   then make a prediction on the test fold s. 
 - For each train/test split, 
   to show that your algorithm is actually learning something 
@@ -152,19 +96,20 @@ Function names: LMSquareLossEarlyStoppingCV, LMLogisticLossEarlyStoppingCV
   compute a baseline predictor that ignores the inputs/features.
   - Regression: the mean of the training labels/outputs.
   - Binary classification: the most frequent class/label/output in the training data.
-- For each data set, compute a 2 x 3 matrix of mean test loss values:
-  - each of the three columns are for a specific test set,
-  - the first row is for the nearest neighbors predictor,
-  - the second row is for the baseline/un-informed predictor.
+- For each data set, compute a 4 x 3 matrix of mean test loss values:
+  - each of the four rows are for a specific test set,
+  - the first column is for the early stopping predictor,
+  - the second column is for the L2 regularized predictor,
+  - the third column is for the baseline/un-informed predictor.
 - Make one or more plot(s) or table(s) that compares these test loss values. 
   For each of the five data sets, 
-  does your nearest neighbors algorithm achieve lower test loss than the baseline?
-- for each data set, run NNLearnCV on the entire data set,
-  and plot the mean validation loss as a function of the number of neighbors. 
+  is early stopping more accurate than L2 regularization? 
+  Are the linear models more accurate than the baseline?
+- for each data set, run ___CV functions on the entire data set,
+  and plot the mean validation loss as a function of the regularization parameter. 
   plot the mean train loss in one color, and the mean validation loss in another color.
-  Is the train loss zero for K=1 neighbors, as expected?
-  Plot a point and/or text label to emphasize the number
-  of neighbors selected by minimizing the mean validation loss function.
+  Plot a point and/or text label to emphasize the regularization parameter
+  selected by minimizing the mean validation loss function.
 - Write up your results in vignettes/report.Rmd that shows the R code that you used
   for the experiments/application, along with the output. 
   - Documentation: [[http://r-pkgs.had.co.nz/vignettes.html][Vignettes chapter of R packages book]].
@@ -206,7 +151,7 @@ What is the optimal number of neighbors?
 #+END_SRC
 
 *** Grading rubric: 100 points.
-Your groups should submit a link to your repo on GitHub.
+Your group should submit a link to your repo on GitHub.
 - 20 points for completeness of report.
   - 4 points for each data set (2 points each for loss matrix and train/validation loss plot)
 - 20 points if your R package passes with no WARNING/ERROR on
@@ -214,32 +159,28 @@ Your groups should submit a link to your repo on GitHub.
   - minus 5 points for every WARNING/ERROR.
 - 20 points for group evaluations -- this is to make sure that each group member participates more or less equally. You will get points deducted if your fellow group members give you a bad evaluation.
 - 10 points for accuracy of your R package and C++ code
-  (I will run tests to make sure it accurately computes the nearest neighbors predictions).
-- 10 points for R documentation pages, 5 points for each of the two
-  functions described above.
-  - 3 points for  informative example code.
-  - 2 points for documenting types/dimensions of inputs/outputs.
-- 10 points for tests, 2 points each for each of the five tests
-  mentioned above.
+  (I will run tests to make sure your LM__LossL2 functions accurately compute the solution to the L2-regularized problems).
+- 10 points for R documentation pages.
+  - 4 points for informative example code.
+  - 4 points for documenting types/dimensions of inputs/outputs.
+  - 2 points for writing the cost function in the LM__LossL2 docs.
+- 10 points for tests, as described above.
 - 10 points for not waiting until the last minute,
   as evidenced by commits in your git repo:
-  - 5 points if you have committed a preliminary version of the C++ code on or before Fri Feb 1.
-  - 5 more points if you have written some R code and documentation on or before Fri Feb 8.
+  - First week: 5 points if you have written all R functions by Fri Feb 22.
+  - Second week: 5 more points if you have written all R tests and documentation, and have started your report by Fri Mar 1.
+  - Third week: finish report vignette, make sure package passes R CMD check with no WARNING/ERROR on win-builder.
 Extra credit:
   - 2 points extra credit if, in your R package,
-    you write a test that makes sure your C++ nearest neighbors code 
-    computes the same predictions as a nearest neighbor prediction computed in R code.
-  - 2 points extra credit if, in your Rmd report,
-    you compute the test loss matrices by writing a loop over all five data sets. 
-    (rather than copying/repeating the same CV code for each data set) 
-    Hint: use store the data sets in a named list.
+    you write a test that makes sure your LM__LossL2 functions compute a solution
+    which has L1-norm of the gradient less than the specified opt.thresh.
+  - 2-6 points extra credit if, in your Rmd report,
+    you also use LMSquareLossL2CV functions on the binary classification data sets,
+    in order to demonstrate that LMLogisticLossL2CV is more accurate. (2 points per data set)
   - 2 points extra credit if, in your Rmd report,
     you use LaTeX code/MathJax to type the equations 
-    for the nearest neighbor prediction function f_{D,k}(x)
-    and the optimal number of neighbors \hat k 
-    (as estimated via minimizing the mean validation loss).
+    for the cost/loss functions for each learning algorithm.
   - 2 points if, in your GitHub repo, you setup Travis-CI to check your R package,
     and have a green badge that indicates a build that passes checks. 
     See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
-  - 2 points if you parallelize your C++ code using [[http://tdhock.github.io/blog/2019/omp/][OpenMP]].
