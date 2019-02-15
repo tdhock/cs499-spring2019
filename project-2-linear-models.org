@@ -1,6 +1,6 @@
 Coding project 2: linear models for regression and binary classification.
 
-For this project you will be writing an R package with C++ code
+For this project you will be writing an R package 
 that implements gradient descent algorithms for linear models.
 You are allowed and encouraged to discuss your code/ideas with other students,
 but it is strictly forbidden to copy any code/documentation/tests/etc from other groups,
@@ -158,7 +158,7 @@ Your group should submit a link to your repo on GitHub.
   https://win-builder.r-project.org/
   - minus 5 points for every WARNING/ERROR.
 - 20 points for group evaluations -- this is to make sure that each group member participates more or less equally. You will get points deducted if your fellow group members give you a bad evaluation.
-- 10 points for accuracy of your R package and C++ code
+- 10 points for accuracy of your code
   (I will run tests to make sure your LM__LossL2 functions accurately compute the solution to the L2-regularized problems).
 - 10 points for R documentation pages.
   - 4 points for informative example code.
