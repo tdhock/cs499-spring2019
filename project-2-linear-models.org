@@ -176,7 +176,7 @@ Extra credit:
     which has L1-norm of the gradient less than the specified opt.thresh.
   - 2-6 points extra credit if, in your Rmd report,
     you also use LMSquareLossL2CV functions on the binary classification data sets,
-    in order to demonstrate that LMLogisticLossL2CV is more accurate. (2 points per data set)
+    and comment on the difference in accuracy between logistic/square losses. (2 points per data set)
   - 2 points extra credit if, in your Rmd report,
     you use LaTeX code/MathJax to type the equations 
     for the cost/loss functions for each learning algorithm.
