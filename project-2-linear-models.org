@@ -158,18 +158,13 @@ Your group should submit a link to your repo on GitHub.
   https://win-builder.r-project.org/
   - minus 5 points for every WARNING/ERROR.
 - 20 points for group evaluations -- this is to make sure that each group member participates more or less equally. You will get points deducted if your fellow group members give you a bad evaluation.
-- 10 points for accuracy of your code
+- 20 points for accuracy of your code
   (I will run tests to make sure your LM__LossL2 functions accurately compute the solution to the L2-regularized problems).
 - 10 points for R documentation pages.
   - 4 points for informative example code.
   - 4 points for documenting types/dimensions of inputs/outputs.
   - 2 points for writing the cost function in the LM__LossL2 docs.
 - 10 points for tests, as described above.
-- 10 points for not waiting until the last minute,
-  as evidenced by commits in your git repo:
-  - First week: 5 points if you have written all R functions by Fri Feb 22.
-  - Second week: 5 more points if you have written all R tests and documentation, and have started your report by Fri Mar 1.
-  - Third week: finish report vignette, make sure package passes R CMD check with no WARNING/ERROR on win-builder.
 Extra credit:
   - 2 points extra credit if, in your R package,
     you write a test that makes sure your LM__LossL2 functions compute a solution
@@ -177,6 +172,10 @@ Extra credit:
   - 2-6 points extra credit if, in your Rmd report,
     you also use LMSquareLossL2CV functions on the binary classification data sets,
     and comment on the difference in accuracy between logistic/square losses. (2 points per data set)
+  - 2-10 points extra credit if, in your Rmd report,
+    you also compare against NNLearnCV, and comment on 
+    whether or not linear models or nearest neighbors is more accurate
+    (2 points per data set).
   - 2 points extra credit if, in your Rmd report,
     you use LaTeX code/MathJax to type the equations 
     for the cost/loss functions for each learning algorithm.
@@ -184,3 +183,7 @@ Extra credit:
     and have a green badge that indicates a build that passes checks. 
     See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
+  - if you submit your work early you will get feedback from me and extra credit:
+    - First week: 10 points if you have written all R functions described above by Fri Feb 22. (1 point per function)
+    - Second week: 10 more points if you have started your report by Fri Mar 1. (2 points per data set)
+    - Third week: do tests/docs, finish report, make sure package passes R CMD check with no WARNING/ERROR on win-builder.
