@@ -124,30 +124,15 @@ R Function names: LMSquareLossL2CV, LMLogisticLossL2CV.
 
 print out and/or plot the matrix.
 
-comment on difference between NN and baseline.
+comment on difference in accuracy.
 
-### Train/validation loss plot
-
-plot the two loss functions.
-
-What is the optimal number of neighbors?
-
-## Data set 2: SAheart
-
-### Matrix of loss values
-
-print out and/or plot the matrix.
-
-comment on difference between NN and baseline.
-
-### Train/validation loss plot
+### Train/validation loss plots
 
 plot the two loss functions.
 
-What is the optimal number of neighbors?
+What are the optimal regularization parameters?
 
-## Data set 3: ...
-...
+## Data set 2: ...
 #+END_SRC
 
 *** Grading rubric: 100 points.
@@ -185,5 +170,9 @@ Extra credit:
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
   - if you submit your work early you will get feedback from me and extra credit:
     - First week: 10 points if you have written all R functions described above by Fri Feb 22. (1 point per function)
-    - Second week: 10 more points if you have started your report by Fri Mar 1. (2 points per data set)
+    - Second week: 10 more points if you have started your report by Fri Mar 1 -- 
+      please send me your rendered html report by email. 
+      You will get 2 points of extra credit for the analysis of each data set 
+      (1 point for plots of train/validation loss versus regularization parameter,
+      1 point for 4-fold CV loss matrix table/plot).
     - Third week: do tests/docs, finish report, make sure package passes R CMD check with no WARNING/ERROR on win-builder.
