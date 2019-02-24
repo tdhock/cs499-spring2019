@@ -187,3 +187,15 @@ It should not make a difference theoretically but numerically (on computers) it 
 - For the learned weight vector, should there be n_features elements? Or n_features+1? there should be n_features+1 because of the intercept/bias/beta. Please make the intercept the first element of the weight vector
 
 - What is the opt.thresh variable? It is an optimality threshold, a positive real number that controls when to stop and declare that a particular weight vector is "optimal" numerically. Smaller values closer to zero mean closer to the actual optimum, and typically more gradient descent steps, and a slower algorithm.
+
+- what step size should we use? It is up to you. You should use either constant step size, backtracking line search, or exact line search, as discussed in class.
+
+- how to compute the train/test/validation loss/predictions? You should use the learned weight vector with the given feature matrix, e.g. cbind(1, X.test) %*% W.mat for the test predictions.
+
+- how should we write the predict function?
+
+list(predict=function(X.test){
+   ... return a vector of predictions ...
+  })
+  
+- how to decide max.iterations? you should choose a large number of iterations so that the validation loss starts increasing. You may need to use a different max.iterations value for each data set.
