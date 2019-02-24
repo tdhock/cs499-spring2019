@@ -18,7 +18,7 @@ By now you know how to code functions in C++ or R so you have the choice.
 ** Linear models with early stopping regularization
 R Function names: LMSquareLossIterations, LMLogisticLossIterations
 - Inputs: X.mat (feature matrix, n_train x n_features), y.vec (label vector, n_train x 1), max.iterations (int scalar > 1), step.size.
-- Output: W.mat, matrix of weight vectors, one for each iteration, n_features x max.iterations. 
+- Output: W.mat, matrix of weight vectors, one for each iteration, n_features+1 x max.iterations. (the first element of the weight vector should be the intercept term).
   Should be able to get a matrix of predictions via X.mat %*% W.mat
 - there should be one function for the square loss, one function for the logistic loss.
 - both functions should optimize the mean loss (not the total loss).
@@ -54,8 +54,9 @@ R Function names: LMSquareLossL2penalties, LMLogisticLossL2penalties.
 - Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty values)
 - this function should begin by scaling X.mat to obtain X.scaled.mat with each column mean=0 and sd=1
 - it should then loop over penalty values, calling LM__LossL2 to get the optimal weight vector for each.
-- Output: W.mat (n_features x n_penalties), weight matrix on original scale,
-  that can be used to get predictions via X.mat %*% W.mat
+- Output: W.mat (n_features+1 x n_penalties), weight matrix on original scale, 
+  that can be used to get predictions via cbind(1, X.mat) %*% W.mat 
+  (the first row of W.mat should be the bias/beta/intercept)
 R Function names: LMSquareLossL2CV, LMLogisticLossL2CV.
 - Inputs: X.mat, y.vec, fold.vec, penalty.vec
 - should use K-fold cross-validation based on the fold IDs provided in fold.vec
