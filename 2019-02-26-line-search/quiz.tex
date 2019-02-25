@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Lik}{Lik}
+\DeclareMathOperator*{\Diag}{Diag}
+%\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} 26 Feb
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+Exact line search in 2 dimensions. For $w\in\mathbb R^2$, define the
+cost function
+$$C(w) = \frac 1 2 (w_1-1)^2 + \frac 1 2 (w_2+1)^2 = \frac 1 2 ||w +
+\left[\begin{array}{c}
+  -1\\
+   1
+\end{array}\right]
+||^2_2$$
+
+\vskip 1cm
+Derive an expression for the gradient in terms of $w$, $\nabla C(w)=$\underline{\hspace{2in}}
+
+Let $w^{(0)}=0$ be the starting point of gradient descent, at the
+origin. 
+
+\vskip 1cm
+The descent direction is
+
+$d^{(0)} = -\nabla C(w^{(0)})=$\underline{\hspace{2in}}
+
+The cost of a step with size $\alpha>0$ in that direction is
+\begin{equation*}
+  \mathcal C_0(\alpha) = C(w^{(0)} + \alpha d^{(0)}).
+\end{equation*}
+
+To find the step size with the lowest cost we first need the derivative
+(in terms of $\alpha$):
+
+\vskip 1cm
+\begin{equation*}
+  \mathcal C'_0(\alpha) = \underline{\hspace{2in}}
+\end{equation*}
+
+\vskip 1cm
+Setting the derivative to zero, $\mathcal C'_0(\alpha)=0$, 
+
+implies an optimal step size of
+$\alpha^{(0)}=\argmin_\alpha \mathcal
+C'_0(\alpha)=$\underline{\hspace{2in}}
+
+\vskip 1cm
+Taking that step lands us at 
+
+\begin{equation*}
+  w^{(1)} = w^{(0)} + \alpha^{(0)} d^{(0)} = \underline{\hspace{2in}}
+\end{equation*}
+
+\vskip 1cm
+which has a cost of
+
+\begin{equation*}
+  C(w^{(1)}) = \underline{\hspace{2in}}
+\end{equation*}
+
+
+\end{document}

@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Lik}{Lik}
+\DeclareMathOperator*{\Diag}{Diag}
+%\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} 14 Feb
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+In the statistics literature, the ridge regression problem is
+typically defined as follows. The
+output/label $ y_i\in\mathbb R$ is real-valued, and the
+inputs/features $x_i\in\mathbb R^p$ is a real vector as usual.
+Let $X\in \mathbb R^{n\times p}$ be the input/feature matrix, and let
+$ y\in\mathbb R^n$ be the vector of labels. 
+
+The linear prediction function is
+$f_{\beta,w}(x_i) = \beta + w^T x_i$, where $\beta\in\mathbb R$ is
+called the ``intercept'' or ``bias'' term, and $w\in\mathbb R^p$ is
+the usual vector of weights, one for each feature.
+
+Let $1_n=\left[
+  \begin{array}{ccc}
+    1 &\cdots&1
+  \end{array}
+\right]^T\in\mathbb R^n$ be an $n$-vector of ones. The ridge
+regression cost function can then be defined as
+\begin{equation*}
+  \mathcal C_\lambda(\beta, w) = ||1_n\beta + X w - y||_2^2 + \lambda ||w||_2^2.
+\end{equation*}
+Note in the definition above that L2 regularization is only used for
+the weight vector $w$ (not for the bias/intercept $\beta$).
+
+The optimal model parameters for a particular $\lambda\geq 0$ are
+defined as
+\begin{equation*}
+  \hat \beta^\lambda, \hat w^\lambda = \argmin_{\beta\in\mathbb R, w\in\mathbb R^p}
+\mathcal C_\lambda(\beta, w).
+\end{equation*}
+To find the optimal model parameters we must first compute the
+gradients, (fill in the blanks below in terms of $X,y,w,\beta,1_n$)
+
+\vskip 1in
+
+$\nabla_\beta \mathcal C_\lambda(\beta, w)= $\underline{\hspace{2in}}
+
+\vskip 1in
+
+$\nabla_w \mathcal C_\lambda(\beta, w)= $\underline{\hspace{2in}}
+
+\end{document}
