@@ -42,7 +42,7 @@ R Function names: LMSquareLossEarlyStoppingCV, LMLogisticLossEarlyStoppingCV
   
 ** Linear models with L2 regularization
 R Function names: LMSquareLossL2, LMLogisticLossL2.
-- Inputs: X.scaled.mat, y.vec, penalty (non-negative numeric scalar), opt.thresh (positive numeric scalar), initial.weight.vec.
+- Inputs: X.scaled.mat, y.vec, penalty (non-negative numeric scalar), opt.thresh (positive numeric scalar), initial.weight.vec, step.size.
 - these functions should assume that X.scaled.mat already has mean=0 and sd=1 for each of its columns,
   and its job is to find the optimal weight vector that minimizes the following cost function:
   \sum_{i=1}^n L[w^T x_i, y_i] + penalty * ||w||, where L is either the logistic or square loss.
