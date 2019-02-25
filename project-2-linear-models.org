@@ -192,6 +192,8 @@ It should not make a difference theoretically but numerically (on computers) it 
 
 - how to compute the train/test/validation loss/predictions? You should use the learned weight vector with the given feature matrix, e.g. cbind(1, X.test) %*% W.mat for the test predictions.
 
+- What should I do after scaling the features when there is a feature with no variance (same value for all train observations)? Remove the feature when you do gradient descent, and assign 0 to the corresponding weight for the return value.
+
 - how should we write the predict function?
 
 list(predict=function(X.test){
