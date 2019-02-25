@@ -54,6 +54,7 @@ R Function names: LMSquareLossL2penalties, LMLogisticLossL2penalties.
 - Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty values)
 - this function should begin by scaling X.mat to obtain X.scaled.mat with each column mean=0 and sd=1
 - it should then loop over penalty values, calling LM__LossL2 to get the optimal weight vector for each.
+- use warm restarts, i.e. instead of starting the optimization from the 0 vector each time (slow), use the optimal solution for the previous penalty value as the next initial.weight.vec (faster).
 - Output: W.mat (n_features+1 x n_penalties), weight matrix on original scale, 
   that can be used to get predictions via cbind(1, X.mat) %*% W.mat 
   (the first row of W.mat should be the bias/beta/intercept)
