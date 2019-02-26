@@ -430,6 +430,232 @@ stopping) that minimizes the mean validation loss from CV.
 
 \section{L2 regularization}
 
-TODO
+Define the cost function
+\begin{equation}
+  \label{eq:cost}
+  C_\lambda(w) = \mathcal L(w) + \lambda||w||_2^2.
+\end{equation}
+\begin{itemize}
+\item The loss $\mathcal L(w)$  encourages fitting the train data.
+\item The squared L2 norm $||w||_2^2$ encourages a regularized model.
+\item $\lambda\geq 0$ is a penalty constant (larger for more regularization).
+\end{itemize}
+
+For a given penalty $\lambda$ the L2 regularized linear model is
+defined as $f_w(x)= w^T x$, using $f_{w^\lambda}$, where $w^\lambda$ is the
+weight vector with minimal cost:
+\begin{equation}
+  w^\lambda = \argmin_{w\in\mathbb R^p} C_\lambda(w).
+\end{equation}
+
+The learning algorithm then looks like:
+\begin{itemize}
+\item For each train/validation split do:
+\item For $\lambda\in\{\lambda_1, \dots, \lambda_{m}\}$ compute the
+  optimal weight vector $w^\lambda$, where $m$ is the number of
+  penalty values/models considered. Combine them into a matrix
+  $W\in\mathbb R^{p\times m}$.
+\item Compute prediction matrix $\hat Y = XW\in\mathbb R^{n\times m}$.
+\item Compute average loss on this validation set,
+  $\mathcal L(\hat Y, Y)$.
+\item Let $\hat \lambda = \argmin_\lambda \text{MeanValidationLoss}(\lambda)$.
+\item Use $f_{\hat \lambda}$ for the final predictions on test data.
+\end{itemize}
+
+To compute $w^\lambda$ we need the gradient:
+\begin{equation}
+  \label{eq:L2-reg-gradient}
+  \nabla C(w) = \nabla \mathcal L(w) + 2\lambda w.
+\end{equation}
+The gradent of the loss $\nabla \mathcal L$ is the same as we computed
+earlier for the early stopping model.
+
+In the statistics literature we usually parameterize the linear
+function $f_{\beta,w}(x)=\beta + x^T w$ with an additional
+intercept/bias term $\beta\in\mathbb R$, which is un-penalized:
+\begin{equation}
+  \label{eq:cost-bias}
+  C_\lambda(\beta, w) = \mathcal L(\beta,w) + \lambda||w||_2^2.
+\end{equation}
+Then we need to compute the gradient with respect to both variables,
+$\nabla_\beta C(\beta, w), \nabla_w C(\beta, w)$.
+
+\section{Scaling}
+
+The gradient descent will only work if the inputs are scaled. Ex input
+matrix with height in mm, weight in kg, shoe size.
+
+We start with an unscaled input matrix $X\in\mathbb R^{n \times p}$
+and we want to do gradient descent on a scaled input matrix
+$\tilde X\in\mathbb R^{n\times \tilde p}$, where $\tilde p\leq p$ is
+fewer features than we started out with, because some with zero
+variance may be filtered before doing gradient descent.
+
+To define the scaled features we need to compute the mean $m_j$ and
+standard deviation $s_j$ of each column $j\in\{1,\dots, p\}$ of $X$:
+\begin{eqnarray*}
+  m_j &=& \frac 1 n \sum_{i=1}^n x_{ij}\\
+  s_j &=& \sqrt{\frac 1 n \sum_{i=1} (x_{ij} - m_j)^2}
+\end{eqnarray*}
+We define the set of features with non-zero variance in the train set as
+$\mathcal J = \{j|s_j>0\}$. The size of this set is
+$\tilde p = |\mathcal J|$, the number of features/columns in the
+scaled data matrix. Let $x_{\mathcal J}\in\mathbb R^{\tilde p}$ be the
+unscaled feature vector, omitting the entries/features which have zero
+variance in the train set.
+
+Then let $s =\left[
+\begin{array}{ccc}
+  s_1&\cdots & s_p
+\end{array}
+\right]^T\in\mathbb R^p$ be the vector of standard deviations for all
+features, and let $\tilde s =\left[
+\begin{array}{ccc}
+  \tilde s_1&\cdots & \tilde s_{\tilde p}
+\end{array}
+\right]^T = s_{\mathcal J}\in\mathbb R^{\tilde p}$ be the standard
+deviations for all features with non-zero variance in the training
+set. The diagonal scaling matrix is
+\begin{equation}
+  \tilde S^{-1} = \text{Diag}(\tilde s)^{-1}=\left[
+    \begin{array}{ccc}
+      1/\tilde s_1& 0&0\\
+      0 & \ddots & 0\\
+      0 & 0 & 1/\tilde s_{\tilde p}
+    \end{array}
+\right]\in\mathbb R^{\tilde p\times \tilde p}
+\end{equation}
+Then for any unscaled feature vector $x\in \mathbb R^p$ we define the
+corresponding scaled feature vector as 
+\begin{equation}
+  \label{eq:scaled-feature}
+  \tilde x = \tilde S^{-1} (x_{\mathcal J} - m_{\mathcal J}).
+\end{equation}
+
+So the linear model on a scaled feature vector
+$\tilde x\in\mathbb R^{\tilde p}$ is
+\begin{equation}
+  \label{eq:scaled-prediction}
+  \tilde f_{\tilde w}(\tilde x)=\tilde w^T \tilde x,
+\end{equation}
+ where
+$\tilde w\in\mathbb R^{\tilde p}$ is the scaled weight vector.
+The cost we want to minimize in gradient descent is then
+\begin{equation}
+  \label{eq:scaled-cost}
+  \tilde C_\lambda( \tilde w) = \tilde{ \mathcal L}(\tilde w) + \lambda ||\tilde w||_2^2.
+\end{equation}
+Gradient descent gives us an optimal scaled weight vector
+$\tilde w^\lambda = \argmin_{\tilde w\in\mathbb R^{\tilde p}} \tilde
+C_\lambda(\tilde w)$. To make a prediction using a new unscaled test
+data point $x\in\mathbb R^p$ we
+\begin{itemize}
+\item scale it via (\ref{eq:scaled-feature}), which gives us
+  $\tilde x\in\mathbb R^{\tilde p}$.
+\item compute the inner product with the learned weight vector (\ref{eq:scaled-prediction}).
+\end{itemize}
+
+It is equivalent (and more convenient for the user) to return the
+weight vector $w$ in the original (unscaled) space:
+\begin{equation}
+  \tilde f_{\tilde w}(\tilde x) = \tilde x^T \tilde w = 
+(x_{\mathcal J}-m_{\mathcal J})^T \tilde S^{-1}\tilde w = 
+x_{\mathcal J} \underbrace{\tilde S^{-1} \tilde w}_w
+\underbrace{-m_{\mathcal J} \tilde S^{-1} \tilde w}_{\beta}.
+\end{equation}
+which implies that the prediction function $f_{\beta,w}(x)$ for an
+unscaled input/feature vector $x\in\mathbb R^p$ is defined by the
+bias/intercept $\beta\in\mathbb R$ and weight vector $w$ as
+above. Actually there is a slight abuse of notation: the equation
+above only defines the weights for the features $j\in\mathcal J$ with
+non-zero variance in the train data. The other features
+$j\not\in\mathcal J$ with zero variance in the train data should have
+zero weight in the final weight vector $w$.
+
+\section{Exact line search}
+
+Gradient descent is for finding a weight vector $w\in\mathbb R^p$
+which minimizes a smooth cost function $C(w)$.
+
+We start the algorithm at the origin, $w^{(0)}=0$.
+
+For each iteration $t$ we compute the descent direction 
+\begin{equation}
+  \label{eq:descent-direction}
+  d^{(t)} = -\nabla C(w^{(t)})
+\end{equation}
+Then we define the next iteration by taking a step in that direction,
+\begin{equation}
+  \label{eq:gradient-step}
+  w^{(t+1)} = w^{(t)} + \alpha^{(t)} d^{(t)},
+\end{equation}
+where $\alpha^{(t)}>0$ is an iteration-specific step size parameter.
+
+For line search the main idea is that we want to choose a step
+size that minimizes the cost:
+\begin{equation}
+  \label{eq:line-search-cost}
+  \mathcal C_t(\alpha) = C(w^{(t)} + \alpha d^{(t)}).
+\end{equation}
+For exact line search we take the best possible step,
+\begin{equation}
+  \label{eq:exact-line-search}
+  \alpha^{(t)} = \argmin_\alpha \mathcal C_t(\alpha).
+\end{equation}
+
+Example: a function with a minimum at (-1, 2).
+\begin{equation}
+  C(w) = 0.5(w_1 +1)^2 + 0.5 (w_2-2) = 0.5||w + \left[
+    \begin{array}{cc}
+      1&-2
+    \end{array}
+\right]^T ||_2^2.
+\end{equation}
+Derive the exact line search step.
+
+The exact line search step can be derived for the L2-regularized
+linear model for regression.
+\begin{eqnarray}
+  \mathcal C_t(\alpha) &=& 0.5||X(w^{(t)} + \alpha d^{(t)}) -y||_2^2 +
+ 0.5\lambda||w^{(t)} + \alpha d^{(t)}||_2^2\\
+  \mathcal C'_t(\alpha) &=& d^{(t) T} X^T [X(w^{(t)} + \alpha d^{(t)}) -y] +
+\lambda d^{(t) T} [w^{(t)} + \alpha d^{(t)}].
+\end{eqnarray}
+Setting the derivative equal to zero and solving for $\alpha$ yields
+\begin{equation}
+  \alpha^{(t)} = \argmin_\alpha \mathcal C_t(\alpha) = 
+\frac{
+d^{(t) T} [ \overbrace{-X^T(Xw^{(t)}-y)}^{d^{(t)}} - \lambda w^{(t)} ]
+}{
+d^{(t) T} (X^T X + \lambda I_p) d^{(t)}
+} = \frac{
+||d^{(t)}||_2^2
+-\lambda d^{(t) T} w^{(t)} 
+}{
+|| X d^{(t)} ||_2^2 + 
+\lambda ||d^{(t)}||_2^2
+}
+\end{equation}
+Is it any slower than the constant gradient step? We are already computing
+the gradient / descent direction,
+\begin{equation}
+  d^{(t)} = -\nabla C(w^{(t)}) = -X^T(X w^{(t)} - y).
+\end{equation}
+\begin{itemize}
+\item Computing each element of $X w^{(t)}\in\mathbb R^n$ is an $O(p)$
+  operation, so overall time is $O(np)$.
+\item The next operation, subtracting $y$ is $O(n)$.
+\item For the next operation, left-multiply by $-X^T$, computing each
+  of the $p$ elements is $O(n)$, so overall time is $O(np)$.
+\item Overall computation of $d^{(t)}$ is thus $O(np)$.
+\end{itemize}
+Computing the largest component of $\alpha^{(t)}$, $||Xd^{(t)}||_2^2$,
+is also $O(np)$ so there is no asymptotic difference in time
+complexity between constant and exact line search (for this problem).
+
+\section{Backtracking line search}
+
+TODO.
+
 
 \end{document}
