@@ -170,8 +170,8 @@ Extra credit:
     and have a green badge that indicates a build that passes checks. 
     See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]]
     and [[https://docs.travis-ci.com/user/languages/r/][docs]].
-  - if you submit your work early (to me via email on Friday) you will get feedback from me and extra credit:
-    - First week: 10 points if you have written all R functions described above, and you email me with a link to your github repo by Fri Feb 26. (1 point per function)
+  - if you submit your work early (to me via email) you will get feedback from me and extra credit:
+    - First week: 10 points if you have written all R functions described above, and you email me with a link to your github repo by Tuesday Feb 26. (1 point per function)
     - Second week: 10 more points if you have started your report, and you email me with the rendered HTML report as an attachment by Fri Mar 1. 
       You will get 2 points of extra credit for the analysis of each data set 
       (1 point for plots of train/validation loss versus regularization parameter,
