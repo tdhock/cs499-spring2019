@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{setspace}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\Lik}{Lik}
+\DeclareMathOperator*{\Diag}{Diag}
+%\doublespacing
+
+\begin{document}
+
+\thispagestyle{empty}
+
+Name: \underline{\hspace{2in}} StudentID: \underline{\hspace{2in}} 28 Feb
+
+This quiz will count toward your grade -- 1 point if you get the
+correct answer.
+
+\textbf{Exact line search for un-regularized least squares linear regression. }
+
+For an input/feature matrix $X\in \mathbb R^{n\times p}$, an
+output/label vector $y\in\mathbb R^n$, and a weight vector
+$w\in\mathbb R^p$, define the least squares loss function
+$$ L(w) = \frac 1 2|| Xw - y||^2_2$$
+
+\vskip 1in Derive an expression for the gradient in terms of $X,y,w$.
+$\nabla L(w)=$\underline{\hspace{2in}}
+
+\vskip 1in
+The descent direction at $w$ is the negative gradient,
+$ d = -\nabla L(w)=$\underline{\hspace{2in}}
+
+The cost of a step with size $\alpha>0$ in that direction is
+\vskip 1in
+\begin{equation*}
+  \mathcal L(\alpha) = L(w + \alpha d) = \underline{\hspace{2in}}
+\end{equation*}
+
+To find the step size with the min cost we first need the derivative
+(in terms of $\alpha,d,w,X,y$):
+
+\vskip 1in
+\begin{equation*}
+  \mathcal L'(\alpha) = \underline{\hspace{2in}}
+\end{equation*}
+
+Setting the derivative to zero, $\mathcal L'(\alpha)=0$,  implies an optimal step size of
+\vskip 1in
+$\argmin_\alpha \mathcal
+L'(\alpha)=$\underline{\hspace{2in}}
+
+
+\end{document}
