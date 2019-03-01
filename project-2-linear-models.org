@@ -53,7 +53,8 @@ R Function names: LMSquareLossL2, LMLogisticLossL2.
 R Function names: LMSquareLossL2penalties, LMLogisticLossL2penalties.
 - Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty values)
 - this function should begin by scaling X.mat to obtain X.scaled.mat with each column mean=0 and sd=1
-- it should then loop over penalty values, calling LM__LossL2 to get the optimal weight vector for each.
+- it should then loop over penalty values, calling LM__LossL2 to get the (scaled) optimal weight vector for each.
+- it should then convert the optimal weight vector (tilde w/tilde beta) back to the original scale, using the mean/sd of each column/feature.
 - use warm restarts, i.e. instead of starting the optimization from the 0 vector each time (slow), use the optimal solution for the previous penalty value as the next initial.weight.vec (faster).
 - Output: W.mat (n_features+1 x n_penalties), weight matrix on original scale, 
   that can be used to get predictions via cbind(1, X.mat) %*% W.mat 
@@ -183,6 +184,9 @@ Extra credit:
 The total loss is the sum of the loss over all training data points.
 The mean loss is the sum divided by the number of data points.
 It should not make a difference theoretically but numerically (on computers) it is usually better to use the mean.
+
+- Where should we do scaling for the L2 regularized learning functions? 
+The idea is that the other functions (LMSquareLossL2penalties, LMLogisticLossL2penalties) should do the scaling, and keep track of the mean/sd, then pass the X.scaled.mat to LM__LossL2. So then in LM__LossL2 you don't have to worry about scaling -- you just solve for tilde w/tilde beta, and return those. Then the other functions (LMSquareLossL2penalties, LMLogisticLossL2penalties) should take care of converting the tilde w/tilde beta to w/beta on the original scale.
 
 - For the learned weight vector, should there be n_features elements? Or n_features+1? there should be n_features+1 because of the intercept/bias/beta. Please make the intercept the first element of the weight vector
 
