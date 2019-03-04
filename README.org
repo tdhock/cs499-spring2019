@@ -69,11 +69,12 @@ Finally after doing all of the above, please email me to ask for an office hour.
 - Lecture 10 Thu Feb 14: L2 regularization.
   - gradient descent for L2 regularized (ridge) linear regression,
     [[http://bl.ocks.org/tdhock/raw/c003753d46b9b84e5de1bc612786df9d/][viz]], [[file:2019-02-14-L2-regularization/viz.R][code]].
-- Lecture 11 Tue Feb 19: 
-- Lecture 12 Thu Feb 21: 
-- Lecture 13 Tue Feb 26: 
-- Lecture 14 Thu Feb 28: 
-- Lecture 15 Tue Mar 05: 
+- Lecture 11 Tue Feb 19: project review
+- Lecture 12 Thu Feb 21: scaling
+- Lecture 13 Tue Feb 26: exact line search
+- Lecture 14 Thu Feb 28: backtracking line search
+- Lecture 15 Tue Mar 05: exam review 1
+  - previous quizzes [[file:exam-1-review.pdf]]
 - Lecture 16 Thu Mar 07: 
 - Lecture 17 Tue Mar 12: 
 - Lecture 18 Thu Mar 14: 
