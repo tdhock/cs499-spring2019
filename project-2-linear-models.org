@@ -19,7 +19,7 @@ By now you know how to code functions in C++ or R so you have the choice.
 R Function names: LMSquareLossIterations, LMLogisticLossIterations
 - Inputs: X.mat (feature matrix, n_train x n_features), y.vec (label vector, n_train x 1), max.iterations (int scalar > 1), step.size.
 - Output: W.mat, matrix of weight vectors, one for each iteration, n_features+1 x max.iterations. (the first element of the weight vector should be the intercept term).
-  Should be able to get a matrix of predictions via X.mat %*% W.mat
+  Should be able to get a matrix of predictions via cbind(1, X.mat) %*% W.mat
 - there should be one function for the square loss, one function for the logistic loss.
 - both functions should optimize the mean loss (not the total loss).
 - make sure to compute a scaled input matrix, which has mean=0 and sd=1 for each column,
@@ -49,7 +49,7 @@ R Function names: LMSquareLossL2, LMLogisticLossL2.
 - On the documentation pages for these functions you should write the math/equation of the cost function that it minimizes.
 - opt.thresh should be a threshold on the L1-norm (sum of absolute values) of the gradient. 
   I will test your code to make sure that the L1-norm of the gradient of your solution is less than opt.thresh.
-- Output: optimal weight vector for the given penalty parameter.
+- Output: optimal weight vector (\tilde w, for scaled data) for the given penalty parameter.
 R Function names: LMSquareLossL2penalties, LMLogisticLossL2penalties.
 - Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty values)
 - this function should begin by scaling X.mat to obtain X.scaled.mat with each column mean=0 and sd=1
@@ -205,6 +205,11 @@ The idea is that the other functions (LMSquareLossL2penalties, LMLogisticLossL2p
   - 2. the train error/loss should always decrease as a function of the model complexity parameter (number of iterations or -penalty). 
   - 3. you can compare your solution with R package glmnet, which also fits L2 regularized linear models (use alpha=0).
   - 4. for L2 regularized optimization algorithm, you should check if the gradient is (close to) zero -- that is the global optimum.
+
+- what are the differences between LM___LossL2 and LM___Iterations?
+  - LM__Iterations needs to store/return each step of gradient descent, but LM__LossL2 only returns the last/optimal one.
+  - LM__Iterations gradient does NOT include the penalty term, but LM__LossL2 does.
+  - LM__Iterations should return weight matrix on original scale (for use with unscaled features), but LM__LossL2 should return weight vector for use with scaled features.
 
 - how should we write the predict function?
 
