@@ -198,6 +198,8 @@ The idea is that the other functions (LMSquareLossL2penalties, LMLogisticLossL2p
 
 - What should I do after scaling the features when there is a feature with no variance (same value for all train observations)? Remove the feature when you do gradient descent, and assign 0 to the corresponding weight for the return value.
 
+- how to use the scale function in R? Use X.scaled <- scale(X.unscaled) and then X.scaled is a matrix with the same dimensions as X.unscaled, and with attr(X.scaled, "scaled:center") which is the mean of each column, and attr(X.scaled, "scaled:scale") which is the standard deviation of each column.
+
 - how do I know if the learning algorihm was coded correctly? 
   - 1. for any learning algorithm it should at least be as accurate as the baseline predictor, in terms of test error/accuracy in cross-validation. Baseline is mean of train labels for regression, or most frequent class in train labels for classification.
   - 2. the train error/loss should always decrease as a function of the model complexity parameter (number of iterations or -penalty). 
