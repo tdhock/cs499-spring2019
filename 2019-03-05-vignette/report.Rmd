@@ -1,0 +1,77 @@
+---
+title: "Comparison of nearest neighbors algorithm"
+author: "Toby Dylan Hocking"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparison of nearest neighbors algorithm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r}
+data(spam, package="ElemStatLearn")
+data(zip.train, package="ElemStatLearn")
+str(spam)
+str(zip.train)
+is.01 <- zip.train[,1] %in% c(0,1)
+data.list <- list(
+  spam=list(
+    features=as.matrix(spam[, 1:57]),
+    labels=ifelse(spam$spam=="spam", 1, 0)),
+  zip.train=list(
+    features=zip.train[is.01, -1],
+    labels=as.integer(zip.train[is.01, 1])))
+str(data.list)
+n.folds <- 5
+results.list <- list()
+mean.loss.list <- list()
+for(data.name in names(data.list)){
+  data.set <- data.list[[data.name]]
+  str(data.set)
+  stopifnot(all(data.set$labels %in% c(0,1)))
+  stopifnot(length(data.set$labels) == nrow(data.set$features))
+  set.seed(1)
+  fold.vec <- sample(rep(1:n.folds, l=nrow(data.set$features)))
+  str(fold.vec)
+  result.mat.list <- list()
+  for(test.fold in 1:n.folds){
+    is.test <- fold.vec == test.fold
+    is.train <- !is.test
+    X.train <- data.set$features[is.train,]
+    y.train <- data.set$labels[is.train]
+    baseline <- mean(y.train)
+    fit <- nearestNeighbors::NearestNeighborsCV(X.train, y.train, 30L)
+    str(fit)
+    mean.loss.list[[paste(data.name, test.fold)]] <- fit$mean.loss$mean.loss
+    pred.prob.list <- list(
+      earlyStopping=.....,
+      L2regularized=.....,
+      ##knn=fit$predict(data.set$features[is.test,]),
+      baseline=rep(baseline, sum(is.test)))
+    str(pred.prob.list)
+    test.fold.result.list <- list()
+    for(algo in names(pred.prob.list)){
+      pred.prob.vec <- pred.prob.list[[algo]]
+      pred.class.vec <- ifelse(pred.prob.vec > 0.5, 1, 0)
+      test.fold.result.list[[algo]] <-
+        mean(data.set$labels[is.test] != pred.class.vec)
+    }
+    result.mat.list[[test.fold]] <- do.call(c, test.fold.result.list)
+  }
+  do.call(rbind, result.mat.list)
+}
+```
+
+## Analysis of spam data set
+
+
+
+## Analysis of zip.train data set

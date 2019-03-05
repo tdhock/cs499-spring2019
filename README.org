@@ -73,11 +73,12 @@ Finally after doing all of the above, please email me to ask for an office hour.
 - Lecture 12 Thu Feb 21: scaling
 - Lecture 13 Tue Feb 26: exact line search
 - Lecture 14 Thu Feb 28: backtracking line search
-- Lecture 15 Tue Mar 05: exam review 1
+- Lecture 15 Tue Mar 05: vignette tutorial
+  - Example vignette created in class: [[file:2019-03-05-vignette/report.Rmd]]
   - previous quizzes [[file:exam-1-review.pdf]]
-- Lecture 16 Thu Mar 07: 
-- Lecture 17 Tue Mar 12: 
-- Lecture 18 Thu Mar 14: 
+- Lecture 16 Thu Mar 07: exam review 1
+- Lecture 17 Tue Mar 12: exam review 2
+- Lecture 18 Thu Mar 14: mid-term
 
 MIDTERM EXAM
 

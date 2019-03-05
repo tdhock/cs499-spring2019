@@ -11,4 +11,7 @@ LazyData: true
 LinkingTo: RcppEigen
 RoxygenNote: 6.1.0
 Imports: data.table
-Suggests: ggplot2
+Suggests: ggplot2,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
