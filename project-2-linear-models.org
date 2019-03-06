@@ -180,6 +180,7 @@ Extra credit:
     - Third week: do tests/docs, finish report, make sure package passes R CMD check with no WARNING/ERROR on win-builder.
 
 ** FAQ
+- how do I know that I'm doing the scaling/unscaling correctly? one way is to test that the predictions from the original features are the same as from the scaled features, e.g. cbind(1, X.original) %*% W.original == scale(X.original) %*% W.scaled.
 - what is the difference if I use the total loss instead of the mean loss?  Will the training result change? 
 The total loss is the sum of the loss over all training data points.
 The mean loss is the sum divided by the number of data points.
