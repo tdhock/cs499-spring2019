@@ -20,7 +20,7 @@ After class, you should review your notes with one of your classmates (ask one o
 Finally after doing all of the above, please email me to ask for an office hour.
 
 ** Lectures
-  
+[[https://github.com/tdhock/cs499-spring2019/raw/master/notes.pdf][Abbreviated notes PDF]]
 - [[file:2019-01-15-applications/][Lecture 1 Tue Jan 15]]: Applications of
   machine learning, syllabus, calculus/C quiz.
 - Lecture 2 Thu Jan 17: supervised learning.
