@@ -138,7 +138,7 @@ What are the optimal regularization parameters?
 ## Data set 2: ...
 #+END_SRC
 
-*** Grading rubric: 100 points.
+* Grading rubric: 100 points.
 Your group should submit a link to your repo on GitHub.
 - 20 points for completeness of report.
   - 4 points for each data set (2 points each for loss matrix and train/validation loss plot)
