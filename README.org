@@ -8,6 +8,7 @@ TuTh 9:35-10:50
 
 - [[file:project-1-nearest-neighbors.org][Project 1: nearest neighbors]]
 - [[file:project-2-linear-models.org][Project 2: linear models]]
+- [[file:project-3-neural-networks.org][Project 3: neural networks]]
 
 ** How to ace this class
 
@@ -84,8 +85,8 @@ MIDTERM EXAM
 
 - Lecture 19 Tue Mar 19: spring
 - Lecture 20 Thu Mar 21: break
-- Lecture 21 Tue Mar 26: 
-- Lecture 22 Thu Mar 28: 
+- Lecture 21 Tue Mar 26: Neural networks
+- Lecture 22 Thu Mar 28: Backpropagation algorithm
  - Lecture 23 Tue Apr 02: 
 - Lecture 24 Thu Apr 04: 
 - Lecture 25 Tue Apr 09: 

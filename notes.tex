@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{natbib}
 \usepackage{algpseudocode}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -654,7 +654,50 @@ complexity between constant and exact line search (for this problem).
 
 \section{Backtracking line search}
 
-TODO.
+Backtracking line search is more general than exact line search, in
+the sense that it can be used on more cost functions. It performs
+approximate/numerical solution of the optimal step size (rather than
+the analytic solution used by exact line search).
+
+The main idea is to start by trying a big $\alpha=1$. If the cost
+increases then the step is too big, so decrease the step by a
+reduction factor $\rho\in(0,1)$. Keep decreasing the step size until
+the cost decreases (it is guaranteed to when $d$ is a descent
+direction). In practice the range of $\rho$ values is from 0.1 (crude
+search) to 0.8 (more exhaustive search).
+
+In practice the simple rule above is not used, because it may result
+in a sequence of steps with very small decreases in cost. Instead we
+introduce a parameter $\gamma\in(0,0.5)$ which controls how much
+progress/decrease is significant/acceptable. 
+We want $\alpha$ such that
+
+\begin{equation}
+  \mathcal C_t(\alpha) = C(w^{(t)} + \alpha d^{(t)}) < 
+C(w^{(t)} + \gamma \alpha \nabla C(w^{(t)})^T d^{(t)})= \mathcal A_{t}^\gamma(\alpha)
+\end{equation}
+
+When $\gamma=0$ then a small decrease in cost is acceptable; when
+$\gamma=0.5$ then only a very large decrease is acceptable. In
+practice $\gamma$ is usually between 0.01 and 0.3 \citep[page 466]{Boyd2004}.
+
+The approximate cost $\mathcal A_{t}^\gamma(\alpha)$ for $\gamma=1$ is
+a linear approxmation of the cost around $w^{(t)}$, which
+underestimates the cost since it is a convex function. By using a
+$\gamma<0.5$ we get a linear approximation between the min cost and
+min decrease (draw plot).
+
+\section{Neural networks}
+
+We follow the presentation/notation of \citet{Murphy2012}.
+
+TODO
+
+\section{Backpropagation algorithm}
+
+
+\bibliographystyle{abbrvnat}
+\bibliography{refs}
 
 
 \end{document}
