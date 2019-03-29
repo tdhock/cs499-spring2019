@@ -699,11 +699,17 @@ $$
 x \rightarrow^V a \rightarrow^\sigma z \rightarrow^w b
 $$
 
+Overall prediction function is 
+
+$$
+f(x_i) = b_i = w^T z_i = w^T \sigma(a_i) = w^T S(V^T x_i)
+$$
+
 Feature matrix is $X\in\mathbb R^{n\times p}$. Feature vector for one observation is $x_i\in\mathbb R^p$. One feature of that observation is $x_{ij}\in\mathbb R$.
 
 Labels are $y\in\mathbb R^n$ for regression. One label is $y_i\in\mathbb R$.
 
-Hidden variables are $z\in\mathbb R^u$. One hidden variable is $z_k\in\mathbb R$.
+Hidden layer vector is $z_i = S(a_i) = S(V^T x_i) \in\mathbb R^u$. One hidden unit is $z_{ik}=\sigma(a_{ik})\in\mathbb R$.
 
 Indices are $i\in\{1,\dots, n\}$ for observations/examples, $j\in\{1,\dots,p\}$ for features, and $k\in\{1,\dots, u\}$ for hidden units.
 
@@ -711,7 +717,85 @@ Weight matrix for first layer is $V\in\mathbb R^{p\times u}$. Weight vector for 
 
 Weight vector for predicting output is $w\in\mathbb R^u$.
 
+Overall loss function that we want to minimize is
+$$
+\mathcal L(w, V) = \sum_{i=1}^n \frac 1 2 [ f(x_i) - y_i]^2 = \sum_{i=1}^n \frac 1 2 [ w^T S(V^T x_i) - y_i]^2
+$$
 
+The learning algorithm is as before with linear models:
+start at $w,V=0$ (or some random values close) and then take steps in the opposite direction of the gradient. 
+We therefore need to compute the gradients of $\mathcal L$ with respect to the parameters $w,V$.
+We consider the gradient with respect to a single observation $i$:
+$$
+\nabla_w \frac 1 2 [ f(x_i) - y_i ]^2 = 
+\underbrace{
+  \frac{\partial}{\partial b_i} \frac 1 2 [b_i -y_i]^2
+}_{
+  b_i - y_i = \delta^w_i
+}
+\underbrace{
+  \nabla_w \underbrace{
+    b_i
+  }_{
+    w^T z_i
+  }
+}_{
+  z_i
+}
+= \delta^w_i z_i
+$$
+And we consider the gradient of the weights $v_k\in \mathbb R^p$ used to predict hidden unit $k$:
+\begin{eqnarray*}
+\nabla_{v_k} \frac 1 2 [ f(x_i) - y_i]^2 
+&=& \underbrace{
+  \frac{\partial}{\partial a_{ik}} \frac 1 2 [ w^T S(a_i) - y_i ]^2
+}_{
+  \delta^v_{ik}
+} \nabla_{v_k} \underbrace{
+  a_{ik}
+}_{
+  v_k^T x_i
+}\\
+&=& \underbrace{
+  [ \frac{\partial}{\partial b_i} \frac 1 2 ( b_i - y_i )^2 ]
+}_{
+  \delta^w_i
+}
+\underbrace{
+  [ \frac{\partial}{\partial a_{ik}} b_i ]
+}_{
+  w_k \sigma'(a_{ik})
+}
+x_i\\
+\end{eqnarray*}
+The first layer errors $\delta_i^v = \left[\begin{array}{ccc}
+\delta_{i1}^v & \cdots & \delta_{iu}^v
+\end{array}\right]\in\mathbb R^u$ can thus be written in terms of the second layer errors
+$\delta_i^w\in\mathbb R$.
+
+Therefore the gradient of the full first layer weight matrix $V$ with respect to one observation is
+$$
+\nabla_V \frac 1 2 [ f(x_i) - y_i ]^2 = x_i \delta_i^{vT}
+$$
+
+The algorithm is to compute, in order:
+\begin{tabular}{ccc}
+quantity & one observation & batch \\
+hidden before sigmoid & $a_i = V^T x_i \in \mathbb R^u$ & 
+  $A = XV\in\mathbb R^{n\times u}$ \\
+hidden after sigmoid & $z_i = S(a_i)\in\mathbb R^u$ & 
+  $Z = S(A)\in\mathbb R^{n\times u}$\\
+predictions & $b_i = w^T z_i \in \mathbb R$ & 
+  $b = Z w\in \mathbb R^n$\\
+second level errors & $\delta_i^w =  b_i - y_i \in\mathbb R$ & 
+  $\delta^w = b-y\in\mathbb R^n$\\
+first level errors & $\delta_i^v = \delta_i^w \Diag(w) S'(a_i)\in\mathbb R^u$ & 
+  $\delta^v = \Diag(\delta^w) S'(A) \Diag(w)\in\mathbb R^{n\times u}$\\
+second level gradient & $\nabla_w \frac 1 2 [f(x_i)-y_i]^2 = \delta_i^w z_i\in\mathbb R^u$ &
+  $\nabla_w \mathcal L(w, V) = \frac 1 n \sum_{i=1}^n \delta_i^w z_i = Z^T \delta^w/n\in\mathbb R^u$\\
+first level gradient & $\nabla_V \frac 1 2 [f(x_i)-y_i]^2 = x_i \delta_i^{vT}\in\mathbb R^{p\times u}$ &
+  $\nabla_V \mathcal L(w, V) = \frac 1 n \sum_{i=1}^n x_i \delta_i^{vT} = X^T \delta^v/n$
+\end{tabular}
 
 \bibliographystyle{abbrvnat}
 \bibliography{refs}
