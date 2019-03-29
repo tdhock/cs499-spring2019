@@ -691,9 +691,26 @@ min decrease (draw plot).
 
 We follow the presentation/notation of \citet{Murphy2012}.
 
-TODO
+Draw neural network diagrams for logistic regression and e.g. ($p$, 5, 10, 1) network has two hidden layers and one output.
 
-\section{Backpropagation algorithm}
+\section{Backpropagation algorithm for single layer regression network}
+
+$$
+x \rightarrow^V a \rightarrow^\sigma z \rightarrow^w b
+$$
+
+Feature matrix is $X\in\mathbb R^{n\times p}$. Feature vector for one observation is $x_i\in\mathbb R^p$. One feature of that observation is $x_{ij}\in\mathbb R$.
+
+Labels are $y\in\mathbb R^n$ for regression. One label is $y_i\in\mathbb R$.
+
+Hidden variables are $z\in\mathbb R^u$. One hidden variable is $z_k\in\mathbb R$.
+
+Indices are $i\in\{1,\dots, n\}$ for observations/examples, $j\in\{1,\dots,p\}$ for features, and $k\in\{1,\dots, u\}$ for hidden units.
+
+Weight matrix for first layer is $V\in\mathbb R^{p\times u}$. Weight vector for predicting hidden unit $k$ is $v_k\in\mathbb R^p$.
+
+Weight vector for predicting output is $w\in\mathbb R^u$.
+
 
 
 \bibliographystyle{abbrvnat}
