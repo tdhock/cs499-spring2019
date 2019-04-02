@@ -86,9 +86,9 @@ MIDTERM EXAM
 - Lecture 19 Tue Mar 19: spring
 - Lecture 20 Thu Mar 21: break
 - Lecture 21 Tue Mar 26: Neural networks
-- Lecture 22 Thu Mar 28: Backpropagation algorithm
- - Lecture 23 Tue Apr 02: 
-- Lecture 24 Thu Apr 04: 
+- Lecture 22 Thu Mar 28: Backpropagation algorithm for regression
+- Lecture 23 Tue Apr 02: Backprop [[file:2019-04-02-neural-network-regression/backprop.R][coding demo]]
+- Lecture 24 Thu Apr 04: Scaling/intercept, backprop for binary classification
 - Lecture 25 Tue Apr 09: 
 - Lecture 26 Thu Apr 11: 
 

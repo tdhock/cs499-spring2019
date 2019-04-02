@@ -23,27 +23,39 @@ R Function name: NNetIterations
   step.size, n.hidden.units (number of hidden units), is.train
   (logical vector of size n_observations, TRUE if the observation is
   in the train set, FALSE for the validation set).
+- internally make sure to compute a scaled train input matrix, X.train
+  (n_train x n_nontrivial_features), each column should have mean=0
+  and sd=1. n_train = number of train observations,
+  n_nontrivial_features = number of features with non-zero
+  variance/sd. Keep track of which features have zero variance, and
+  make sure to set the corresponding weights to zero in the final
+  V.mat output. Also keep track of the mean/sd of each column, so you
+  can return V.mat on the original scale (if you use the unscaled
+  X.mat during gradient descent, it will not converge -- numerical
+  instability).
 - Output: list with named elements:
   - pred.mat, n_observations x max.iterations matrix of predicted
     values (real number for regression, probability for binary
     classification).
-  - W.mat final weight matrix (n_features+1 x n.hidden.units)
-  - v.vec final weight vector (n.hidden.units+1). 
-  - predict(testX.mat), a function that takes a test features matrix
-    and returns a vector of predictions (real numbers for regression,
-    probabilities for binary classification). You should be able to
-    make predictions via cbind(1, sigmoid(cbind(1, X) %*% W.mat)) %*%
-    v.vec. The first row of W.mat should be the intercept terms; the
-    first element of v.vec should be the intercept term.
+  - V.mat final weight matrix (n_features+1 x n.hidden.units). The first
+    row of V.mat should be the intercept terms.
+  - w.vec final weight vector (n.hidden.units+1). The first element of
+    w.vec should be the intercept term.
+  - predict(testX.mat), a function that takes an unscaled test feature
+    matrix and returns a vector of predictions (real numbers for
+    regression, probabilities for binary classification). You should
+    be able to make predictions via
+#+BEGIN_SRC R
+  A.mat <- cbind(1, testX.mat) %*% V.mat
+  Z.mat <- sigmoid(A.mat)
+  pred.vec <- cbind(1, Z.mat) %*% w.vec
+#+END_SRC
 - if all of y.vec is binary (either 0 or 1) then you should use the
   logistic loss, otherwise use the square loss.
 - you should optimize the mean loss, which is the sum over all data
-  divided by n_observations (if you don't divide by the number of
+  divided by the number of data (if you don't divide by the number of
   observations the gradient can get numerically unstable for large
   data).
-- make sure to compute a scaled input matrix, which has mean=0 and sd=1 for each column,
-  and keep track of the mean/sd of each column, so you can return W.mat on the original scale
-  (if you use the unscaled X.mat during gradient descent, it will not converge -- numerical instability).
 
 R Function name: NNetEarlyStoppingCV
 - Inputs: X.mat, y.vec, fold.vec, max.iterations, step.size, n.hidden.units.
@@ -173,4 +185,21 @@ Extra credit:
 
 ** FAQ
 
- 
+*** How to deal with scaling?
+
+Same as in the linear model from project 2. Your NNetIterations
+function should return V.mat on the original scale.
+
+*** How to deal with intercept/bias terms?
+
+They should be the first element/row of the weight
+vector/matrix. e.g. use cbind(1, feature.mat) %*% weights
+
+*** In NNetIterations do we have to store/return weight matrices/vectors for all iterations?
+
+No. Just return the final weight matrix/vector after doing
+max.iterations steps of gradient descent. And make sure to compute the
+mean train/validation loss during each step, and return those loss
+vectors as well. The is.train input parameter should be a logical
+vector, with one element for each observation, that indicates the set
+of each observation (TRUE=train, FALSE=validation).
