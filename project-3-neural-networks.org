@@ -199,7 +199,9 @@ vector/matrix. e.g. use cbind(1, feature.mat) %*% weights
 
 No. Just return the final weight matrix/vector after doing
 max.iterations steps of gradient descent. And make sure to compute the
-mean train/validation loss during each step, and return those loss
-vectors as well. The is.train input parameter should be a logical
+predictions for all observations during each step, and return them in a prediction matrix. 
+The is.train input parameter should be a logical
 vector, with one element for each observation, that indicates the set
 of each observation (TRUE=train, FALSE=validation).
+Train observations should be used for scaling and gradient descent. 
+The others should not be used for scaling/gradient descent, but predictions should be reported for all observations.
