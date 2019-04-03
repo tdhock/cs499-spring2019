@@ -413,7 +413,8 @@ The gradient $\nabla\mathcal L:\mathbb R^p\rightarrow\mathbb R^p$ is
   -\tilde y_i x_i
 }{
   1+\exp(\tilde y_i w^T x_i)
-} = -X^T \tilde Y S(\tilde Y X w),
+} = 
+\sum_{i=1}^n-\tilde y_i x_i \sigma(-\tilde y_i w^T x_i) = -X^T \tilde Y S(-\tilde Y X w),
 \end{equation*}
 where $\tilde Y=\Diag(\tilde y)$ and $S:\mathbb R^n\rightarrow \mathbb R^n$ is the componentwise application
 of the logistic link function,
