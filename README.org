@@ -88,7 +88,9 @@ MIDTERM EXAM
 - Lecture 21 Tue Mar 26: Neural networks
 - Lecture 22 Thu Mar 28: Backpropagation algorithm for regression
 - Lecture 23 Tue Apr 02: Backprop [[file:2019-04-02-neural-network-regression/backprop.R][coding demo]]
-- Lecture 24 Thu Apr 04: Scaling/intercept, backprop for binary classification
+- Lecture 24 Thu Apr 04: Scaling/intercept, backprop for binary classification [[file:2019-04-04-neural-network-classification/backprop.R][coding demo]]
+  - Figure: train/validation loss for neural network [[file:2019-04-04-neural-network-classification/figure-nnet-spam.png]]
+  - Figure: neural network vs linear model [[file:2019-04-04-neural-network-classification/figure-nnet-spam-compare-linear.png]]
 - Lecture 25 Tue Apr 09: 
 - Lecture 26 Thu Apr 11: 
 

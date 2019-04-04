@@ -8,27 +8,31 @@ X.unscaled.mat <- as.matrix(ozone[,-1])
 head(X.unscaled.mat)
 y.vec <- ozone[,1]
 step.size <- 0.02
-n.hidden.units <- 200 # u
-n.folds <- 5
-max.iterations <- 500
+n.hidden.units <- 50 # u
+n.folds <- 2
+max.iterations <- 40
 sigmoid <- function(a){
   1/(1+exp(-a))
 }
 set.seed(1)
 unique.folds <- 1:n.folds
 loss.dt.list <- list()
-fold.vec <- rep(unique.folds, l=nrow(X.scaled.mat))
-for(validation.fold in unique.folds){
+fold.vec <- sample(rep(unique.folds, l=nrow(X.unscaled.mat)))
+for(validation.fold in 1){
   is.train <- fold.vec != validation.fold
   X.train.unscaled <- X.unscaled.mat[is.train, ]
   X.train.scaled <- scale(X.train.unscaled)
+  X.all.scaled <- scale(
+    X.unscaled.mat,
+    attr(X.train.scaled, "scaled:center"),
+    attr(X.train.scaled, "scaled:scale"))
   y.train <- y.vec[is.train]
-  (V <- matrix(rnorm(ncol(X.scaled.mat)*n.hidden.units), ncol(X.scaled.mat), n.hidden.units))
+  (V <- matrix(rnorm(ncol(X.unscaled.mat)*n.hidden.units), ncol(X.unscaled.mat), n.hidden.units))
   (w <- rnorm(n.hidden.units))
   set.dt <- data.table(
     set=ifelse(is.train, "train", "validation"))
   for(iteration in 1:max.iterations){
-    pred.vec <- as.numeric(sigmoid(X.scaled.mat %*% V) %*% w)
+    pred.vec <- as.numeric(sigmoid(X.all.scaled %*% V) %*% w)
     pred.dt <- data.table(
       set.dt,
       loss=0.5*(pred.vec - y.vec)^2)
@@ -52,7 +56,6 @@ for(validation.fold in unique.folds){
   }
 }
 (loss.dt <- do.call(rbind, loss.dt.list))
-
 ## Plot train/validation loss for each fold.
 min.dt <- loss.dt[, .SD[which.min(mean.loss)], by=list(validation.fold, set)]
 ggplot()+
