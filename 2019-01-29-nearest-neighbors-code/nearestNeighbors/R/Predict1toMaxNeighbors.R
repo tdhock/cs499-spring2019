@@ -1,4 +1,7 @@
-Predict1toMaxNeighbors <- function(X.train, y.train, x.test, max.neighbors){
+Predict1toMaxNeighbors <- function
+(X.train, y.train, x.test, max.neighbors,
+  w.train=rep(1, nrow(X.train))
+){
   if(!all(
     is.matrix(X.train),
     is.numeric(X.train)
@@ -10,6 +13,13 @@ Predict1toMaxNeighbors <- function(X.train, y.train, x.test, max.neighbors){
     length(y.train)==nrow(X.train)
   )){
     stop("y.train must be a numeric vector of size nrow(X.train)")
+  }
+  if(!all(
+    is.numeric(w.train),
+    length(w.train)==nrow(X.train),
+    0 < w.train
+  )){
+    stop("w.train must be a numeric vector of size nrow(X.train)")
   }
   if(!all(
     is.numeric(x.test),
@@ -27,7 +37,9 @@ Predict1toMaxNeighbors <- function(X.train, y.train, x.test, max.neighbors){
     "Predict1toMaxNeighbors_interface",
     as.double(X.train), as.double(y.train),
     nrow(X.train), ncol(X.train), as.integer(max.neighbors),
-    as.double(x.test),
+    as.double(x.test), as.double(w.train),
+    distance.vec=double(nrow(X.train)),
+    sorted.index.vec=integer(nrow(X.train)),
     test.predictions=double(max.neighbors),
     PACKAGE="nearestNeighbors")
   res$test.predictions
@@ -35,7 +47,9 @@ Predict1toMaxNeighbors <- function(X.train, y.train, x.test, max.neighbors){
 
 Predict1toMaxNeighborsMatrix <- function
 ### Nearest neighbor predictions for an entire test matrix.
-(X.train, y.train, X.test, max.neighbors){
+(X.train, y.train, X.test, max.neighbors,
+  w.train=rep(1, nrow(X.train))
+){
   if(!all(
     is.matrix(X.train),
     is.numeric(X.train)
@@ -56,6 +70,13 @@ Predict1toMaxNeighborsMatrix <- function
     stop("x.test must be a numeric vector of size ncol(X.train)")
   }
   if(!all(
+    is.numeric(w.train),
+    length(w.train)==nrow(X.train),
+    0 < w.train
+  )){
+    stop("w.train must be a numeric vector of size nrow(X.train)")
+  }
+  if(!all(
     is.integer(max.neighbors),
     length(max.neighbors)==1
   )){
@@ -65,7 +86,7 @@ Predict1toMaxNeighborsMatrix <- function
     "Predict1toMaxNeighborsMatrix_interface",
     as.double(X.train), as.double(y.train),
     nrow(X.train), ncol(X.train), as.integer(max.neighbors), nrow(X.test),
-    as.double(t(X.test)),
+    as.double(t(X.test)), as.double(w.train),
     test.predictions=double(max.neighbors*nrow(X.test)),
     PACKAGE="nearestNeighbors")
   matrix(res$test.predictions, nrow(X.test), max.neighbors, byrow=TRUE)
@@ -82,7 +103,7 @@ loss.function.list <- list(
 
 NearestNeighborsCV <- structure(function
 ### Fit nearest neighbors model using k-fold CV.
-(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL, LAPPLY=parallel::mclapply){
+(input.mat, label.vec, max.neighbors, fold.vec, n.folds=5L, loss.function=NULL, LAPPLY=parallel::mclapply, weight.vec=rep(1, nrow(input.mat))){
   if(is.null(loss.function)){
     loss.name <- if(all(label.vec %in% c(0,1))){
       "misclassification"
@@ -96,6 +117,13 @@ NearestNeighborsCV <- structure(function
     is.numeric(input.mat)
   )){
     stop("input.mat must be a numeric matrix")
+  }
+  if(!all(
+    is.numeric(weight.vec),
+    length(weight.vec)==nrow(input.mat),
+    0 < weight.vec
+  )){
+    stop("weight.vec must be a positive numeric vector of size nrow(input.mat)")
   }
   if(!all(
     is.numeric(label.vec),
@@ -169,8 +197,10 @@ NearestNeighborsCV <- structure(function
 }, ex=function(){
 
   library(nearestNeighbors)
+  library(data.table)
   data(mixture.example, package="ElemStatLearn")
-  err.dt <- with(mixture.example, NearestNeighborsCV(x, y, 20L))
+  fit <- with(mixture.example, NearestNeighborsCV(
+    x, y, 20L, weight.vec=rep(1:2, l=nrow(x))))
 
   library(ggplot2)
   ggplot()+
@@ -179,7 +209,7 @@ NearestNeighborsCV <- structure(function
     facet_grid(validation.fold ~ .)+
     geom_line(aes(
       neighbors, loss, color=set.name),
-      data=err.dt)
+      data=fit$fold.loss)
 
   max.neighbors <- 50L
   set.seed(1)

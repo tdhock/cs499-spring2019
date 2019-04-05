@@ -1,14 +1,15 @@
 int Predict1toMaxNeighbors
 (double *train_inputs_ptr, double *train_label_ptr,
  int nrow, int ncol, int max_neighbors,
- double *test_input_ptr,
+ double *test_input_ptr, double*,
+ double*, int*,
  double *test_prediction_ptr
  );
 
 int Predict1toMaxNeighborsMatrix
 (double *train_inputs_ptr, double *train_label_ptr,
  int nrow, int ncol, int max_neighbors, int ntest,
- double *test_input_ptr,
+ double *test_input_ptr, double*,
  double *test_prediction_ptr
  );
 

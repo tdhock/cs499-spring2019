@@ -8,13 +8,16 @@
 void Predict1toMaxNeighbors_interface
 (double *train_inputs_ptr, double *train_label_ptr,
  int* nrow_ptr, int* ncol_ptr, int* max_neighbors_ptr,
- double *test_input_ptr,
+ double *test_input_ptr, double *weight_ptr,
+ double *dist_ptr,
+ int *index_ptr,
  double *test_prediction_ptr
  ){
   int status = Predict1toMaxNeighbors
     (train_inputs_ptr, train_label_ptr,
      *nrow_ptr, *ncol_ptr, *max_neighbors_ptr,
-     test_input_ptr,
+     test_input_ptr, weight_ptr,
+     dist_ptr, index_ptr,
      test_prediction_ptr);
   if(status == ERROR_TOO_MANY_NEIGHBORS){
     error("too many neighbors (should be at most nrow)");
@@ -33,13 +36,13 @@ void Predict1toMaxNeighbors_interface
 void Predict1toMaxNeighborsMatrix_interface
 (double *train_inputs_ptr, double *train_label_ptr,
  int* n_train_ptr, int* ncol_ptr, int* max_neighbors_ptr, int* n_test_ptr,
- double *test_input_ptr,
+ double *test_input_ptr, double *weight_ptr,
  double *test_prediction_ptr
  ){
   int status = Predict1toMaxNeighborsMatrix
     (train_inputs_ptr, train_label_ptr,
      *n_train_ptr, *ncol_ptr, *max_neighbors_ptr, *n_test_ptr,
-     test_input_ptr,
+     test_input_ptr, weight_ptr,
      test_prediction_ptr);
   if(status == ERROR_TOO_MANY_NEIGHBORS){
     error("too many neighbors (should be at most nrow)");
@@ -90,10 +93,10 @@ void Predict1toMaxNeighborsMatrixMultiClass_interface
     error("unrecognized error ", status);
   }
 }
-
+ 
 R_CMethodDef cMethods[] = {
-  {"Predict1toMaxNeighbors_interface", (DL_FUNC) &Predict1toMaxNeighbors_interface, 7},
-  {"Predict1toMaxNeighborsMatrix_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrix_interface, 8},
+  {"Predict1toMaxNeighbors_interface", (DL_FUNC) &Predict1toMaxNeighbors_interface, 10},
+  {"Predict1toMaxNeighborsMatrix_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrix_interface, 9},
   {"Predict1toMaxNeighborsMatrixMultiClass_interface", (DL_FUNC) &Predict1toMaxNeighborsMatrixMultiClass_interface, 9},
   {NULL, NULL, 0}
 };
