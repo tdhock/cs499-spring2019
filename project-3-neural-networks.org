@@ -195,6 +195,10 @@ function should return V.mat on the original scale.
 They should be the first element/row of the weight
 vector/matrix. e.g. use cbind(1, feature.mat) %*% weights
 
+*** Do we have to include the intercept terms?
+
+For the first layer weights (V.mat) you do need to include the intercept to report the weights on the original scale. For the second layer weights (w.vec) you can include an intercept term if you want. If you do then the second layer predictions should be cbind(1, Z.mat) %*% w.vec, otherwise just Z.mat %*% w.vec.
+
 *** In NNetIterations do we have to store/return weight matrices/vectors for all iterations?
 
 No. Just return the final weight matrix/vector after doing
