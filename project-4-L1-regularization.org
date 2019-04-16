@@ -10,7 +10,7 @@ group.  Any violations will result in one or more of the following:
 - a zero on this assignment, 
 - a failing grade in this class,
 - expulsion from NAU.
-
+  
 * Algorithms to code
 By now you know how to code functions in C++ or R so you have the choice.
 - if you code the algorithm in C++, write an R function that calls your C++ code via .C
@@ -25,14 +25,17 @@ R Function name: LinearModelL1
 - these functions should assume that X.scaled.mat already has mean=0
   and sd=1 for each of its columns, and its job is to find the optimal
   weight vector that minimizes the following cost function: 1/n
-  \sum_{i=1}^n L[w^T x_i + b, y_i] + penalty * ||w||_1, where L is
-  either the logistic loss (if all labels are in {0,1}) or square loss.
+  \sum_{i=1}^n L[w^T x_i + b, y_i] + penalty * ||w||_1, where n is the
+  number of rows of X.scaled.mat, p is the number of columns, w is the
+  weight vector (size p), b is the bias/intercept term, and L is either the
+  logistic loss (if all labels are in {0,1}) or square loss.
 - On the documentation page you should write the math/equation of the
   cost function that it minimizes.
 - opt.thresh should be a positive threshold on the sub-differential
   optimality criterion that we derive in class.
-- Output: optimal weight vector (\tilde w, for scaled data) for the
-  given penalty parameter.
+- Output: optimal weight vector (with p+1 elements, first element is
+  the bias/intercept b) for the given penalty parameter.
+
 R Function names: LinearModelL1penalties
 - Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty
   values), step.size
@@ -50,6 +53,7 @@ R Function names: LinearModelL1penalties
   original scale, that can be used to get predictions via cbind(1,
   X.mat) %*% W.mat (the first row of W.mat should be the
   bias/beta/intercept)
+
 R Function names: LinearModelL1CV
 - Inputs: X.mat, y.vec, (the following arguments should have sensible
   defaults) fold.vec, n.folds=5, penalty.vec, step.size
@@ -196,25 +200,16 @@ Extra credit:
 
 *** How to deal with scaling?
 
-Same as in the linear model from project 2. Your NNetIterations
-function should return V.mat on the original scale.
+Same as in the previous projects. Your LinearModelL1penalties function
+should return W.mat on the original scale.
 
-*** How to deal with intercept/bias terms?
+*** How to deal with intercept/bias term?
 
-They should be the first element/row of the weight
-vector/matrix. e.g. use cbind(1, feature.mat) %*% weights
+It should be the first element of the weight
+vector, e.g. use cbind(1, unscaled.feature.mat) %*% W.mat for prediction.
 
-*** Do we have to include the intercept terms?
+*** Do we have to include the intercept term?
 
-For the first layer weights (V.mat) you do need to include the intercept to report the weights on the original scale. For the second layer weights (w.vec) you can include an intercept term if you want. If you do then the second layer predictions should be cbind(1, Z.mat) %*% w.vec, otherwise just Z.mat %*% w.vec.
+Yes. Make sure that LinearModelL1 returns a p+1 weight vector (first
+element is the bias/intercept).
 
-*** In NNetIterations do we have to store/return weight matrices/vectors for all iterations?
-
-No. Just return the final weight matrix/vector after doing
-max.iterations steps of gradient descent. And make sure to compute the
-predictions for all observations during each step, and return them in a prediction matrix. 
-The is.train input parameter should be a logical
-vector, with one element for each observation, that indicates the set
-of each observation (TRUE=train, FALSE=validation).
-Train observations should be used for scaling and gradient descent. 
-The others should not be used for scaling/gradient descent, but predictions should be reported for all observations.

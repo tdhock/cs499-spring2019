@@ -155,7 +155,7 @@ Your group should submit a link to your repo on GitHub.
 - 10 points for tests, as described above.
 
 Extra credit: 
-  - 1-30 points extra credit if, in your Rmd report, you also compare
+  - 1-15 points extra credit if, in your Rmd report, you also compare
     against NNLearnCV/LM__L2CV/LM__EarlyStoppingCV, and comment on
     whether or not the neural network is more accurate (max 3 points
     per data set, one point for each algo). Note that the only way to

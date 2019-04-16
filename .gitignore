@@ -16,3 +16,4 @@ quiz.pdf
 *.so
 *.gz
 .httr-oauth
+*.dll
