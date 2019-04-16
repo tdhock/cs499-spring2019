@@ -807,7 +807,61 @@ the sigmoid can be computed as
 
 \section{Backpropagation for single layer binary classification network}
 
-TODO
+For binary classification we have outputs $\tilde y_i \in \{-1, 1\}$
+and we use the logistic loss, which yields the mean loss
+\begin{equation}
+  \label{eq:mean_NN_binary_loss}
+  \frac 1 n \sum_{i=1}^n \log[ 1+ e^{ -\tilde y_i f(x_i) } ] =
+  \frac 1 n \sum_{i=1}^n \log[ 1+ e^{ -\tilde y_i w^T S[V^T x_i] } ] 
+\end{equation}
+Recall that the predicted values are $f(x_i) = b_i\in\mathbb R$, which means the gradient of one observation $i$ is
+\begin{equation}
+  \label{eq:grad_w_binary}
+  \nabla_w \log[ 1+ e^{ -\tilde y_i b_i } ] =
+\underbrace{
+  \frac{\partial}{\partial b_i} \log[ 1+ e^{ -\tilde y_i b_i } ]
+}_{\delta_i^w}
+\underbrace{
+  \nabla_w b_i
+}_{z_i}.
+\end{equation}
+So the algorithm described in the last section is still valid, as long
+as the new second level errors are computed via
+\begin{equation}
+  \label{eq:delta_i_w_binary}
+  \delta_i^w = \frac{-\tilde y_i}{1+\exp(\tilde y_i b_i)} = -\tilde y_i\sigma(-\tilde y_i b_i)\in\mathbb R
+\end{equation}
+or in vector notation for $n$ data points,
+\begin{equation}
+  \label{eq:delta_w_binary}
+  \delta^w = -\tilde Y S[ -\tilde Y b ]\in \mathbb R^n.
+\end{equation}
+
+\section{Scaling for neural networks}
+
+As in linear models, the train input matrix $X$ must be scaled before
+gradient descent, for numerical stability. If $x_i\in\mathbb R^p$ is
+an unscaled input/feature vector, let $\tilde x_i = D[x_i - m]$ be the
+corresponding scaled input/feature vector. Then the hidden units
+before applying the sigmoid are
+\begin{equation}
+  \label{eq:nn_scaled_prediction}
+  a_i = \tilde V^T \tilde x_i = 
+  \tilde V^T D (x_i - m) = \tilde V^T D x_i - \tilde V^T D m = 
+  V^T x_i + \beta = 
+  \left[\begin{array}{cc}
+          \beta & V^T
+  \end{array}\right]
+  \left[\begin{array}{c}
+          1 \\ x_i
+  \end{array}\right]
+\in\mathbb R^u,
+\end{equation}
+where the weight matrix/intercept on the original scale are
+\begin{eqnarray*}
+  V &=& D \tilde V\in \mathbb R^{p \times u}\\
+  \beta &=& - \tilde V^T D m\in \mathbb R^u.
+\end{eqnarray*}
 
 \bibliographystyle{abbrvnat}
 \bibliography{refs}
