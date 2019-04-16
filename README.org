@@ -4,6 +4,8 @@ Optimization Algorithms for Machine Learning
 
 TuTh 9:35-10:50
 
+[[file:CS499-Spring2019-ML-Syllabus.pdf]]
+
 ** Coding projects
 
 - [[file:project-1-nearest-neighbors.org][Project 1: nearest neighbors]]
