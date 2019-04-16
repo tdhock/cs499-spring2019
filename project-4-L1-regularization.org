@@ -1,0 +1,220 @@
+Coding project 4: L1-regularized linear models for regression and binary classification.
+
+For this project you will be writing an R package that implements
+optimization algorithms for linear models with L1-regularization. You
+are allowed and encouraged to discuss your code/ideas with other
+students, but it is strictly forbidden to copy any
+code/documentation/tests/etc from other groups, or any web pages. Your
+code/project must be written from scratch by the members of your
+group.  Any violations will result in one or more of the following:
+- a zero on this assignment, 
+- a failing grade in this class,
+- expulsion from NAU.
+
+* Algorithms to code
+By now you know how to code functions in C++ or R so you have the choice.
+- if you code the algorithm in C++, write an R function that calls your C++ code via .C
+- if you code the algorithm in pure R, use matrix/vector arithmetic
+  for efficiency (do NOT use for loops over data points or features)
+
+** Linear models with L1 regularization
+
+R Function name: LinearModelL1
+- Inputs: X.scaled.mat, y.vec, penalty (non-negative numeric scalar),
+  opt.thresh (positive numeric scalar), initial.weight.vec, step.size.
+- these functions should assume that X.scaled.mat already has mean=0
+  and sd=1 for each of its columns, and its job is to find the optimal
+  weight vector that minimizes the following cost function: 1/n
+  \sum_{i=1}^n L[w^T x_i + b, y_i] + penalty * ||w||_1, where L is
+  either the logistic loss (if all labels are in {0,1}) or square loss.
+- On the documentation page you should write the math/equation of the
+  cost function that it minimizes.
+- opt.thresh should be a positive threshold on the sub-differential
+  optimality criterion that we derive in class.
+- Output: optimal weight vector (\tilde w, for scaled data) for the
+  given penalty parameter.
+R Function names: LinearModelL1penalties
+- Inputs: X.mat, y.vec, penalty.vec (vector of decreasing penalty
+  values), step.size
+- this function should begin by scaling X.mat to obtain X.scaled.mat
+  with each column mean=0 and sd=1
+- it should then loop over penalty values, calling LinearModelL1 to get
+  the (scaled) optimal weight vector for each.
+- it should then convert the optimal weight vector (tilde w, tilde
+  beta) back to the original scale, using the mean/sd of each
+  column/feature.
+- use warm restarts, i.e. instead of starting the optimization from
+  the 0 vector each time (slow), use the optimal solution for the
+  previous penalty value as the next initial.weight.vec (faster).
+- Output: W.mat (n_features+1 x n_penalties), weight matrix on
+  original scale, that can be used to get predictions via cbind(1,
+  X.mat) %*% W.mat (the first row of W.mat should be the
+  bias/beta/intercept)
+R Function names: LinearModelL1CV
+- Inputs: X.mat, y.vec, (the following arguments should have sensible
+  defaults) fold.vec, n.folds=5, penalty.vec, step.size
+- should use K-fold cross-validation based on the fold IDs provided in
+  fold.vec (or if fold.vec not provided, your function should create
+  one based on n.folds).
+- for each train/validation split, use LinearModelL1penalties to
+  compute optimal L1-penalized models on the train data, then compute
+  the validation loss of each model.
+- compute mean.validation.loss.vec/mean.train.loss.vec, which is a
+  vector (with n_penalties elements) of mean validation/train loss
+  over all K folds.
+- minimize the mean validation loss to determine selected.penalty, the
+  optimal penalty value.
+- finally use LinearModelL1penalties(penalty.vec=selected.penalty) on
+  the whole training data set.
+- Output a list with the following named elements:
+  - mean.validation.loss, mean.train.loss.vec, penalty.vec,
+    selected.penalty (for plotting train/validation loss curves)
+  - weight.vec, the weight vector found by using gradient descent with
+    selected.penalty on the whole training data set.
+  - predict=function(testX.mat), a function that takes a test features
+    matrix and returns a vector of predictions (real numbers for
+    regression, probabilities for binary classification).
+  
+** Documentation and tests
+- for each R function, write documentation with at least one example
+  of how to use it.
+- write at least two tests for each R function, in tests/testthat/test-xxx.R.
+    You should at least test that 
+    (1) for valid inputs your function returns an output of the expected type/dimension, 
+    (2) for an invalid input, your function stops with an informative error message.
+    
+* Experiments/application: run your code on the following data sets.
+- Binary classification
+  - ElemStatLearn::spam 2-class [4601, 57] output is last column (spam).
+  - ElemStatLearn::SAheart 2-class [462, 9] output is last column (chd).
+  - ElemStatLearn::zip.train: 10-class [7291, 256] output is first column. (ignore classes other than 0 and 1)
+- Regression
+  - ElemStatLearn::prostate [97 x 8] output is lpsa column, ignore train column.
+  - ElemStatLearn::ozone [111 x 3] output is first column (ozone).
+- For each data set, use 5-fold cross-validation to evaluate the
+  prediction accuracy of your code. For each split, set aside the data
+  in fold s as a test set. Use LinearModelL1CV to train a model
+  on the other folds (which should be used in your function as
+  internal train/validation sets/splits), then make a prediction on
+  the test fold s.
+- For each train/test split, 
+  to show that your algorithm is actually learning something 
+  non-trivial from the inputs/features,
+  compute a baseline predictor that ignores the inputs/features.
+  - Regression: the mean of the training labels/outputs.
+  - Binary classification: the most frequent class/label/output in the
+    training data.
+- For each data set, compute a s x 2 matrix of mean test loss values:
+  - each of the rows are for a specific test set,
+  - the first column is for the L1-regularized linear model predictor,
+  - the second column is for the baseline/un-informed predictor.
+- Make one or more plot(s) or table(s) that compares these test loss
+  values.  For each of the five data sets, is the L1-regularized
+  linear model more accurate than the baseline?
+- for each data set, run LinearModelL1CV on the entire data set and
+  plot the mean validation loss as a function of the regularization
+  parameter. Plot the mean train loss in one color, and the mean
+  validation loss in another color. Plot a point and/or text label to
+  emphasize the regularization parameter selected by minimizing the
+  mean validation loss function.
+- Write up your results in vignettes/report.Rmd that shows the R code
+  that you used for the experiments/application, along with the
+  output.
+  - Documentation: [[http://r-pkgs.had.co.nz/vignettes.html][Vignettes chapter of R packages book]].
+  - Example [[https://github.com/cran/glmnet/blob/master/vignettes/glmnet_beta.Rmd][Rmd vignette source code]].
+    [[https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html][vignette rendered to HTML]].
+  - For this assignment the headings should be as follows:
+
+#+BEGIN_SRC
+## Data set 1: spam
+
+### Matrix of loss values
+
+print out and/or plot the matrix.
+
+comment on difference in accuracy.
+
+### Train/validation loss plots
+
+plot the two loss functions.
+
+What are the optimal regularization parameters?
+
+## Data set 2: ...
+#+END_SRC
+
+* Grading rubric: 100 points.
+Your group should submit a link to your repo on GitHub.
+- 20 points for completeness of report.
+  - 4 points for each data set (2 points each for loss matrix and
+    train/validation loss plot)
+- 20 points if your R package passes with no WARNING/ERROR on
+  https://win-builder.r-project.org/
+  - minus 5 points for every WARNING/ERROR.
+- 20 points for group evaluations -- this is to make sure that each
+  group member participates more or less equally. You will get points
+  deducted if your fellow group members give you a bad evaluation.
+- 20 points for accuracy of your code (I will run tests to make sure
+  your functions give errors for bad inputs, and the proper output for
+  good inputs).
+- 10 points for R documentation pages.
+  - 5 points for informative example code.
+  - 5 points for documenting types/dimensions of inputs/outputs.
+- 10 points for tests, as described above.
+
+Extra credit: 
+  - 1-20 points extra credit if, in your Rmd report, you also compare
+    against
+    NNLearnCV/LM__L2CV/LM__EarlyStoppingCV/NeuralNetworkEarlyStoppingCV,
+    and comment on whether or not the L1-regularized linear model is
+    more accurate (max 4 points per data set, one point for each
+    algo). Note that the only way to get this to work along with
+    CRAN/win-builder checks is by copying the code from the previous R
+    package(s) to your package for project 4.
+  - 10 points extra credit if, in your Rmd report, you use LaTeX
+    code/MathJax to type the equations for the loss and parameter
+    updates.
+  - 10 points if, in your GitHub repo, you setup Travis-CI to check
+    your R package, and have a green badge that indicates a build that
+    passes checks.  See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]] and [[https://docs.travis-ci.com/user/languages/r/][docs]].
+  - if you submit your work early (to me via email) you will get
+    feedback from me and extra credit:
+    - First week: 10 points if you have written both functions
+      described above, and you email me with a link to your github
+      repo by Tuesday Apr 23. (1 point per function)
+    - Second week: 10 more points if you have started your report, and
+      you email me with the rendered HTML report as an attachment by
+      Tue Apr 30.  You will get 2 points of extra credit for the
+      analysis of each data set (1 point for plots of train/validation
+      loss versus regularization parameter, 1 point for 4-fold CV loss
+      matrix table/plot).
+    - Third week: do tests/docs, finish report, make sure package
+      passes R CMD check with no WARNING/ERROR on win-builder, send me
+      a link to your github project via email by Fri May 3.
+
+** FAQ
+
+*** How to deal with scaling?
+
+Same as in the linear model from project 2. Your NNetIterations
+function should return V.mat on the original scale.
+
+*** How to deal with intercept/bias terms?
+
+They should be the first element/row of the weight
+vector/matrix. e.g. use cbind(1, feature.mat) %*% weights
+
+*** Do we have to include the intercept terms?
+
+For the first layer weights (V.mat) you do need to include the intercept to report the weights on the original scale. For the second layer weights (w.vec) you can include an intercept term if you want. If you do then the second layer predictions should be cbind(1, Z.mat) %*% w.vec, otherwise just Z.mat %*% w.vec.
+
+*** In NNetIterations do we have to store/return weight matrices/vectors for all iterations?
+
+No. Just return the final weight matrix/vector after doing
+max.iterations steps of gradient descent. And make sure to compute the
+predictions for all observations during each step, and return them in a prediction matrix. 
+The is.train input parameter should be a logical
+vector, with one element for each observation, that indicates the set
+of each observation (TRUE=train, FALSE=validation).
+Train observations should be used for scaling and gradient descent. 
+The others should not be used for scaling/gradient descent, but predictions should be reported for all observations.

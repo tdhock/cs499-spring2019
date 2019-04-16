@@ -9,6 +9,7 @@ TuTh 9:35-10:50
 - [[file:project-1-nearest-neighbors.org][Project 1: nearest neighbors]]
 - [[file:project-2-linear-models.org][Project 2: linear models]]
 - [[file:project-3-neural-networks.org][Project 3: neural networks]]
+- [[file:project-4-L1-regularization.org][Project 4: L1-regularized linear models]]
 
 ** How to ace this class
 
