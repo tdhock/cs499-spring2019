@@ -167,34 +167,40 @@ Your group should submit a link to your repo on GitHub.
 - 10 points for tests, as described above.
 
 Extra credit: 
-  - 1-20 points extra credit if, in your Rmd report, you also compare
-    against
-    NNLearnCV/LM__L2CV/LM__EarlyStoppingCV/NeuralNetworkEarlyStoppingCV,
-    and comment on whether or not the L1-regularized linear model is
-    more accurate (max 4 points per data set, one point for each
-    algo). Note that the only way to get this to work along with
-    CRAN/win-builder checks is by copying the code from the previous R
-    package(s) to your package for project 4.
-  - 10 points extra credit if, in your Rmd report, you use LaTeX
-    code/MathJax to type the equations for the loss and parameter
-    updates.
-  - 10 points if, in your GitHub repo, you setup Travis-CI to check
-    your R package, and have a green badge that indicates a build that
-    passes checks.  See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]] and [[https://docs.travis-ci.com/user/languages/r/][docs]].
-  - if you submit your work early (to me via email) you will get
-    feedback from me and extra credit:
-    - First week: 10 points if you have written both functions
-      described above, and you email me with a link to your github
-      repo by Tuesday Apr 23. (1 point per function)
-    - Second week: 10 more points if you have started your report, and
-      you email me with the rendered HTML report as an attachment by
-      Tue Apr 30.  You will get 2 points of extra credit for the
-      analysis of each data set (1 point for plots of train/validation
-      loss versus regularization parameter, 1 point for 4-fold CV loss
-      matrix table/plot).
-    - Third week: do tests/docs, finish report, make sure package
-      passes R CMD check with no WARNING/ERROR on win-builder, send me
-      a link to your github project via email by Fri May 3.
+- 10 points for plotting the coefficient path of the L1/L2 regularized
+  linear model, as a function of the penalty parameter lambda. You
+  should see that the L1 regularization sets some coefficients/weights
+  to zero, whereas the L2 regularized model never has weights which
+  are zero. [[http://directlabels.r-forge.r-project.org/docs/lineplot/posfuns/lasso.labels.html][Example lasso path plot using directlabels package in
+  R]]. (2 points per data set, 1 point for L1, 1 point for L2).
+- 1-20 points extra credit if, in your Rmd report, you also compare
+  against
+  NNLearnCV/LM__L2CV/LM__EarlyStoppingCV/NeuralNetworkEarlyStoppingCV,
+  and comment on whether or not the L1-regularized linear model is
+  more accurate (max 4 points per data set, one point for each
+  algo). Note that the only way to get this to work along with
+  CRAN/win-builder checks is by copying the code from the previous R
+  package(s) to your package for project 4.
+- 10 points extra credit if, in your Rmd report, you use LaTeX
+  code/MathJax to type the equations for the loss and parameter
+  updates.
+- 10 points if, in your GitHub repo, you setup Travis-CI to check your
+  R package, and have a green badge that indicates a build that passes
+  checks.  See [[https://juliasilge.com/blog/beginners-guide-to-travis/][blog]] and [[https://docs.travis-ci.com/user/languages/r/][docs]].
+- Due dates: if you submit your work early (to me via email) you will get
+  feedback from me and extra credit:
+  - First week: 10 points if you have written both functions described
+    above, and you email me with a link to your github repo by Tuesday
+    Apr 23. (1 point per function)
+  - Second week: 10 more points if you have started your report, and
+    you email me with the rendered HTML report as an attachment by Tue
+    Apr 30.  You will get 2 points of extra credit for the analysis of
+    each data set (1 point for plots of train/validation loss versus
+    regularization parameter, 1 point for 4-fold CV loss matrix
+    table/plot).
+  - Third week: do tests/docs, finish report, make sure package passes
+    R CMD check with no WARNING/ERROR on win-builder, send me a link
+    to your github project via email by Fri May 3.
 
 ** FAQ
 
