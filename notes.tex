@@ -863,6 +863,38 @@ where the weight matrix/intercept on the original scale are
   \beta &=& - \tilde V^T D m\in \mathbb R^u.
 \end{eqnarray*}
 
+\section{L1-regularized linear models}
+
+The goal is to learn a linear function $f(x_i) = w^T x_i$ by
+minimizing the L1-regularized cost function
+\begin{equation}
+  \label{eq:l1-reg-cost}
+  C_\lambda(w) = \mathcal L(w) + \lambda ||w||_1,
+\end{equation}
+where $\mathcal L$ is a function that measures how well the model with
+weight vector $w$ fits the train data (typically the square loss for
+regression or the logistic loss for binary classification). 
+
+The learning algorithm is to compute the optimal weight vector
+\begin{equation}
+  \label{eq:best_w_l1}
+  \hat w(\lambda) = \argmin_w C_\lambda(w)
+\end{equation}
+for a range of penalty $\lambda$ parameters, and then select the model
+which minimizes the error with respect to a held-out validation set,
+\begin{equation}
+  \label{eq:best_lambda}
+  \hat \lambda = \argmin_\lambda \text{MeanValidationError}[ \hat w(\lambda) ].
+\end{equation}
+The final prediction function that we use is
+$f(x_i) = \hat w(\hat \lambda)^T x_i$.
+
+\section{Proximal gradient algorthm}
+
+We adapt the proximal gradient algorithm described by \citep[Section~]{Murphy2012}
+
+\section{Bias term for L1-regularized linear models}
+
 \bibliographystyle{abbrvnat}
 \bibliography{refs}
 
