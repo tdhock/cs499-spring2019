@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{fullpage}
+\DeclareMathOperator*{\sign}{sign}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\Lik}{Lik}
@@ -889,11 +890,80 @@ which minimizes the error with respect to a held-out validation set,
 The final prediction function that we use is
 $f(x_i) = \hat w(\hat \lambda)^T x_i$.
 
-\section{Proximal gradient algorthm}
+\section{Proximal gradient algorithm}
 
-We adapt the proximal gradient algorithm described by \citep[Section~]{Murphy2012}
+We adapt the proximal gradient algorithm described by
+\citet[Section~13.4.3]{Murphy2012}. It is characterized by the
+initialization $w^{(0)}=0$ and updates for every $t\geq 0$
+\begin{eqnarray}
+  \label{eq:prox-update}
+  u^{(t)} &=& w^{(t)}+\alpha^{(t)} d^{(t)} \\
+  w^{(t+1)} &=& \text{Prox}_{\alpha^{(t)} R}(u^{(t)}) = 
+\argmin_z \alpha^{(t)} R(z) + \frac 1 2 ||z-u^{(t)}||^2_2
+\end{eqnarray}
+where the descent direction is the negative gradient of the loss,
+\begin{equation}
+  \label{eq:dt}
+  d^{(t)} = -\nabla \mathcal L(w^{(t)}),
+\end{equation}
+and the proximal operator for the L1 regularizer $R(w)=\lambda||w||_1$
+is the soft-thresholding function:
+\begin{equation}
+  \label{eq:proxl1}
+  \text{Prox}_R(w) = \text{soft}(w,\lambda) = \sign(w)(|w|-\lambda)_+
+\end{equation}
+So after simplifying the update rule can be written as
+\begin{equation}
+w^{(t+1)}_j =
+\begin{cases}
+  w_j^{(t)}+\alpha^{(t)} d_j^{(t)} & \text{ for the un-regularized intercept $j=0$}\\
+  \text{soft}(w_j^{(t)}+\alpha^{(t)} d_j^{(t)}, \lambda \alpha^{(t)}) & \text{ for the L1-regularized weights $j>0$}
+\end{cases}
+\end{equation}
+
+\section{Optimality criterion for L1-regularized linear models}
+
+The sub-differential can be used to characterize the minimum of
+the convex, non-smooth cost function:
+\begin{equation}
+  w^* = \argmin_w C_\lambda(w) \iff 0\in \partial C_\lambda(w^*),
+\end{equation}
+which implies
+\begin{equation}
+  -\nabla \mathcal L(w) \in \lambda \partial ||w||_1,
+\end{equation}
+or
+\begin{equation}
+  \begin{cases}
+    \frac{\partial}{\partial w_j} -\mathcal L(w) = \lambda & \text{ if } w_j>0\\
+    \frac{\partial}{\partial w_j} -\mathcal L(w) = -\lambda & \text{ if } w_j<0\\
+    \frac{\partial}{\partial w_j} -\mathcal L(w) \in [-\lambda,\lambda] & \text{ if } w_j=0
+  \end{cases}
+\end{equation}
+We can therefore define the sub-optimality vector
+\begin{equation}
+  \label{eq:c_j}
+  c_j^{(t)} =
+  \begin{cases}
+    |d_j^{(t)} - \sign(w_j^{(t)})\lambda| & \text{ if } w_j\neq 0\\
+    (|d_j^{(t)}| - \lambda)_+ & \text{ if } w_j = 0.
+  \end{cases}
+\end{equation}
+When $c^{(t)}$ is big then $w^{(t)}$ is highly sub-optimal. In
+practice we stop the proximal gradient algorithm when
+$c_j^{(t)}<\epsilon\approx 10^{-3}$ for all weights/features $j$.
 
 \section{Bias term for L1-regularized linear models}
+
+Typically an un-regularized intercept/bias term is included in the
+prediction function, $f(x_i)= \beta + w^T x_i$, so the cost becomes a
+function of that parameter as well:
+\begin{equation}
+  C_{\lambda}(\beta, w) = \mathcal L(\beta, w) + \lambda ||w||_1
+\end{equation}
+Exercise in class: derive the update rule and optimality criterion for
+this new model.
+
 
 \bibliographystyle{abbrvnat}
 \bibliography{refs}
