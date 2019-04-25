@@ -176,7 +176,7 @@ IntervalRegressionInternal <- function
 ### ones.
 }
 
-lambda <- 0.1
+lambda <- 0.6
 fit <- IntervalRegressionInternal(
   X.int, y.train, regularization=lambda,
   verbose=2)
@@ -202,6 +202,9 @@ prox <- function(x, l){
 
 res.vec <- X.int %*% w.vec - y.train
 g.vec <- t(X.int) %*% res.vec / nrow(X.int)
+## lambda_max = smallest regularization/penalty parameter such that
+## all weights are zero.
+lmax <- max(abs(g.vec[-1]))
 d.vec <- -g.vec
 crit.vec <- c(abs(d.vec[1]), subdiff.crit(w.vec[-1], d.vec[-1]))
 it <- it+1
