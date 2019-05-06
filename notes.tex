@@ -964,6 +964,24 @@ function of that parameter as well:
 Exercise in class: derive the update rule and optimality criterion for
 this new model.
 
+\section{Max regularization/penalty parameter}
+
+$\lambda_\max$ is the smallest regularization/penalty parameter such
+that all optimal linear model weights are 0. To derive it we need to
+consider the optimality conditions of the weight vector:
+\begin{equation}
+  0\in \partial C_{\lambda_\max}(0) = \nabla \mathcal L(0) + \lambda_\max \partial ||0||_1
+\end{equation}
+which implies for all features $j$,
+\begin{equation}
+  -\nabla_{w_j} \mathcal L(0) \in [-\lambda_\max, \lambda_\max]
+  \Rightarrow |\nabla_{w_j} \mathcal L(0)| \leq \lambda_\max.
+\end{equation}
+The equations above imply that
+\begin{equation}
+  \lambda_\max = \max_j |\nabla_{w_j}
+\mathcal L(0)| = ||\nabla \mathcal L(0)||_\infty
+\end{equation}
 
 \bibliographystyle{abbrvnat}
 \bibliography{refs}
