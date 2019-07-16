@@ -124,3 +124,7 @@ Hastie, Tibshirani, Friedman
 
 Press, et al.
 - http://numerical.recipes/
+
+** Super useful web editor for markdown vignettes with math
+
+http://markx.herokuapp.com/
