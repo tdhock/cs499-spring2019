@@ -18,9 +18,10 @@ in.out.dt <- data.table(fun.name=names(fun.list))[, {
   prob.vec <- f(input.vec)
   list(
     input=input.vec,
+    fun.type="true.prob",
     true.prob=prob.vec,
     output=ifelse(prob.vec<runif(N), 0, 1),
-    set=c("train", "validation"))
+    set=rep(c("train", "validation"),l=length(input.vec)))
 }, by=list(fun.name)]
 library(animint2)
 ggplot()+
@@ -28,7 +29,7 @@ ggplot()+
   theme(panel.margin=grid::unit(0, "lines"))+
   facet_grid(set ~ fun.name)+
   geom_line(aes(
-    input, true.prob, color="truth"),
+    input, true.prob, fun.type="truth"),
     size=2,
     data=in.out.dt)+
   geom_point(aes(
@@ -80,15 +81,15 @@ ggplot()+
   theme(panel.margin=grid::unit(0, "lines"))+
   facet_grid(panel ~ fun.name)+
   geom_line(aes(
-    input, true.prob, color="truth"),
+    input, true.prob, color=fun.type),
     size=2,
     data=in.out.dt)+
   geom_point(aes(
     input, output),
     data=in.out.dt)+
   geom_line(aes(
-    input, pred.prob, color="prediction"),
-    data=grid.dt)
+    input, pred.prob, color=fun.type),
+    data=data.table(grid.dt, fun.type="pred.prob"))
 
 err.dt <- pred.dt[, {
   is.error <- pred.class != output
@@ -113,7 +114,7 @@ grid.tall <- melt(
 in.out.dt[, fun.type := "truth"]
 set.colors <- c(train="grey50", validation="black")
 pred.colors <- c(pred.prob="red", true.prob="blue")
-viz <- animint(
+(viz <- animint(
   title="Nearest neighbors algorithm for classification",
   funs=ggplot()+
     ggtitle("Data and predictions")+
@@ -169,7 +170,9 @@ viz <- animint(
       clickSelects="neighbors",
       data=neighbors.dt)+
     scale_x_continuous()+
-    scale_color_manual(values=set.colors))
-viz
-
-##animint2gist(viz)
+    scale_color_manual(values=set.colors),
+  out.dir="viz-class-1d",
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-01-17-nearest-neighbors/viz-class-1d.R"))
+if(FALSE){
+  animint2pages(viz, "2019-01-nearest-neighbors-classification-1d")
+}
