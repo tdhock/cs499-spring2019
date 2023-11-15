@@ -9,25 +9,28 @@ N <- 40
 set.seed(1)
 min.x <- -2
 max.x <- 3
-
 n.folds <- 4
 input.vec <- runif(N, min.x, max.x)
 in.out.dt <- data.table(fun.name=names(fun.list))[, {
   f <- fun.list[[fun.name]]
   true.vec <- f(input.vec)
+  output.vec <- true.vec+rnorm(N)
+  m <- min(output.vec)
+  norm01 <- function(x)(x-m)/(max(output.vec)-m)
   list(
+    data.i=seq_along(output.vec),
+    fun.type="true",
     input=input.vec,
-    true=true.vec,
-    output=true.vec+rnorm(N),
-    fold=1:n.folds)
+    true=norm01(true.vec),
+    output=norm01(output.vec),
+    fold=factor(rep(1:n.folds,l=length(output.vec))))
 }, by=list(fun.name)]
-
 ggplot()+
   theme_bw()+
   theme(panel.margin=grid::unit(0, "lines"))+
   facet_grid(fold ~ fun.name)+
   geom_line(aes(
-    input, true, color="truth"),
+    input, true, color=fun.type),
     size=2,
     data=in.out.dt)+
   geom_point(aes(
@@ -40,7 +43,7 @@ ggplot()+
   theme(panel.margin=grid::unit(0, "lines"))+
   facet_grid(. ~ fun.name)+
   geom_point(aes(
-    input, output, fill=factor(fold)),
+    input, output, fill=fold),
     shape=21,
     color="black",
     data=in.out.dt)+
@@ -55,6 +58,7 @@ pred.dt <- fold.dt[, {
       in.mat <- cbind(input[is.train])
       fit <- caret::knnreg(in.mat, output[is.train], k=neighbors)
       data.table(
+        data.i,
         fold,
         input,
         output,
@@ -135,7 +139,6 @@ ggplot()+
 
 pred.colors <- c(prediction="red", truth="blue")
 (set.dt <- pred.dt[neighbors==1])
-
 fold.dt[, {
   dt <- data.table(in.out.dt, validation.fold)
   dt[, set := ifelse(validation.fold==fold, "validation", "train")]
@@ -150,6 +153,7 @@ grid.dt[, fun.type := "prediction"]
 lab.dt <- grid.dt[fun.name=="constant" & input==min(input)]
 (viz <- animint(
   title=paste(n.folds, "fold cross-validation"),
+  out.dir="viz-4folds",
   data=ggplot()+
     ggtitle("Data and fold/set assignment")+
     theme_bw()+
@@ -157,20 +161,20 @@ lab.dt <- grid.dt[fun.name=="constant" & input==min(input)]
     theme_animint(width=1000)+
     facet_grid(panel ~ fun.name)+
     scale_linetype_manual(values=c(prediction="solid"))+
+    ## geom_text(aes(
+    ##   input, 6, label=paste0(
+    ##     neighbors,
+    ##     " nearest neighbor",
+    ##     ifelse(neighbors==1, "", "s"),
+    ##     " predictor")),
+    ##   color=pred.colors[["prediction"]],
+    ##   hjust=0,
+    ##   showSelected=c("neighbors", "validation.fold"),
+    ##   data=lab.dt)+
     geom_text(aes(
-      input, 6, label=paste0(
-        neighbors,
-        " nearest neighbor",
-        ifelse(neighbors==1, "", "s"),
-        " predictor")),
-      color=pred.colors[["prediction"]],
-      hjust=0,
-      showSelected=c("neighbors", "validation.fold"),
-      data=lab.dt)+
-    geom_text(aes(
-      input, 4, label=paste(
-        "trained on fold",
-        validation.fold)),
+      input, 0.95, label=sprintf(
+        "%d-NN trained on fold %d",
+        neighbors, validation.fold)),
       color=pred.colors[["prediction"]],
       hjust=0,
       showSelected=c("neighbors", "validation.fold"),
@@ -190,13 +194,16 @@ lab.dt <- grid.dt[fun.name=="constant" & input==min(input)]
       clickSelects="validation.fold",
       data=data.table(in.out.dt, panel="fold"))+
     geom_point(aes(
-      input, output, color=set),
+      input, output,
+      key=data.i,
+      color=set),
       fill=NA,
       size=3,
       showSelected="validation.fold",
       data=data.table(set.dt[order(set)], panel="set"))+
+    ylab("output")+
     scale_color_manual(values=set.colors)+
-    scale_fill_manual("fold", values=fold.colors, guide=guide_legend(order=1)),
+    scale_fill_manual("fold", values=fold.colors),
   verr=ggplot()+
     ggtitle("Validation error")+
     theme_bw()+
@@ -238,5 +245,8 @@ lab.dt <- grid.dt[fun.name=="constant" & input==min(input)]
     scale_color_manual("fold", values=fold.colors)+
     ##coord_cartesian(ylim=c(0,2))+
     ylab("mean squared error in validation set")+
-    scale_x_continuous()))
-animint2gist(viz)
+    scale_x_continuous(),
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-01-17-nearest-neighbors/viz-4folds.R"))
+if(FALSE){
+  animint2pages(viz, "2019-01-nearest-neighbors-cross-validation")
+}
