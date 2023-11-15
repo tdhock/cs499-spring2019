@@ -16,7 +16,7 @@ in.out.dt <- data.table(fun.name=names(fun.list))[, {
     input=input.vec,
     true=true.vec,
     output=true.vec+rnorm(N),
-    set=c("train", "validation"))
+    set=rep(c("train", "validation"),l=length(input.vec)))
 }, by=list(fun.name)]
 
 library(animint2)
@@ -81,7 +81,7 @@ ggplot()+
 rss.dt <- pred.dt[, {
   res.vec <- pred-output
   rss <- sum(res.vec*res.vec)
-  data.table(rss, mse=rss/length(rss.vec))
+  data.table(rss, mse=rss/length(res.vec))
   }, by=list(neighbors, fun.name, set)]
 ggplot()+
   theme_bw()+
@@ -111,7 +111,7 @@ grid.tall <- melt(
 in.out.dt[, fun.type := "truth"]
 set.colors <- c(train="grey50", validation="black")
 pred.colors <- c(prediction="red", truth="blue")
-viz <- animint(
+(viz <- animint(
   title="Nearest neighbors algorithm for regression",
   funs=ggplot()+
     ggtitle("Data and predictions")+
@@ -130,7 +130,9 @@ viz <- animint(
       input, value, color=fun.type),
       data=grid.tall[fun.type=="truth" & neighbors==1])+
     geom_line(aes(
-      input, value, color=fun.type),
+      input, value,
+      key="pred",
+      color=fun.type),
       showSelected="neighbors",
       data=grid.tall[fun.type=="prediction"]),
   select=ggplot()+
@@ -147,14 +149,19 @@ viz <- animint(
       fill="white",
       data=min.dt)+
     geom_text(aes(
-      N/2, 0.2, label=paste0(
+      N/2, 0.3,
+      key="neighbors",
+      label=paste0(
         neighbors, " nearest neighbor", ifelse(neighbors==1, "", "s"))),
       showSelected="neighbors",
       color=pred.colors[["prediction"]],
       hjust=1,
       data=neighbors.dt)+
     geom_text(aes(
-      N/2, ifelse(set=="train", 0.1, 0), color=set, label=sprintf(
+      N/2, ifelse(set=="train", 0.15, 0),
+      color=set,
+      key=set,
+      label=sprintf(
         "%s error: %.4f", set, mse)),
       showSelected="neighbors",
       hjust=1,
@@ -168,7 +175,11 @@ viz <- animint(
       data=neighbors.dt)+
     scale_x_continuous()+
     coord_cartesian(ylim=c(0,2))+
-    scale_color_manual(values=set.colors))
-viz
-
-##animint2gist(viz)
+    scale_color_manual(values=set.colors),
+  out.dir="viz",
+  duration=list(neighbors=1000),
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-01-17-nearest-neighbors/viz.R"
+  ))
+if(FALSE){
+  animint2pages(viz, "2019-01-nearest-neighbor-regression-one-split")
+}

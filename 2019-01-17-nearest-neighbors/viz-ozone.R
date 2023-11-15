@@ -1,6 +1,10 @@
 library(data.table)
 library(parallel)
-data(ozone, package="ElemStatLearn")
+ozone.url <- "https://hastie.su.domains/ElemStatLearn/datasets/ozone.data"
+if(!file.exists("ozone.tsv")){
+  download.file(ozone.url, "ozone.tsv")
+}
+ozone <- fread("ozone.tsv")
 library(animint2)
 
 ggplot()+
@@ -122,7 +126,7 @@ ggplot()+
 
 pred.dt[, fold.fac := factor(validation.fold)]
 min.dt[, fold.fac := factor(validation.fold)]
-viz <- animint(
+(viz <- animint(
   title="Nearest neighbors for regression with 2D inputs",
   data=ggplot()+
     xlab("x1 = wind")+
@@ -202,6 +206,9 @@ viz <- animint(
       clickSelects="validation.fold",
       fill="white",
       shape=21),
-  duration=list(validation.fold=200)
-  )
-animint2gist(viz)
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-01-17-nearest-neighbors/viz-ozone.R",
+  out.dir="viz-ozone",
+  duration=list(validation.fold=200)))
+if(FALSE){
+  animint2pages(viz)
+}
