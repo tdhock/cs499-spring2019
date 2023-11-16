@@ -1,10 +1,10 @@
 library(animint2)
 library(data.table)
-
-data(ozone, package="ElemStatLearn")
-plot(ozone)
-plot(ozone ~ temperature, data=ozone)
-
+ozone.url <- "https://hastie.su.domains/ElemStatLearn/datasets/ozone.data"
+if(!file.exists("ozone.tsv")){
+  download.file(ozone.url, "ozone.tsv")
+}
+ozone <- fread("ozone.tsv")
 ozone.sc <- scale(ozone)
 X.mat <- cbind(1, ozone.sc[, "temperature"])
 y.vec <- ozone.sc[, "ozone"]
@@ -30,8 +30,8 @@ ggplot()+
     data=fit.dt)
 
 n.grid <- 200
-min.int <- -0.1
-max.int <- 0.2
+min.int <- -0.2
+max.int <- 0.1
 min.slope <- -0.2
 max.slope <- 1
 grid.dt <- data.table(expand.grid(
@@ -121,18 +121,14 @@ ggplot()+
     shape=21,
     data=data.table(min.dt, model="min cost"))
 
-step.min <- cost.dt[, list(
-  parameter="log10(step size)",
-  model="min cost",
-  min.cost=min(cost)
-), by=list(set, step.size)]
 ggplot()+
   geom_point(aes(
-    log10(step.size), min.cost, color=set),
-    data=step.min)
+    log10(step.size), cost, color=set),
+    data=min.dt)
 
 ozone.dt <- data.table(ozone.sc, set=ifelse(is.train, "train", "validation"))
 max.cost <- 0.5
+text.x <- -0.2
 set.colors <- c(
   "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", 
   "#E5C494", "#B3B3B3")
@@ -143,14 +139,12 @@ viz <- animint(
     ylab("output/label: ozone")+
     theme_bw()+
     theme_animint(height=300)+
-    theme(panel.margin=grid::unit(0, "lines"))+
-    facet_grid(set ~ .)+
     geom_point(aes(
       temperature, ozone, color=set),
       shape=21,
       fill=NA,
       data=ozone.dt)+
-    scale_color_manual(values=set.colors, guide="none")+
+    scale_color_manual(values=set.colors)+
     geom_abline(aes(
       intercept=intercept, slope=slope, key=1),
       showSelected=c("iteration", "step.size"),
@@ -197,17 +191,17 @@ viz <- animint(
     ##   size=3,
     ##   data=weight.dt)+
     geom_text(aes(
-      0.1, 0, key=1, label=sprintf("cost=%.4f", cost)),
+      text.x, 0, key=1, label=sprintf("cost=%.4f", cost)),
       showSelected=c("iteration", "step.size"),
       hjust=0,
       data=cost.dt)+
     geom_text(aes(
-      0.1, -0.1, key=1, label=paste0("iteration=", iteration)),
+      text.x, -0.1, key=1, label=paste0("iteration=", iteration)),
       showSelected=c("iteration", "step.size"),
       hjust=0,
       data=cost.dt)+
     geom_text(aes(
-      0.1, -0.2, key=1, label=sprintf("step size=%.4f", step.size)),
+      text.x, -0.2, key=1, label=sprintf("step size=%.4f", step.size)),
       showSelected=c("iteration", "step.size"),
       hjust=0,
       data=cost.dt),
@@ -215,14 +209,13 @@ viz <- animint(
     ggtitle("Train/validation error, select iteration and step size")+
     scale_color_manual(values=set.colors)+
     theme_bw()+
-    theme(panel.margin=grid::unit(0, "lines"))+
     theme_animint(width=800, height=300)+
     facet_grid(. ~ parameter, scales="free")+
     coord_cartesian(ylim=c(0.2, max.cost))+
     geom_point(aes(
-      log10(step.size), min.cost, color=set, fill=model),
-      data=step.min)+
-    ylab("cost of regression model = mean squared error")+
+      log10(step.size), cost, color=set, fill=model),
+      data=data.table(min.dt, model="min cost")[, parameter := "log10(step size)"])+
+    ylab("mean squared error")+
     xlab("")+
     geom_tallrect(aes(
       xmin=before, xmax=after),
@@ -257,9 +250,13 @@ viz <- animint(
   duration=list(
     step.size=400,
     iteration=400),
+  out.dir="viz.step.size",
+  title="Gradient descent with several step sizes for 1d linear regression in ozone data",
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-02-05-linear-regression/viz.step.size.R",
   time=list(
     variable="iteration",
     ms=500))
 viz
-
-##animint2gist(viz)
+if(FALSE){
+  animint2pages(viz, "2019-02-05-linear-regression-1d-grad-desc-ozone-steps")
+}

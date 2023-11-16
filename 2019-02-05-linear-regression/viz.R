@@ -1,10 +1,12 @@
 library(animint2)
 library(data.table)
-
-data(ozone, package="ElemStatLearn")
+ozone.url <- "https://hastie.su.domains/ElemStatLearn/datasets/ozone.data"
+if(!file.exists("ozone.tsv")){
+  download.file(ozone.url, "ozone.tsv")
+}
+ozone <- fread("ozone.tsv")
 plot(ozone)
 plot(ozone ~ temperature, data=ozone)
-
 ozone.sc <- scale(ozone)
 X.mat <- cbind(1, ozone.sc[, "temperature"])
 y.vec <- ozone.sc[, "ozone"]
@@ -114,14 +116,12 @@ viz <- animint(
     ylab("output/label: ozone")+
     theme_bw()+
     theme_animint(height=300)+
-    theme(panel.margin=grid::unit(0, "lines"))+
-    facet_grid(set ~ .)+
     geom_point(aes(
-      temperature, ozone),
+      temperature, ozone, color=set),
       shape=21,
       fill=NA,
       data=ozone.dt)+
-    scale_color_manual(values=set.colors, guide="none")+
+    scale_color_manual(values=set.colors)+
     geom_abline(aes(
       intercept=intercept, slope=slope, key=1),
       showSelected="iteration",
@@ -142,7 +142,7 @@ viz <- animint(
       data=fit.dt)+
     geom_path(aes(
       intercept, slope),
-      color="grey",
+      color="grey50",
       data=weight.dt)+
     geom_segment(aes(
       intercept, slope,
@@ -152,10 +152,16 @@ viz <- animint(
       showSelected="iteration",
       data=weight.dt)+
     coord_cartesian(xlim=c(min.int, max.int), ylim=c(min.slope, max.slope))+
+    ## geom_point(aes(
+    ##   intercept, slope, key=1),
+    ##   showSelected="iteration",
+    ##   size=3,
+    ##   data=weight.dt)+
     geom_point(aes(
-      intercept, slope, key=1),
-      showSelected="iteration",
+      intercept, slope),
+      clickSelects="iteration",
       size=3,
+      alpha=0.5,
       data=weight.dt),
   cost=ggplot()+
     ggtitle("Train/validation error, select iteration and step size")+
@@ -184,9 +190,12 @@ viz <- animint(
       data=cost.dt[set=="validation"]),
   duration=list(
     iteration=250),
+  title="Gradient descent for 1d linear regression in ozone data",
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-02-05-linear-regression/viz.R",
   time=list(
     variable="iteration",
     ms=250))
 print(viz)
-
-##animint2gist(viz)
+if(FALSE){
+  animint2pages(viz, "2019-02-05-linear-regression-1d-grad-desc-ozone")
+}

@@ -1,11 +1,13 @@
 library(animint2)
 library(data.table)
-
-data(ozone, package="ElemStatLearn")
+ozone.url <- "https://hastie.su.domains/ElemStatLearn/datasets/ozone.data"
+if(!file.exists("ozone.tsv")){
+  download.file(ozone.url, "ozone.tsv")
+}
+ozone <- fread("ozone.tsv")
+ozone.sc <- scale(ozone)
 plot(ozone)
 plot(ozone ~ temperature, data=ozone)
-
-ozone.sc <- scale(ozone)
 X.mat <- cbind(1, ozone.sc[, "temperature"])
 y.vec <- ozone.sc[, "ozone"]
 set.seed(3)
@@ -237,7 +239,7 @@ set.colors <- c(
 set.err[, Penalty := pfac(penalty)]
 ball.dt[, Penalty := pfac(penalty)]
 weight.dt[, frame := 1:.N]
-viz <- animint(
+(viz <- animint(
   title="L2-regularized (Ridge) least squares linear regression",
   ## regression=ggplot()+
   ##   ggtitle("Linear regression model")+
@@ -369,10 +371,12 @@ viz <- animint(
       showSelected="Penalty",
       clickSelects="frame",
       data=weight.dt),
+  out.dir="viz",
+  source="https://github.com/tdhock/cs499-spring2019/blob/master/2019-02-14-L2-regularization/viz.R",
   duration=list(
     iteration=500,
     frame=500,
-    Penalty=500))
-print(viz)
-
-animint2gist(viz)
+    Penalty=500)))
+if(FALSE){
+  animint2pages(viz, "2019-02-14-L2-regularization")
+}
